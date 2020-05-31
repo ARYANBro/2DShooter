@@ -1,2 +1,1 @@
-# 2DShooter
-2D top down shooter 
+My second game first try trying out 2D
