@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scripts/Player.cs" type="Script" id=1]
+[ext_resource path="res://Imports/OrangeBlock/OrangeBlock.png" type="Texture" id=3]
+[ext_resource path="res://Scripts/GameRules.cs" type="Script" id=4]
+[ext_resource path="res://Imports/Enemy/Enemy.png" type="Texture" id=5]
+[ext_resource path="res://Scripts/Enemy.cs" type="Script" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 7, 7 )
+
+[sub_resource type="ShaderMaterial" id=2]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 30, 30 )
+
+[node name="Shooter Test Scene" type="Node"]
+script = ExtResource( 4 )
+
+[node name="Player" type="KinematicBody2D" parent="." groups=[
+"Player",
+]]
+position = Vector2( 248, 128 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+speed = 15.0
+acceleration = 12.0
+
+[node name="PlayerSprite" type="Sprite" parent="Player"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource( 1 )
+
+[node name="Enemy" type="KinematicBody2D" parent="." groups=[
+"Player",
+]]
+position = Vector2( 156.4, 171.502 )
+scale = Vector2( 1.00319, 1 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+acceleration = 1.0
+
+[node name="EnemySprite" type="Sprite" parent="Enemy"]
+material = SubResource( 2 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+shape = SubResource( 1 )
+
+[node name="EnemyDetection" type="Area2D" parent="Enemy"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/EnemyDetection"]
+shape = SubResource( 3 )
+
+[node name="Enviornment" type="Node" parent="."]
+
+[node name="Wall" type="StaticBody2D" parent="Enviornment" groups=[
+"Enviornment",
+]]
+position = Vector2( 149, 76 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Enviornment/Wall"]
+polygon = PoolVector2Array( -149, -76, -149.068, 193.931, 330.932, 193.931, 331, -76, -149, -76, -165.068, -94.0687, 346.932, -94.0687, 346.932, 209.931, -165.068, 209.931, -165.068, -94.0687 )
