@@ -1,71 +1,86 @@
 using Godot;
 
-public class Player : KinematicBody2D {
-	[Export] public float bulletSpeed = 10000.0f;
-	[Export] public float acceleration = 7.0f;
-	[Export] public float speed = 8.0f;
-	public PackedScene bulletScene;
-	public Position2D firePoint;
+public class Player : KinematicBody2D
+{
+    /* Paths */
+    [Export] public PackedScene bulletScene;
+    [Export] public NodePath firePointPath;
 
-	private Vector2 direction;
-	private Vector2 velocity;
-	private Vector2 mousePos;
+    /* Movemnet */
+    [Export] public float acceleration = 70.0f;
+    [Export] public float sprintSpeed = 650.0f;
+    [Export] public float speed = 450.0f;
 
-	public override void _Ready() {
-		bulletScene = ResourceLoader.Load<PackedScene>("res://Assets/Bullet.tscn");
-		firePoint = (Position2D)GetTree().Root.GetNode("FirePoint");
-	}
+    /* Ref */
+    public Position2D firePoint;
 
-	public override void _Process(float delta) {
+    /* Movement */
+    private Vector2 direction;
+    private Vector2 velocity;
+    private Vector2 mousePos;
+    private Vector2 lookDir;
 
-		mousePos = GetViewport().GetMousePosition();
-		
-		/* Temporary put it in a game rules script */
-		if (Input.IsActionPressed("ui_cancel")) {
-			GetTree().Quit();
-		}
+    public override void _EnterTree()
+    {
+        firePoint = GetNode<Position2D>(firePointPath);
+    }
 
-		firePoint.Position += Position;
-	}
+    public override void _Process(float delta)
+    {
+        mousePos = GetViewport().GetMousePosition();
+    }
 
-	public override void _PhysicsProcess(float delta) {
-		Move(delta);
+    public override void _PhysicsProcess(float delta)
+    {
+        Movement(delta);
 
-		Vector2 lookDir = mousePos - Position;
-		float angle = Mathf.Atan2(lookDir.y, lookDir.x);
-		RotationDegrees = Mathf.Rad2Deg(angle) + 90;
+        if (Input.IsActionJustPressed("Fire"))
+            Shoot();
+    }
 
-		if (Input.IsActionJustPressed("Fire")) {
-			Shoot();
-		}
-	}
+    private void Movement(float delta)
+    {
+        // Movement
+        direction = new Vector2();
 
-	private void Move(float delta) {
+        if (Input.IsActionPressed("MoveForward"))
+            direction -= new Vector2(0.0f, 1.0f) * speed;
+        else if (Input.IsActionPressed("MoveBackward"))
+            direction += new Vector2(0.0f, 1.0f) * speed;
 
-		direction = new Vector2();
+        if (Input.IsActionPressed("MoveLeft"))
+            direction -= new Vector2(1.0f, 0.0f) * speed;
+        else if (Input.IsActionPressed("MoveRight"))
+            direction += new Vector2(1.0f, 0.0f) * speed;
 
-		if (Input.IsActionPressed("MoveForward"))
-			direction -= new Vector2(0.0f, 1.0f) * speed;
-		else if (Input.IsActionPressed("MoveBackward"))
-			direction += new Vector2(0.0f, 1.0f) * speed;
+        direction = direction.Normalized();
 
-		if (Input.IsActionPressed("MoveLeft"))
-			direction -= new Vector2(1.0f, 0.0f) * speed;
-		else if (Input.IsActionPressed("MoveRight"))
-			direction += new Vector2(1.0f, 0.0f) * speed;
+        if (Input.IsActionPressed("Sprint"))
+            velocity = velocity.LinearInterpolate(direction * sprintSpeed, acceleration * delta);
+        else
+            velocity = velocity.LinearInterpolate(direction * speed, acceleration * delta);
 
-		direction = direction.Normalized();
+        MoveAndSlide(velocity);
 
-		velocity = velocity.LinearInterpolate(direction * speed, acceleration * delta);
-		MoveAndSlide(velocity);
-	}
+        //Rotate towards mouse
+        lookDir = mousePos - Position;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x);
 
-	private void Shoot() {
-		RigidBody2D bullet = (RigidBody2D)bulletScene.Instance();
-		bullet.RotationDegrees = RotationDegrees;
-		bullet.Transform = Transform;
-		bullet.AddForce(new Vector2(0.0f, 0.0f), (mousePos - Position) * bulletSpeed); ;
+        RotationDegrees = Mathf.Rad2Deg(angle) + 90;
 
-		GetTree().Root.AddChild(bullet);
-	}
+    }
+
+    private void Shoot()
+    {
+        Bullet bullet = (Bullet)bulletScene.Instance();
+
+        if (bullet != null)
+        {
+            bullet.Position = firePoint.GlobalPosition;
+            bullet.RotationDegrees = RotationDegrees;
+            bullet.Fire(lookDir);
+
+            GetTree().Root.AddChild(bullet);
+        }
+    }
 }
