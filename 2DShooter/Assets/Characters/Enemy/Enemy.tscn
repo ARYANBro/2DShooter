@@ -1,0 +1,117 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Scripts/Enemy/Enemy.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Characters/Enemy/Enemy Death Particles.tscn" type="PackedScene" id=2]
+
+[sub_resource type="VisualShaderNodeColorUniform" id=1]
+uniform_name = "Color"
+
+[sub_resource type="VisualShader" id=2]
+code = "shader_type canvas_item;
+uniform vec4 Color : hint_color;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// ColorUniform:2
+	vec3 n_out2p0 = Color.rgb;
+	float n_out2p1 = Color.a;
+
+// Output:0
+	COLOR.rgb = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -319, 46 )
+mode = 1
+flags/light_only = false
+nodes/fragment/2/node = SubResource( 1 )
+nodes/fragment/2/position = Vector2( 180, 180 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/Color = Color( 0.929412, 0.184314, 0.254902, 1 )
+
+[sub_resource type="ProxyTexture" id=4]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 7, 7 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 100, 100 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 6.5, 6.5 )
+
+[sub_resource type="Animation" id=14]
+resource_name = "Death_animation"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 0.217638, 1 ),
+"update": 0,
+"values": [ Vector2( 4.5, 4.5 ), Vector2( 1e-05, 1e-05 ) ]
+}
+
+[node name="Enemy" type="RigidBody2D"]
+position = Vector2( 576, 528 )
+scale = Vector2( 4.5, 4.5 )
+collision_layer = 4
+collision_mask = 7
+mode = 3
+script = ExtResource( 1 )
+enemyDetectionPath = NodePath("Enemy Detecton")
+DeathParticlesPath = NodePath("Enemy Death Particles")
+animPlayerPath = NodePath("AnimationPlayer")
+deathTimerPath = NodePath("DeathTimer")
+playerPath = NodePath("../../Player/PlayerController")
+healthPath = NodePath("Helth ")
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 3 )
+scale = Vector2( 15, 15 )
+texture = SubResource( 4 )
+
+[node name="Enemy Collsiion" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 5 )
+
+[node name="Enemy Detecton" type="Area2D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 3
+
+[node name="Detection Area" type="CollisionShape2D" parent="Enemy Detecton"]
+shape = SubResource( 6 )
+
+[node name="Helth " type="Area2D" parent="."]
+visible = false
+collision_layer = 4
+
+[node name="Health Collision" type="CollisionShape2D" parent="Helth "]
+shape = SubResource( 7 )
+
+[node name="Enemy Death Particles" parent="." instance=ExtResource( 2 )]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Death_animation = SubResource( 14 )
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 0.2

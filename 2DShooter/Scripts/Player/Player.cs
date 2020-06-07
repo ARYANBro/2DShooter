@@ -3,16 +3,19 @@ using Godot;
 public class Player : KinematicBody2D
 {
     /* Paths */
+    [Export] public NodePath firePointSpritePath;
     [Export] public PackedScene bulletScene;
     [Export] public NodePath firePointPath;
 
     /* Movemnet */
     [Export] public float acceleration = 70.0f;
+    
     [Export] public float sprintSpeed = 650.0f;
     [Export] public float speed = 450.0f;
 
     /* Ref */
-    public Position2D firePoint;
+    public Sprite firePointSprite;
+    public Position2D firePoint; 
 
     /* Movement */
     private Vector2 direction;
@@ -22,6 +25,7 @@ public class Player : KinematicBody2D
 
     public override void _EnterTree()
     {
+        firePointSprite = GetNode<Sprite>(firePointSpritePath);
         firePoint = GetNode<Position2D>(firePointPath);
     }
 
@@ -66,7 +70,7 @@ public class Player : KinematicBody2D
         lookDir = mousePos - Position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x);
 
-        RotationDegrees = Mathf.Rad2Deg(angle) + 90;
+        firePointSprite.GlobalRotationDegrees = Mathf.Rad2Deg(angle) + 90;
 
     }
 
@@ -76,8 +80,8 @@ public class Player : KinematicBody2D
 
         if (bullet != null)
         {
+            bullet.RotationDegrees = firePointSprite.GlobalRotationDegrees;
             bullet.Position = firePoint.GlobalPosition;
-            bullet.RotationDegrees = RotationDegrees;
             bullet.Fire(lookDir);
 
             GetTree().Root.AddChild(bullet);

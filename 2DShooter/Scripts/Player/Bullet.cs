@@ -11,7 +11,7 @@ public class Bullet : RigidBody2D
     [Export] public NodePath lifetimePath;
 
     /* Movemnet */
-    [Export] public float bulletSpeed = 1000.0f;
+    [Export] public float bulletSpeed = 500.0f;
 
     /* Ref */
     public AnimationPlayer bulletAnimations;
@@ -35,8 +35,9 @@ public class Bullet : RigidBody2D
 
     private void BulletCollided(object body)
     {
-        lifetime.Start();
         particles.Emitting = true;
+        bulletArea.QueueFree();
+        lifetime.Start();
     }
 
     public void Fire(Vector2 lookDir)
@@ -49,5 +50,10 @@ public class Bullet : RigidBody2D
     {
         bulletAnimations.Play("Bullet Die");
         bulletAnimTimer.Start();
+    }
+
+    private void BulletAnimTimerEnd()
+    {
+        QueueFree();
     }
 }
