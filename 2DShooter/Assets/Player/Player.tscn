@@ -46,23 +46,22 @@ shader_param/Color = Color( 0.929412, 0.768627, 0.141176, 1 )
 [sub_resource type="AnimatedTexture" id=4]
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 8.5, 8.5 )
+extents = Vector2( 8, 8 )
 
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( 960, 540 )
-scale = Vector2( 5, 5 )
 collision_mask = 6
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
-sprintSpeed = 400.0
-speed = 250.0
-accel = 40.0
+maxSprintSpeed = 120.0
+acceleration = 500.0
+friction = 500.0
+maxSpeed = 80.0
 
 [node name="Player Sprite" type="Sprite" parent="."]
 material = SubResource( 3 )
-scale = Vector2( 18, 18 )
+scale = Vector2( 15, 15 )
 texture = SubResource( 4 )
 
 [node name="Player Collision" type="CollisionShape2D" parent="."]

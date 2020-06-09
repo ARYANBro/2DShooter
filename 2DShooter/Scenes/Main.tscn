@@ -6,14 +6,17 @@
 [node name="Main" type="Node2D"]
 
 [node name="Main Cam" type="Camera2D" parent="."]
-position = Vector2( 960, 540 )
-scale = Vector2( 2.5, 2.5 )
+position = Vector2( 160, 90 )
 current = true
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-accel = 50.0
+position = Vector2( 250, 90 )
+
+[node name="Gun" parent="Player" index="2"]
+firePointPath = null
 
 [node name="Enemy" parent="." instance=ExtResource( 2 )]
+position = Vector2( 70, 90 )
 mode = 2
 gravity_scale = 0.0
 stopAccel = 2.0

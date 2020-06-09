@@ -86,12 +86,11 @@ shader_param/Color = Color( 0.11, 0.11, 0.11, 1 )
 extents = Vector2( 8.10556, 10.0612 )
 
 [node name="Gun" type="KinematicBody2D"]
-scale = Vector2( 0.5, 0.5 )
+scale = Vector2( 0.4, 0.4 )
 collision_mask = 6
 script = ExtResource( 1 )
 bulletScene = ExtResource( 2 )
 camPath = NodePath("../../Main Cam")
-firePointPath = NodePath("Firepoint")
 fireSpeed = 20000.0
 
 [node name="Gun Sprite" type="Sprite" parent="."]
@@ -114,4 +113,5 @@ scale = Vector2( 1, 2 )
 shape = SubResource( 7 )
 
 [node name="Firepoint" type="Position2D" parent="."]
-position = Vector2( -5.03555, -99.0276 )
+position = Vector2( 0, -100 )
+scale = Vector2( 1, 1 )
