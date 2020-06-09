@@ -15,13 +15,14 @@ public class Player : KinematicBody2D
     }
 
     private void Movement(float delta)
-    {
+{
         Vector2 inputVector = new Vector2();
 
         inputVector.x = Input.GetActionStrength("MoveRight") - Input.GetActionStrength("MoveLeft");
         inputVector.y = Input.GetActionStrength("MoveDown") - Input.GetActionStrength("MoveUp");
+        inputVector = inputVector.Normalized();
 
-        GD.Print(inputVector);
+        GD.Print("Input vector: " + inputVector);
 
         if (Input.IsActionPressed("Sprint"))
             velocity = velocity.LinearInterpolate(inputVector * sprintSpeed, accel * delta);
