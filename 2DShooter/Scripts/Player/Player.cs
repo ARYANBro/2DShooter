@@ -1,8 +1,7 @@
 using Godot;
 using System;
 
-public class Player : KinematicBody2D
-{
+public class Player : KinematicBody2D {
     [Export] public float maxSprintSpeed;
     [Export] public float acceleration;
     [Export] public float friction;
@@ -33,6 +32,5 @@ public class Player : KinematicBody2D
         }
 
         velocity = MoveAndSlide(velocity);
-        //GD.Print(velocity);
     }
 }

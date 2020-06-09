@@ -1,8 +1,7 @@
 using Godot;
 using System;
 
-public class Enemy : RigidBody2D
-{
+public class Enemy : RigidBody2D {
     [Export] public NodePath playerPath;
     [Export] public NodePath detectionPath;
     [Export] public NodePath gunPath;

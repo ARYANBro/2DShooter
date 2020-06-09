@@ -1,21 +1,19 @@
 using Godot;
 using System;
 
-public class Gun : KinematicBody2D
-{
-
+public class Gun : KinematicBody2D {
     [Export] public PackedScene bulletScene;
     [Export] public NodePath camPath;
     [Export] public float fireSpeed;
     [Export] public int hitPoints;
 
     public Position2D firepoint;
-    public Camera2D cam;
     private Vector2 mousePos;
     private Vector2 lookDir;
+    public Camera2D cam;
 
     public override void _Ready() {
-        firepoint = GetNode<Position2D>();
+        firepoint = GetNode<Position2D>("Firepoint");
         cam = GetNode<Camera2D>(camPath);
     }
 
