@@ -7,14 +7,17 @@ public class Enemy : RigidBody2D
     [Export] public NodePath detectionPath;
     [Export] public NodePath gunPath;
 
+    [Export] public float stopAccel;
+    [Export] public float linearVel;
+    [Export] public float speed;
     [Export] public int hp;
-    [Export] public float accel;
 
     public Area2D detection;
     public Player player;
     public Gun gun;
 
     private bool iSeePlayer;
+    private Vector2 velocity;
 
     public override void _EnterTree()
     {
@@ -22,8 +25,8 @@ public class Enemy : RigidBody2D
         player = GetNode<Player>(playerPath);
         gun = GetNode<Gun>(gunPath);
 
-        detection.Connect("body_entered", this, "CanSeePlayer");
-        detection.Connect("body_exited", this, "CantSeePlayer");
+        detection.Connect("body_exited", this, "PlayerNotSeen");
+        detection.Connect("body_entered", this, "PlayerSeen");
         Connect("body_entered", this, "EnemyCollided");
     }
 
@@ -39,28 +42,30 @@ public class Enemy : RigidBody2D
     {
         if (iSeePlayer && player != null)
         {
-            Position = Position.LinearInterpolate(player.Position, accel * delta);
+            Vector2 forcePos = player.Position - Position;
+            LinearVelocity = forcePos.Normalized() * linearVel;
         }
+        else if (!iSeePlayer && player != null)
+            LinearVelocity = LinearVelocity.LinearInterpolate(new Vector2(), delta * stopAccel);
     }
 
-    private void CanSeePlayer(object body)
+    public void PlayerSeen(object body)
     {
         if (body.GetType().Name == "Player")
             iSeePlayer = true;
     }
 
-    private void CantSeePlayer(object body)
+    public void PlayerNotSeen(object body)
     {
         if (body.GetType().Name == "Player")
             iSeePlayer = false;
     }
 
-    private void EnemyCollided(object body)
+    public void EnemyCollided(object body)
     {
         if (body.GetType().Name == "Bullet")
         {
             hp -= gun.hitPoints;
-            GD.Print(hp);
         }
     }
 }

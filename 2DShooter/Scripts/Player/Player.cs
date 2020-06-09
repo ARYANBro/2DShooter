@@ -11,25 +11,22 @@ public class Player : KinematicBody2D
 
     public override void _PhysicsProcess(float delta)
     {
-        Vector2 direction = new Vector2();
+        Movement(delta);
+    }
 
-        if (Input.IsActionPressed("MoveUp"))
-            direction.y -= Position.y;
-        else if (Input.IsActionPressed("MoveDown"))
-            direction.y += Position.y;
+    private void Movement(float delta)
+    {
+        Vector2 inputVector = new Vector2();
 
-        if (Input.IsActionPressed("MoveLeft"))
-            direction.x -= Position.x;
+        inputVector.x = Input.GetActionStrength("MoveRight") - Input.GetActionStrength("MoveLeft");
+        inputVector.y = Input.GetActionStrength("MoveDown") - Input.GetActionStrength("MoveUp");
 
-        else if (Input.IsActionPressed("MoveRight"))
-            direction.x += Position.x;
+        GD.Print(inputVector);
 
-        direction = direction.Normalized();
-        
         if (Input.IsActionPressed("Sprint"))
-            velocity = velocity.LinearInterpolate(direction * sprintSpeed, accel * delta);
+            velocity = velocity.LinearInterpolate(inputVector * sprintSpeed, accel * delta);
         else
-            velocity = velocity.LinearInterpolate(direction * speed, accel * delta);
+            velocity = velocity.LinearInterpolate(inputVector * speed, accel * delta);
 
         MoveAndSlide(velocity);
     }

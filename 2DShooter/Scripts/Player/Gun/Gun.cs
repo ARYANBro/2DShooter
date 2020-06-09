@@ -4,8 +4,8 @@ using System;
 public class Gun : KinematicBody2D
 {
     [Export] public PackedScene bulletScene;
-    [Export] public NodePath camPath;
     [Export] public NodePath firePointPath;
+    [Export] public NodePath camPath;
 
     [Export] public float fireSpeed;
     [Export] public int hitPoints;
@@ -14,7 +14,7 @@ public class Gun : KinematicBody2D
     public Camera2D cam;
 
     private Vector2 mousePos;
-    private Vector2 lookdir;
+    private Vector2 lookDir;
 
     public override void _EnterTree()
     {
@@ -29,8 +29,8 @@ public class Gun : KinematicBody2D
 
     public override void _PhysicsProcess(float delta)
     {
-        lookdir = mousePos - GlobalPosition;
-        float angle = Mathf.Atan2(lookdir.y, lookdir.x);
+        lookDir = mousePos - GlobalPosition;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x);
 
         RotationDegrees = Mathf.Rad2Deg(angle) + 90;
 
@@ -40,11 +40,10 @@ public class Gun : KinematicBody2D
 
     private void Shoot()
     {
-        Bullet bullet = (Bullet)bulletScene.Instance();
+        RigidBody2D bullet = (RigidBody2D)bulletScene.Instance();
         bullet.Position = firePoint.GlobalPosition;
         bullet.Rotation = GlobalRotation;
-
-        bullet.Fire(lookdir, fireSpeed);
+        bullet.AddForce(new Vector2(), lookDir.Normalized() * fireSpeed);
 
         GetTree().Root.AddChild(bullet);
     }
