@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Enemy/EnemyBullet.cs" type="Script" id=1]
+
+[sub_resource type="VisualShaderNodeColorUniform" id=1]
+uniform_name = "Color"
+
+[sub_resource type="VisualShader" id=2]
+code = "shader_type canvas_item;
+uniform vec4 Color : hint_color;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// ColorUniform:2
+	vec3 n_out2p0 = Color.rgb;
+	float n_out2p1 = Color.a;
+
+// Output:0
+	COLOR.rgb = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -298.667, 70.6667 )
+mode = 1
+flags/light_only = false
+nodes/fragment/2/node = SubResource( 1 )
+nodes/fragment/2/position = Vector2( 180.333, 196.667 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/Color = Color( 0.948417, 0.95, 0.931, 1 )
+
+[sub_resource type="ProxyTexture" id=4]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 3, 3 )
+
+[node name="Enemy Bullet" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 5
+mode = 2
+gravity_scale = 0.0
+contacts_reported = 1
+contact_monitor = true
+script = ExtResource( 1 )
+speed = 200.0
+
+[node name="Bullet Sprite" type="Sprite" parent="."]
+material = SubResource( 3 )
+scale = Vector2( 7, 7 )
+texture = SubResource( 4 )
+
+[node name="Bullet Collision" type="CollisionShape2D" parent="."]
+shape = SubResource( 5 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+scale = Vector2( 0.35, 0.35 )
+[connection signal="body_entered" from="." to="." method="OnEnemyBulletBodyEntered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="OnVisibilityNotifierScreenExited"]

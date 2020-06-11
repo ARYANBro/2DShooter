@@ -10,8 +10,9 @@ public class Gun : KinematicBody2D
 
     public override void _Ready()
     {
-        firepoint = GetNode<Position2D>("Firepoint");
         bulletScene = (PackedScene)ResourceLoader.Load("res://Assets/Player/Gun/Bullet.tscn");
+        firepoint = GetNode<Position2D>("Firepoint");
+        GetTree().CurrentScene.Connect("OnPlayerDied", this, "PlayerDied");
     }
 
     public override void _Process(float delta)
@@ -35,5 +36,10 @@ public class Gun : KinematicBody2D
         bullet.Position = firepoint.GlobalPosition;
         bullet.Rotation = GlobalRotation;
         GetTree().Root.AddChild(bullet);
+    }
+
+    private void OnPlayerDied()
+    {
+        QueueFree();
     }
 }

@@ -3,10 +3,13 @@ using System;
 
 public class Player : KinematicBody2D
 {
+    [Signal] public delegate void PlayerDiedHandler();
+
     [Export] public float maxSprintSpeed = 120.0f;
     [Export] public float acceleration = 500.0f;
     [Export] public float friction = 500.0f;
     [Export] public float maxSpeed = 80.0f;
+    [Export] public int hp = 100;
 
     private Vector2 velocity = Vector2.Zero;
 
@@ -38,5 +41,18 @@ public class Player : KinematicBody2D
         }
 
         velocity = MoveAndSlide(velocity);
+    }
+
+    public void takeDamage(int damage)
+    {
+        hp -= damage;
+
+        if (hp <= 0)
+        {
+            Hide();
+            SetPhysicsProcess(false);
+            SetProcess(false);
+            EmitSignal("PlayerDiedHandler");
+        }
     }
 }

@@ -16,16 +16,15 @@ public class Enemy : KinematicBody2D
 
     private Vector2 velocity;
     private bool canSeePlayer;
-    float angle;
+    private float angle;
 
     public override void _Ready()
     {
-        bulletScene = (PackedScene)ResourceLoader.Load("res://Assets/Player/Gun/Bullet.tscn");
+        bulletScene = (PackedScene)ResourceLoader.Load("res://Assets/Enemy/Enemy Bullet.tscn");
         player = GetTree().CurrentScene.GetNode<Player>("Player");
         attackRateTimer = GetNode<Timer>("Attack Rate");
         detection = GetNode<Area2D>("Detection Area");
         gun = player.GetNode<Gun>("Gun");
-        attackRateTimer.SetBlockSignals(true);
     }
 
     public override void _Process(float delta)
@@ -40,6 +39,9 @@ public class Enemy : KinematicBody2D
         Movement(delta);
         if (canSeePlayer)
             attackRateTimer.SetBlockSignals(false);
+        else
+            attackRateTimer.SetBlockSignals(true);
+
     }
 
     private void Movement(float delta)
@@ -63,13 +65,9 @@ public class Enemy : KinematicBody2D
 
     private void Attack()
     {
-        RigidBody2D bullet = (RigidBody2D)bulletScene.Instance();
-        bullet.GetNode<CollisionShape2D>("Bullet Collision").Disabled = true;
-        bullet.CollisionLayer = Convert.ToUInt32(2);
-        bullet.CollisionMask = Convert.ToUInt32(1);
-        bullet.CollisionMask = Convert.ToUInt32(3);
-        bullet.RotationDegrees = angle;
-        bullet.Position = Position;
+        RigidBody2D bullet = (RigidBody2D)bulletScene.Instance(PackedScene.GenEditState.Instance);
+        bullet.GlobalPosition = GlobalPosition;
+        bullet.GlobalRotationDegrees = angle;
         GetTree().Root.AddChild(bullet);
     }
 

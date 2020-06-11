@@ -46,7 +46,7 @@ shader_param/Color = Color( 0.929412, 0.768627, 0.141176, 1 )
 [sub_resource type="AnimatedTexture" id=4]
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 8, 8 )
+extents = Vector2( 7, 7 )
 
 [node name="Player" type="KinematicBody2D"]
 collision_mask = 6
