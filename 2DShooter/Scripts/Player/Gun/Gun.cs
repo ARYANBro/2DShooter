@@ -4,15 +4,14 @@ using System;
 public class Gun : KinematicBody2D
 {
     [Export] public float fireSpeed = 500.0f;
-    public PackedScene bulletScene;
     public Position2D firepoint;
-
+    public PackedScene bulletScene;
     private Vector2 mousePos;
 
     public override void _Ready()
     {
-        bulletScene = (PackedScene)ResourceLoader.Load("res://Assets/Player/Gun/Bullet.tscn");
         firepoint = GetNode<Position2D>("Firepoint");
+        bulletScene = (PackedScene)ResourceLoader.Load("res://Assets/Player/Gun/Bullet.tscn");
     }
 
     public override void _Process(float delta)
@@ -32,12 +31,9 @@ public class Gun : KinematicBody2D
 
     private void Shoot(Vector2 lookDir)
     {
-        if (bulletScene != null)
-        {
-            RigidBody2D bullet = (RigidBody2D)bulletScene.Instance();
-            bullet.Position = firepoint.GlobalPosition;
-            bullet.Rotation = GlobalRotation;
-            GetTree().Root.AddChild(bullet);
-        }
+        RigidBody2D bullet = (RigidBody2D)bulletScene.Instance();
+        bullet.Position = firepoint.GlobalPosition;
+        bullet.Rotation = GlobalRotation;
+        GetTree().Root.AddChild(bullet);
     }
 }

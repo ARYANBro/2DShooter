@@ -64,8 +64,7 @@ texture = SubResource( 4 )
 [node name="Bullet Collision" type="CollisionShape2D" parent="."]
 shape = SubResource( 5 )
 
-[node name="Bullet Lifetimer" type="Timer" parent="."]
-wait_time = 5.0
-autostart = true
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+scale = Vector2( 0.35, 0.35 )
 [connection signal="body_entered" from="." to="." method="OnBulletBodyEntered"]
-[connection signal="timeout" from="Bullet Lifetimer" to="." method="OnBulletLifeTimeTimerTimeOut"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="OnVisibilityNotifierScreenExited"]

@@ -60,6 +60,11 @@ material = SubResource( 3 )
 scale = Vector2( 15, 15 )
 texture = SubResource( 4 )
 
+[node name="Attack Rate" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.5
+autostart = true
+
 [node name="Enemy Collision" type="CollisionShape2D" parent="."]
 shape = SubResource( 5 )
 
@@ -70,5 +75,6 @@ collision_mask = 5
 
 [node name="Detection Collision" type="CollisionShape2D" parent="Detection Area"]
 shape = SubResource( 6 )
+[connection signal="timeout" from="Attack Rate" to="." method="OnAttackRateTimerTimeOut"]
 [connection signal="body_entered" from="Detection Area" to="." method="OnDetectionAreaEntered"]
 [connection signal="body_exited" from="Detection Area" to="." method="OnDetectoinAreaBodyExited"]

@@ -9,36 +9,37 @@ public class Enemy : KinematicBody2D
     [Export] public int hp = 50;
 
     public PackedScene bulletScene;
+    public Timer attackRateTimer;
     public Area2D detection;
     public Player player;
     public Gun gun;
 
     private Vector2 velocity;
     private bool canSeePlayer;
+    float angle;
 
     public override void _Ready()
     {
         bulletScene = (PackedScene)ResourceLoader.Load("res://Assets/Player/Gun/Bullet.tscn");
         player = GetTree().CurrentScene.GetNode<Player>("Player");
+        attackRateTimer = GetNode<Timer>("Attack Rate");
         detection = GetNode<Area2D>("Detection Area");
         gun = player.GetNode<Gun>("Gun");
+        attackRateTimer.SetBlockSignals(true);
     }
 
     public override void _Process(float delta)
     {
         Vector2 lookDir = player.GlobalPosition - GlobalPosition;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x);
+        angle = Mathf.Atan2(lookDir.y, lookDir.x);
         angle = Mathf.Rad2Deg(angle) + 90;
-
-        if (canSeePlayer)
-        {
-            Attack(angle);
-        }
     }
 
     public override void _PhysicsProcess(float delta)
     {
         Movement(delta);
+        if (canSeePlayer)
+            attackRateTimer.SetBlockSignals(false);
     }
 
     private void Movement(float delta)
@@ -60,18 +61,16 @@ public class Enemy : KinematicBody2D
         }
     }
 
-    private void Attack(float angle)
+    private void Attack()
     {
-        if (bulletScene != null)
-        {
-            RigidBody2D bullet = (RigidBody2D)bulletScene.Instance(PackedScene.GenEditState.Instance);
-            CollisionShape2D bulletCollision = bullet.GetNode<CollisionShape2D>("Bullet Collision");
-            bullet.Position = Position;
-            bullet.RotationDegrees = angle;
-            bulletCollision.Disabled = true;
- 
-            GetTree().Root.AddChild(bullet);
-        }
+        RigidBody2D bullet = (RigidBody2D)bulletScene.Instance();
+        bullet.GetNode<CollisionShape2D>("Bullet Collision").Disabled = true;
+        bullet.CollisionLayer = Convert.ToUInt32(2);
+        bullet.CollisionMask = Convert.ToUInt32(1);
+        bullet.CollisionMask = Convert.ToUInt32(3);
+        bullet.RotationDegrees = angle;
+        bullet.Position = Position;
+        GetTree().Root.AddChild(bullet);
     }
 
     public void OnDetectionAreaEntered(object body)
@@ -91,5 +90,10 @@ public class Enemy : KinematicBody2D
         hp -= damage;
         if (hp <= 0)
             QueueFree();
+    }
+
+    private void OnAttackRateTimerTimeOut()
+    {
+        Attack();
     }
 }

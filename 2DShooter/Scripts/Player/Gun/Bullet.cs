@@ -3,8 +3,8 @@ using System;
 
 public class Bullet : RigidBody2D
 {
-    [Export] public int damage;
     [Export] public float speed = 500.0f;
+    [Export] public int damage;
 
     public override void _Ready()
     {
@@ -22,7 +22,7 @@ public class Bullet : RigidBody2D
         QueueFree();
     }
 
-    private void OnBulletLifeTimeTimerTimeOut()
+    private void OnVisibilityNotifierScreenExited()
     {
         QueueFree();
     }
