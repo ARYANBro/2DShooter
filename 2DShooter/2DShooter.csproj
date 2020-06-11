@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Assets\Enemy\EnemyBullet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\CameraShake.cs" />
     <Compile Include="Scripts\Enemy\Enemy.cs" />
     <Compile Include="Scripts\GameRules.cs" />
     <Compile Include="Scripts\Player\Gun\Bullet.cs" />
