@@ -14,8 +14,5 @@ position = Vector2( 250, 90 )
 
 [node name="Enemy" parent="." instance=ExtResource( 2 )]
 position = Vector2( 70, 90 )
-mode = 2
-gravity_scale = 0.0
-stopAccel = 2.0
 
 [editable path="Player"]

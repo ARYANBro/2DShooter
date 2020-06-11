@@ -45,24 +45,15 @@ shader_param/Color = Color( 0.96, 0, 0.24, 1 )
 [sub_resource type="ProxyTexture" id=4]
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 8, 8 )
+extents = Vector2( 7, 7 )
 
 [sub_resource type="CircleShape2D" id=6]
 radius = 70.0
 
-[node name="Enemy" type="RigidBody2D"]
+[node name="Enemy" type="KinematicBody2D"]
 collision_layer = 2
 collision_mask = 5
-mode = 3
-contacts_reported = 1
-contact_monitor = true
 script = ExtResource( 1 )
-playerPath = NodePath("../Player")
-detectionPath = NodePath("Detection Area")
-gunPath = NodePath("../Player/Gun")
-linearVel = 250.0
-speed = 250.0
-hp = 50
 
 [node name="Enemy Sprite" type="Sprite" parent="."]
 material = SubResource( 3 )
@@ -73,6 +64,11 @@ texture = SubResource( 4 )
 shape = SubResource( 5 )
 
 [node name="Detection Area" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 5
 
 [node name="Detection Collision" type="CollisionShape2D" parent="Detection Area"]
 shape = SubResource( 6 )
+[connection signal="body_entered" from="Detection Area" to="." method="OnDetectionAreaEntered"]
+[connection signal="body_exited" from="Detection Area" to="." method="OnDetectoinAreaBodyExited"]

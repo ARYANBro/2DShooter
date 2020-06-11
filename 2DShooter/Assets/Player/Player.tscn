@@ -54,10 +54,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
-maxSprintSpeed = 120.0
-acceleration = 500.0
-friction = 500.0
-maxSpeed = 80.0
 
 [node name="Player Sprite" type="Sprite" parent="."]
 material = SubResource( 3 )
@@ -68,4 +64,3 @@ texture = SubResource( 4 )
 shape = SubResource( 5 )
 
 [node name="Gun" parent="." instance=ExtResource( 2 )]
-hitPoints = 10
