@@ -16,7 +16,9 @@ public class EnemyBullet : Bullet
 
             CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("Main Cam");
             cameraShake.Shake(50.0f, 50.0f, 50.0f);
-            QueueFree();
+
         }
+
+        QueueFree();
     }
 }

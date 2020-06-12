@@ -9,4 +9,4 @@
 collision_layer = 2
 collision_mask = 5
 script = ExtResource( 1 )
-damage = 20
+speed = 100.0
