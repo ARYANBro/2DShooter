@@ -1,5 +1,5 @@
-using Godot;
 using System;
+using Godot;
 
 public class Player : KinematicBody2D
 {

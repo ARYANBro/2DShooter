@@ -56,6 +56,7 @@ contacts_reported = 1
 contact_monitor = true
 script = ExtResource( 1 )
 speed = 200.0
+damage = 20
 
 [node name="Bullet Sprite" type="Sprite" parent="."]
 material = SubResource( 3 )

@@ -14,8 +14,8 @@ public class Enemy : KinematicBody2D
     public Player player;
     public Gun gun;
 
-    private Vector2 velocity;
     private bool canSeePlayer;
+    private Vector2 velocity;
     private float angle;
 
     public override void _Ready()
@@ -53,9 +53,7 @@ public class Enemy : KinematicBody2D
             inputVector = inputVector.Normalized();
 
             if (canSeePlayer)
-            {
                 velocity = velocity.MoveToward(inputVector * maxSpeed, acceleration * delta);
-            }
             else
                 velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
 
@@ -65,9 +63,12 @@ public class Enemy : KinematicBody2D
 
     private void Attack()
     {
+        Vector2 offset = GlobalPosition - player.Position;
+        offset = offset.Normalized();
         RigidBody2D bullet = (RigidBody2D)bulletScene.Instance(PackedScene.GenEditState.Instance);
-        bullet.GlobalPosition = GlobalPosition;
+        bullet.Transform = Transform;
         bullet.GlobalRotationDegrees = angle;
+        bullet.Position += offset * -15.0f;
         GetTree().Root.AddChild(bullet);
     }
 
