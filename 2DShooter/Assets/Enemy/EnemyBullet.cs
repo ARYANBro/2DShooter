@@ -1,22 +1,9 @@
 using System;
 using Godot;
 
-public class EnemyBullet : RigidBody2D
+public class EnemyBullet : Bullet
 {
-    [Export] public float speed = 500.0f;
-    [Export] public int damage = 10;
-
-    public override void _Ready()
-    {
-        LinearVelocity = -Transform.y * speed;
-    }
-
-    private void OnVisibilityNotifierScreenExited()
-    {
-        QueueFree();
-    }
-
-    private void OnEnemyBulletBodyEntered(object body)
+    private void OnBulletBodyEntered(object body)
     {
         if (body.GetType().Name == "Player")
         {
@@ -26,6 +13,10 @@ public class EnemyBullet : RigidBody2D
             {
                 player.takeDamage(damage);
             }
+
+            CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("Main Cam");
+            cameraShake.Shake(50.0f, 50.0f, 50.0f);
+            QueueFree();
         }
     }
 }

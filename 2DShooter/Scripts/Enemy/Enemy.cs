@@ -65,10 +65,13 @@ public class Enemy : KinematicBody2D
     {
         Vector2 offset = GlobalPosition - player.Position;
         offset = offset.Normalized();
-        RigidBody2D bullet = (RigidBody2D)bulletScene.Instance(PackedScene.GenEditState.Instance);
-        bullet.Transform = Transform;
-        bullet.GlobalRotationDegrees = angle;
-        bullet.Position += offset * -15.0f;
+
+        var bullet = (Node2D)bulletScene.Instance(PackedScene.GenEditState.Instance);
+        var enemyBullet = bullet.GetNode<EnemyBullet>("Bullet");
+
+        enemyBullet.Transform = Transform;
+        enemyBullet.GlobalRotationDegrees = angle;
+        enemyBullet.Position += offset * -15.0f;
         GetTree().Root.AddChild(bullet);
     }
 
@@ -88,7 +91,11 @@ public class Enemy : KinematicBody2D
     {
         hp -= damage;
         if (hp <= 0)
+        {
+            var cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("Main Cam");
+            cameraShake.StartShake();
             QueueFree();
+        }
     }
 
     private void OnAttackRateTimerTimeOut()

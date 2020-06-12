@@ -60,6 +60,7 @@
     <Compile Include="Scripts\GameRules.cs" />
     <Compile Include="Scripts\Player\Gun\Bullet.cs" />
     <Compile Include="Scripts\Player\Gun\Gun.cs" />
+    <Compile Include="Scripts\Player\Gun\PlayerBullet.cs" />
     <Compile Include="Scripts\Player\Player.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
