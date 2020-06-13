@@ -3,6 +3,8 @@ using Godot;
 
 public class Enemy : KinematicBody2D
 {
+    [Signal] public delegate void EnemyDiedSignal();
+
     [Export] public float acceleration = 450.0f;
     [Export] public float friction = 100.0f;
     [Export] public float maxSpeed = 50.0f;
@@ -94,6 +96,7 @@ public class Enemy : KinematicBody2D
         {
             var cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("Main Cam");
             cameraShake.StartShake();
+            EmitSignal("EnemyDiedSignal");
             QueueFree();
         }
     }

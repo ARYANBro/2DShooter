@@ -3,7 +3,8 @@ using Godot;
 
 public class Player : KinematicBody2D
 {
-    [Signal] public delegate void PlayerDiedHandler();
+    [Signal] public delegate void PlayerDiedSignal();
+    [Signal] public delegate void PlayerDamaged();
 
     [Export] public float maxSprintSpeed = 120.0f;
     [Export] public float acceleration = 500.0f;
@@ -46,13 +47,15 @@ public class Player : KinematicBody2D
     public void takeDamage(int damage)
     {
         hp -= damage;
+        GD.Print(hp);
 
         if (hp <= 0)
         {
             Hide();
-            SetPhysicsProcess(false);
-            SetProcess(false);
-            EmitSignal("PlayerDiedHandler");
+            PauseMode = PauseModeEnum.Stop;
+            EmitSignal("PlayerDiedSignal");
         }
+
+        EmitSignal("PlayerDamaged");
     }
 }

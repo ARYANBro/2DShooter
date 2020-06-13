@@ -3,18 +3,28 @@ using Godot;
 
 public class GameRules : Node2D
 {
-    [Signal] public delegate void OnPlayerDied();
-
-    [Export(PropertyHint.ExpEasing)] public float slowmo = 1f;
+    public Timer timer;
 
     public override void _Ready()
     {
-        GetNode<Player>("Player").Connect("PlayerDiedHandler", this, "PlayerDied");
+        timer = GetNode<Timer>("Timer");
     }
 
-    private void PlayerDied()
+    private void OnPlayerDied()
     {
-        EmitSignal("OnPlayerDied");
+        timer.Start();
+    }
+
+    private void OnTimertimeout()
+    {
         GetTree().Paused = true;
+    }
+
+    public override void _Process(float delta)
+    {
+        if (Input.IsKeyPressed((int)KeyList.Escape))
+        {
+            GetTree().Quit();
+        }
     }
 }
