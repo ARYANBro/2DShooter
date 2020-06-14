@@ -3,6 +3,9 @@ using Godot;
 
 public class Healthbar : TextureProgress
 {
+    [Signal]
+    public delegate void PlayerDied();
+
     private Player player;
 
     public override void _Ready()
@@ -12,6 +15,13 @@ public class Healthbar : TextureProgress
 
     public override void _Process(float delta)
     {
-        Value = player.hp;
+        Value = Mathf.Lerp((float)Value, player.hp, 0.5f);
+
+        if (Value <= 2)
+        {
+            EmitSignal("PlayerDied");
+        }
+
+        GD.Print("Valude: " + Value);
     }
 }

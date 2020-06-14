@@ -3,7 +3,6 @@ using Godot;
 
 public class Player : KinematicBody2D
 {
-    [Signal] public delegate void PlayerDiedSignal();
     [Signal] public delegate void PlayerDamaged();
 
     [Export] public float maxSprintSpeed = 120.0f;
@@ -21,6 +20,7 @@ public class Player : KinematicBody2D
 
     private void Movement(float delta)
     {
+        // Movement
         Vector2 inputVector = Vector2.Zero;
         inputVector.x = Input.GetActionStrength("MoveRight") - Input.GetActionStrength("MoveLeft");
         inputVector.y = Input.GetActionStrength("MoveDown") - Input.GetActionStrength("MoveUp");
@@ -44,16 +44,13 @@ public class Player : KinematicBody2D
         velocity = MoveAndSlide(velocity);
     }
 
-    public void takeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         hp -= damage;
-        GD.Print(hp);
 
         if (hp <= 0)
         {
             Hide();
-            PauseMode = PauseModeEnum.Stop;
-            EmitSignal("PlayerDiedSignal");
         }
 
         EmitSignal("PlayerDamaged");

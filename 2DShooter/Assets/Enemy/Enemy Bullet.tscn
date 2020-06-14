@@ -1,12 +1,75 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Enemy/EnemyBullet.cs" type="Script" id=1]
-[ext_resource path="res://Assets/Bullet.tscn" type="PackedScene" id=2]
+
+[sub_resource type="VisualShaderNodeColorUniform" id=1]
+uniform_name = "Color"
+
+[sub_resource type="VisualShader" id=2]
+code = "shader_type canvas_item;
+uniform vec4 Color : hint_color;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// ColorUniform:2
+	vec3 n_out2p0 = Color.rgb;
+	float n_out2p1 = Color.a;
+
+// Output:0
+	COLOR.rgb = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -419, 200 )
+mode = 1
+flags/light_only = false
+nodes/fragment/2/node = SubResource( 1 )
+nodes/fragment/2/position = Vector2( 35, 279 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/Color = Color( 1.32941, 0.443137, 0.215686, 1 )
+
+[sub_resource type="ProxyTexture" id=4]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 2.5, 4.5 )
 
 [node name="Enemy Bullet" type="Node2D"]
 
-[node name="Bullet" parent="." instance=ExtResource( 2 )]
+[node name="Bullet" type="RigidBody2D" parent="."]
 collision_layer = 2
 collision_mask = 5
+mode = 2
+gravity_scale = 0.0
+contacts_reported = 1
+contact_monitor = true
 script = ExtResource( 1 )
 speed = 100.0
+
+[node name="Bullet Sprite" type="Sprite" parent="Bullet"]
+material = SubResource( 3 )
+scale = Vector2( 6, 10 )
+texture = SubResource( 4 )
+
+[node name="Bullet Collision" type="CollisionShape2D" parent="Bullet"]
+visible = false
+shape = SubResource( 5 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Bullet"]
+visible = false
+scale = Vector2( 0.3, 0.5 )
+[connection signal="body_entered" from="Bullet" to="Bullet" method="OnBulletBodyEntered"]
+[connection signal="screen_exited" from="Bullet/VisibilityNotifier2D" to="Bullet" method="OnVisibilityNotifierScreenExited"]

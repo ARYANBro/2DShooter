@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Healthbar heart.png-299cd8bdf5508b7b6012d1f5eace8eb6.stex"
+path="res://.import/Bullet.png-09d6e4ea3913c45cc1ffdb7fbbd121fa.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Healthbar/Healthbar heart.png"
-dest_files=[ "res://.import/Healthbar heart.png-299cd8bdf5508b7b6012d1f5eace8eb6.stex" ]
+source_file="res://Sprites/Gun/Bullet.png"
+dest_files=[ "res://.import/Bullet.png-09d6e4ea3913c45cc1ffdb7fbbd121fa.stex" ]
 
 [params]
 

@@ -22,7 +22,7 @@ public class Enemy : KinematicBody2D
 
     public override void _Ready()
     {
-        bulletScene = (PackedScene)ResourceLoader.Load("res://Assets/Enemy/Enemy Bullet.tscn");
+        bulletScene = ResourceLoader.Load<PackedScene>("res://Assets/Enemy/Enemy Bullet.tscn");
         player = GetTree().CurrentScene.GetNode<Player>("Player");
         attackRateTimer = GetNode<Timer>("Attack Rate");
         detection = GetNode<Area2D>("Detection Area");
@@ -39,6 +39,7 @@ public class Enemy : KinematicBody2D
     public override void _PhysicsProcess(float delta)
     {
         Movement(delta);
+
         if (canSeePlayer)
             attackRateTimer.SetBlockSignals(false);
         else
@@ -71,10 +72,11 @@ public class Enemy : KinematicBody2D
         var bullet = (Node2D)bulletScene.Instance(PackedScene.GenEditState.Instance);
         var enemyBullet = bullet.GetNode<EnemyBullet>("Bullet");
 
-        enemyBullet.Transform = Transform;
+        enemyBullet.Position = Position;
         enemyBullet.GlobalRotationDegrees = angle;
-        enemyBullet.Position += offset * -15.0f;
-        GetTree().Root.AddChild(bullet);
+        enemyBullet.GlobalPosition += offset * -15.0f;
+
+        GetTree().CurrentScene.AddChild(bullet);
     }
 
     public void OnDetectionAreaEntered(object body)
@@ -92,6 +94,7 @@ public class Enemy : KinematicBody2D
     public void TakeDamage(int damage)
     {
         hp -= damage;
+
         if (hp <= 0)
         {
             var cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("Main Cam");

@@ -13,7 +13,11 @@ public class PlayerBullet : Bullet
             enemy.TakeDamage(damage);
         }
 
+        PackedScene BulletParticles = ResourceLoader.Load<PackedScene>("res://Assets/Effects/Player Bullet Particles.tscn");
+        Node2D bulletParticles = (Node2D)BulletParticles.Instance();
+
+        AddChild(bulletParticles);
+
         QueueFree();
     }
-
 }

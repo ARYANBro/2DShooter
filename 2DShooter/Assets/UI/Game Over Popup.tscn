@@ -1,0 +1,8 @@
+[gd_scene format=2]
+
+[node name="Control" type="Control"]
+anchor_right = 0.24375
+anchor_bottom = 0.338889
+__meta__ = {
+"_edit_use_anchors_": true
+}

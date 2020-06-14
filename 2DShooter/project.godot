@@ -22,6 +22,7 @@ run/main_scene="res://Scenes/Main.tscn"
 
 window/size/width=320
 window/size/height=180
+window/size/fullscreen=true
 window/size/test_width=1280
 window/size/test_height=720
 window/stretch/mode="2d"
@@ -70,3 +71,6 @@ Shoot={
 
 vram_compression/import_s3tc=false
 vram_compression/import_etc2=false
+environment/default_clear_color=Color( 0.25, 0.25, 0.25, 1 )
+quality/filters/msaa=3
+environment/default_environment="res://Evn/New_Enviornment.tres"

@@ -10,7 +10,7 @@ public class EnemyBullet : Bullet
         if (body.GetType().Name == "Player")
         {
             var player = GetTree().CurrentScene.GetNode<Player>("Player");
-            player.takeDamage(damage);
+            player.TakeDamage(damage);
 
             CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("Main Cam");
             cameraShake.Shake(50.0f, 50.0f, 50.0f);
