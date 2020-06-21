@@ -1,8 +1,9 @@
 using System;
+using System.Configuration;
 using Godot;
 public class Enemy : KinematicBody2D
 {
-	[Signal] 
+	[Signal]
 	public delegate void EnemyDiedSignal();
 
 	[Export]
@@ -19,19 +20,22 @@ public class Enemy : KinematicBody2D
 	public PackedScene enemyBulletScene;
 	[Export]
 	public float startTimeBetweenShots;
+	[Export]
+	public Color orignalColor;
 
 	public Player player;
 	public Gun gun;
 
 	private Vector2 velocity;
 	private float timeBetweenShots;
+	private Sprite sprite;
 
 	public override void _Ready()
 	{
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
 		gun = player.GetNode<Gun>("Gun");
 
-		timeBetweenShots = startTimeBetweenShots;
+		timeBetweenShots = startTimeBetweenShots; // For shooting.
 	}
 
 
@@ -53,11 +57,24 @@ public class Enemy : KinematicBody2D
 			EmitSignal("EnemyDiedSignal");
 			QueueFree();
 		}
+
+		// Setting color to white when enemy is damaged.
+		sprite = GetNode<Sprite>("Enemy Sprite");
+		sprite.Material.Set("shader_param/Color", new Color(1f, 1f, 1f, 1f));
+		var hitTimer = GetNode<Timer>("Hit Timer");
+		hitTimer.Start();
 	}
+
+	// Set the color back too orignal
+	private void OnHitTimerTimeout()
+	{
+		sprite.Material.Set("shader_param/Color", orignalColor);
+	}
+
 
 	// Shooting
 	private void Shoot(float delta)
-	{	
+	{
 		if (timeBetweenShots <= 0)
 		{
 			Node2D enemyBullet = (Node2D)enemyBulletScene.Instance();
@@ -91,6 +108,5 @@ public class Enemy : KinematicBody2D
 			velocity = velocity.MoveToward(Vector2.Zero, accel * delta);
 
 		MoveAndSlide(velocity);
-
 	}
 }
