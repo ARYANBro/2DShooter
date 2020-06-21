@@ -18,7 +18,7 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 5.0
 scale_curve = SubResource( 2 )
-color = Color( 1.17647, 0.709804, 0.0196078, 1 )
+color = Color( 1.56863, 0.709804, 0.0196078, 1 )
 
 [node name="Player Bullet Paritcles" type="Particles2D"]
 emitting = false

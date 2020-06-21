@@ -12,21 +12,15 @@ public class GameRules : Node2D
     public override void _Process(float delta)
     {
         // Input just for testing. 
-
-        // Quitting the game.
-        if (Input.IsKeyPressed((int)KeyList.Escape))
-        {
-            GetTree().Quit();
-        }
-
-        // Fullscreen and widowed mode.
-        if (Input.IsKeyPressed((int)KeyList.F11) && OS.WindowFullscreen)
+        if (Input.IsActionJustPressed("ui_cancel") && !OS.WindowFullscreen)
         {
             OS.WindowFullscreen = false;
         }
-        else if (Input.IsKeyPressed((int)KeyList.F11) && !OS.WindowFullscreen)
+        else if (Input.IsActionJustPressed("ui_cancel") && OS.WindowFullscreen)
         {
             OS.WindowFullscreen = true;
         }
+
+
     }
 }

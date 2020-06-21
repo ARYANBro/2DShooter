@@ -7,10 +7,9 @@ public class Gun : Node2D
 	public float fireSpeed = 500.0f;
 	[Export]
 	public PackedScene bulletScene;
-
 	public Position2D firepoint;
 
-	private Vector2 mousePos;
+    private Vector2 mousePos;
 
 	public override void _Ready()
 	{
@@ -35,11 +34,11 @@ public class Gun : Node2D
 
 	private void Shoot(Vector2 lookDir)
     {
-        Node2D bullet = (Node2D)bulletScene.Instance();
-		PlayerBullet playerBullet = bullet.GetNode<PlayerBullet>("Bullet");
+        Node2D bulletNode2D = (Node2D)bulletScene.Instance();
+		PlayerBullet playerBullet = bulletNode2D.GetNode<PlayerBullet>("Bullet");
 		
 		playerBullet.Position = firepoint.GlobalPosition;
 		playerBullet.Rotation = Rotation;
-		GetTree().CurrentScene.AddChild(bullet);
+		GetTree().CurrentScene.AddChild(bulletNode2D);
 	}
 }

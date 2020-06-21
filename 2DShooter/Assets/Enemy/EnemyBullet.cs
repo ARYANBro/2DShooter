@@ -9,10 +9,8 @@ public class EnemyBullet : Bullet
 	public override void _Ready()
 	{
 		var playerPos = -Position.DirectionTo(GetTree().CurrentScene.GetNode<Player>("Player").Position);
-		float angle = Mathf.Atan2(playerPos.y, playerPos.x); // Try the dot instead.
+		float angle = Mathf.Atan2(playerPos.y, playerPos.x);
 		RotationDegrees = Mathf.Rad2Deg(angle) - 90;
-
-		// Apply the linear velociy according to local transform
 		LinearVelocity = -Transform.y * speed;
 	}
 

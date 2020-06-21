@@ -1,10 +1,14 @@
 using System;
+using System.ComponentModel;
 using System.Configuration;
 using Godot;
+
 public class Enemy : KinematicBody2D
 {
 	[Signal]
 	public delegate void EnemyDiedSignal();
+	[Signal]
+	public delegate void EnemyHurt();
 
 	[Export]
 	public int speed;
@@ -20,8 +24,9 @@ public class Enemy : KinematicBody2D
 	public PackedScene enemyBulletScene;
 	[Export]
 	public float startTimeBetweenShots;
+
 	[Export]
-	public Color orignalColor;
+	public Color color;
 
 	public Player player;
 	public Gun gun;
@@ -32,10 +37,16 @@ public class Enemy : KinematicBody2D
 
 	public override void _Ready()
 	{
+		GD.Randomize();
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
 		gun = player.GetNode<Gun>("Gun");
-
-		timeBetweenShots = startTimeBetweenShots; // For shooting.
+		sprite = GetNode<Sprite>("Enemy Sprite");
+		sprite.Material.Set("shader_param/Color", color);
+		// For shooting.
+		timeBetweenShots = startTimeBetweenShots;
+		Position = new Vector2((float)GD.RandRange(0, 320), (float)GD.RandRange(0, 180));
+		// Debuging
+		GD.Print(Position);
 	}
 
 
@@ -58,32 +69,35 @@ public class Enemy : KinematicBody2D
 			QueueFree();
 		}
 
+		EmitSignal("EnemyHurt");
+	}
+
+	private void OnEnemyHurt()
+	{
 		// Setting color to white when enemy is damaged.
-		sprite = GetNode<Sprite>("Enemy Sprite");
 		sprite.Material.Set("shader_param/Color", new Color(1f, 1f, 1f, 1f));
 		var hitTimer = GetNode<Timer>("Hit Timer");
 		hitTimer.Start();
 	}
 
+
 	// Set the color back too orignal
 	private void OnHitTimerTimeout()
 	{
-		sprite.Material.Set("shader_param/Color", orignalColor);
+		sprite.Material.Set("shader_param/Color", color);
 	}
-
 
 	// Shooting
 	private void Shoot(float delta)
 	{
 		if (timeBetweenShots <= 0)
 		{
-			Node2D enemyBullet = (Node2D)enemyBulletScene.Instance();
-			EnemyBullet enemyBulletRigid = enemyBullet.GetNode<EnemyBullet>("Bullet");
+			Node2D enemyBulletNode2D = (Node2D)enemyBulletScene.Instance();
+			EnemyBullet enemyBullet = enemyBulletNode2D.GetNode<EnemyBullet>("Bullet");
+			Vector2 playerPos = enemyBullet.Position - player.Position;
+			enemyBullet.Position = Position;
 
-			Vector2 playerPos = enemyBulletRigid.GlobalPosition - player.GlobalPosition;
-			enemyBulletRigid.Position = Position;
-
-			GetTree().CurrentScene.AddChild(enemyBullet);
+			GetTree().CurrentScene.AddChild(enemyBulletNode2D);
 
 			// Setting this to "startTimeBetweenShots" is important.
 			timeBetweenShots = startTimeBetweenShots;

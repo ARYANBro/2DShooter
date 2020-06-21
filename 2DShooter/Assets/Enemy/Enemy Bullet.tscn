@@ -3,8 +3,6 @@
 [ext_resource path="res://Assets/Enemy/EnemyBullet.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Bullet.tscn" type="PackedScene" id=3]
 
-
-
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
 uniform_name = "Color"
 
@@ -54,7 +52,7 @@ extents = Vector2( 3.5, 3.5 )
 
 [node name="Bullet" parent="." instance=ExtResource( 3 )]
 position = Vector2( 0, -0.0321732 )
-collision_layer = 2
+collision_layer = 0
 collision_mask = 5
 script = ExtResource( 1 )
 speed = 200.0
