@@ -3,56 +3,78 @@ using Godot;
 
 public class Player : KinematicBody2D
 {
-    [Signal] public delegate void PlayerDamaged();
+	[Signal]
+	public delegate void PlayerDamaged();
 
-    [Export] public float maxSprintSpeed = 120.0f;
-    [Export] public float acceleration = 500.0f;
-    [Export] public float friction = 500.0f;
-    [Export] public float maxSpeed = 80.0f;
-    [Export] public int hp = 100;
+	[Export]
+	public float sprintSpeed;
+	[Export]
+	public float acceleration;
+	[Export]
+	public float sprintAccelerations;
+	[Export]
+	public float friction;
+	[Export]
+    public float speed;
+    [Export]
+	public int hp;
+    public Particles2D playerSprintParticles;
 
     private Vector2 velocity = Vector2.Zero;
 
-    public override void _PhysicsProcess(float delta)
-    {
-        Movement(delta);
-    }
+	public override void _Ready()
+	{
+		playerSprintParticles = GetNode<Particles2D>("Player Sprite Paritcles");
+	}
 
-    private void Movement(float delta)
-    {
-        // Movement
-        Vector2 inputVector = Vector2.Zero;
-        inputVector.x = Input.GetActionStrength("MoveRight") - Input.GetActionStrength("MoveLeft");
-        inputVector.y = Input.GetActionStrength("MoveDown") - Input.GetActionStrength("MoveUp");
-        inputVector = inputVector.Normalized();
+	public override void _PhysicsProcess(float delta)
+	{
+		Movement(delta);
+	}
 
+	// Movement
+	private void Movement(float delta)
+	{
+		Vector2 inputVector = Vector2.Zero;
+		inputVector.x = Input.GetActionStrength("MoveRight") - Input.GetActionStrength("MoveLeft");
+		inputVector.y = Input.GetActionStrength("MoveDown") - Input.GetActionStrength("MoveUp");
+		inputVector = inputVector.Normalized();
+
+        // Sprinting 
         if (Input.IsActionPressed("Sprint"))
-        {
-            if (inputVector != Vector2.Zero)
-                velocity = velocity.MoveToward(inputVector * maxSprintSpeed, acceleration * delta);
-            else
-                velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
-        }
-        else
-        {
-            if (inputVector != Vector2.Zero)
-                velocity = velocity.MoveToward(inputVector * maxSpeed, acceleration * delta);
-            else
-                velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
-        }
+		{
+			if (inputVector != Vector2.Zero)
+				velocity = velocity.MoveToward(inputVector * sprintSpeed, sprintAccelerations * delta);
+			else
+				velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
 
-        velocity = MoveAndSlide(velocity);
-    }
+			// Set sprint particles emitting to true.
+			playerSprintParticles.Emitting = true;
+		}
+		else
+		{
+			// Set sprint particles emitting to false.
+			playerSprintParticles.Emitting = false;
 
-    public void TakeDamage(int damage)
-    {
-        hp -= damage;
+			if (inputVector != Vector2.Zero)
+				velocity = velocity.MoveToward(inputVector * speed, acceleration * delta);
+			else
+				velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
+		}
 
-        if (hp <= 0)
-        {
-            Hide();
-        }
+		velocity = MoveAndSlide(velocity);
+	}
 
-        EmitSignal("PlayerDamaged");
-    }
+	// When player is damaged can be called by any one.
+	public void TakeDamage(int damage)
+	{
+		hp -= damage;
+
+		if (hp <= 0)
+		{
+			Hide();
+		}
+
+		EmitSignal("PlayerDamaged");
+	}
 }

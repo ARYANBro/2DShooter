@@ -21,7 +21,5 @@ public class Healthbar : TextureProgress
         {
             EmitSignal("PlayerDied");
         }
-
-        GD.Print("Valude: " + Value);
     }
 }

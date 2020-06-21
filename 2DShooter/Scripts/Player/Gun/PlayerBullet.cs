@@ -3,21 +3,27 @@ using System;
 
 public class PlayerBullet : Bullet
 {
-    [Export] public int damage = 20;
+	[Export] 
+	public int damage = 20;
+	[Export]
+	public PackedScene hitParticlesScene;
 
-    private void OnBulletBodyEntered(object body)
-    {
-        if (body.GetType().Name == "Enemy")
-        {
-            Enemy enemy = (Enemy)body;
-            enemy.TakeDamage(damage);
-        }
+	private void OnBulletBodyEntered(object body)
+	{
+		if (body.GetType().Name == "Enemy")
+		{
+			Enemy enemy = (Enemy)body;
+			enemy.TakeDamage(damage);
+		}
 
-        PackedScene BulletParticles = ResourceLoader.Load<PackedScene>("res://Assets/Effects/Player Bullet Particles.tscn");
-        Node2D bulletParticles = (Node2D)BulletParticles.Instance();
+		var hitParticle = (Particles2D)hitParticlesScene.Instance();
+		hitParticle.Position = Position;
+		hitParticle.Emitting = true;
 
-        AddChild(bulletParticles);
+        // Delete the hit particle #TODO
+        /******************************/
 
+        GetTree().CurrentScene.AddChild(hitParticle);
         QueueFree();
     }
 }

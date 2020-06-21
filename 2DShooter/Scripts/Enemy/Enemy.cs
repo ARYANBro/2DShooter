@@ -1,111 +1,96 @@
 using System;
 using Godot;
-
 public class Enemy : KinematicBody2D
 {
-    [Signal] public delegate void EnemyDiedSignal();
+	[Signal] 
+	public delegate void EnemyDiedSignal();
 
-    [Export] public float acceleration = 450.0f;
-    [Export] public float friction = 100.0f;
-    [Export] public float maxSpeed = 50.0f;
-    [Export] public int hp = 50;
+	[Export]
+	public int speed;
+	[Export]
+	public int accel;
+	[Export]
+	public int stoppingDistance;
+	[Export]
+	public int retreatDistance;
+	[Export]
+	public int hp;
+	[Export]
+	public PackedScene enemyBulletScene;
+	[Export]
+	public float startTimeBetweenShots;
 
-    public PackedScene bulletScene;
-    public Timer attackRateTimer;
-    public Area2D detection;
-    public Player player;
-    public Gun gun;
+	public Player player;
+	public Gun gun;
 
-    private bool canSeePlayer;
-    private Vector2 velocity;
-    private float angle;
+	private Vector2 velocity;
+	private float timeBetweenShots;
 
-    public override void _Ready()
-    {
-        bulletScene = ResourceLoader.Load<PackedScene>("res://Assets/Enemy/Enemy Bullet.tscn");
-        player = GetTree().CurrentScene.GetNode<Player>("Player");
-        attackRateTimer = GetNode<Timer>("Attack Rate");
-        detection = GetNode<Area2D>("Detection Area");
-        gun = player.GetNode<Gun>("Gun");
-    }
+	public override void _Ready()
+	{
+		player = GetTree().CurrentScene.GetNode<Player>("Player");
+		gun = player.GetNode<Gun>("Gun");
 
-    public override void _Process(float delta)
-    {
-        Vector2 lookDir = player.GlobalPosition - GlobalPosition;
-        angle = Mathf.Atan2(lookDir.y, lookDir.x);
-        angle = Mathf.Rad2Deg(angle) + 90;
-    }
+		timeBetweenShots = startTimeBetweenShots;
+	}
 
-    public override void _PhysicsProcess(float delta)
-    {
-        Movement(delta);
 
-        if (canSeePlayer)
-            attackRateTimer.SetBlockSignals(false);
-        else
-            attackRateTimer.SetBlockSignals(true);
+	public override void _PhysicsProcess(float delta)
+	{
+		Movement(delta);
+		Shoot(delta);
+	}
 
-    }
+	// Can be called whenever enemy has to be damaged.
+	public void TakeDamage(int damage)
+	{
+		hp -= damage;
 
-    private void Movement(float delta)
-    {
-        if (player != null)
-        {
-            Vector2 inputVector = Vector2.Zero;
-            inputVector = player.GlobalPosition - GlobalPosition;
-            inputVector = inputVector.Normalized();
+		if (hp <= 0)
+		{
+			CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("Main Cam");
+			cameraShake.StartShake();
+			EmitSignal("EnemyDiedSignal");
+			QueueFree();
+		}
+	}
 
-            if (canSeePlayer)
-                velocity = velocity.MoveToward(inputVector * maxSpeed, acceleration * delta);
-            else
-                velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
+	// Shooting
+	private void Shoot(float delta)
+	{	
+		if (timeBetweenShots <= 0)
+		{
+			Node2D enemyBullet = (Node2D)enemyBulletScene.Instance();
+			EnemyBullet enemyBulletRigid = enemyBullet.GetNode<EnemyBullet>("Bullet");
 
-            velocity = MoveAndSlide(velocity);
-        }
-    }
+			Vector2 playerPos = enemyBulletRigid.GlobalPosition - player.GlobalPosition;
+			enemyBulletRigid.Position = Position;
 
-    private void Attack()
-    {
-        Vector2 offset = GlobalPosition - player.Position;
-        offset = offset.Normalized();
+			GetTree().CurrentScene.AddChild(enemyBullet);
 
-        var bullet = (Node2D)bulletScene.Instance(PackedScene.GenEditState.Instance);
-        var enemyBullet = bullet.GetNode<EnemyBullet>("Bullet");
+			// Setting this to "startTimeBetweenShots" is important.
+			timeBetweenShots = startTimeBetweenShots;
+		}
+		else
+			timeBetweenShots -= delta;
 
-        enemyBullet.Position = Position;
-        enemyBullet.GlobalRotationDegrees = angle;
-        enemyBullet.GlobalPosition += offset * -15.0f;
+	}
 
-        GetTree().CurrentScene.AddChild(bullet);
-    }
+	// Movement
+	private void Movement(float delta)
+	{
+		Vector2 inputVector = Vector2.Zero;
+		inputVector = player.Position - Position;
+		inputVector = inputVector.Normalized();
 
-    public void OnDetectionAreaEntered(object body)
-    {
-        if (body.GetType().Name == "Player")
-            canSeePlayer = true;
-    }
+		if (Position.DistanceTo(player.Position) > stoppingDistance)
+			velocity = velocity.MoveToward(inputVector * speed, accel * delta);
+		else if (Position.DistanceTo(player.Position) < retreatDistance)
+			velocity = velocity.MoveToward(-inputVector * speed, accel * delta);
+		else
+			velocity = velocity.MoveToward(Vector2.Zero, accel * delta);
 
-    public void OnDetectoinAreaBodyExited(object body)
-    {
-        if (body.GetType().Name == "Player")
-            canSeePlayer = false;
-    }
+		MoveAndSlide(velocity);
 
-    public void TakeDamage(int damage)
-    {
-        hp -= damage;
-
-        if (hp <= 0)
-        {
-            var cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("Main Cam");
-            cameraShake.StartShake();
-            EmitSignal("EnemyDiedSignal");
-            QueueFree();
-        }
-    }
-
-    private void OnAttackRateTimerTimeOut()
-    {
-        Attack();
-    }
+	}
 }

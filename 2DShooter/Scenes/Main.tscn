@@ -40,17 +40,8 @@ wait_time = 0.1
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
 
-[node name="Enemy" parent="." instance=ExtResource( 2 )]
-position = Vector2( 68.4388, 137.424 )
-
-[node name="Enemy2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 213.74, 48.0761 )
-
 [node name="Enemy3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 75.0796, 51.7796 )
-
-[node name="Enemy4" parent="." instance=ExtResource( 2 )]
-position = Vector2( 234.991, 132.996 )
+position = Vector2( 96.3638, 35.7705 )
 
 [node name="Hud" type="Control" parent="."]
 margin_right = 40.0
@@ -78,10 +69,7 @@ __meta__ = {
 [node name="Healtbar" parent="Hud" instance=ExtResource( 7 )]
 [connection signal="timeout" from="Main Cam/Shake Timer" to="Main Cam" method="OnShakeTimerTimeout"]
 [connection signal="PlayerDamaged" from="Player" to="." method="OnPlayerDamaged"]
-[connection signal="EnemyDiedSignal" from="Enemy" to="Hud/Counter" method="OnEnemyDied"]
-[connection signal="EnemyDiedSignal" from="Enemy2" to="Hud/Counter" method="OnEnemyDied"]
 [connection signal="EnemyDiedSignal" from="Enemy3" to="Hud/Counter" method="OnEnemyDied"]
-[connection signal="EnemyDiedSignal" from="Enemy4" to="Hud/Counter" method="OnEnemyDied"]
 [connection signal="PlayerDied" from="Hud/Healtbar/Healthbar" to="." method="OnPlayerDied"]
 
 [editable path="Player"]

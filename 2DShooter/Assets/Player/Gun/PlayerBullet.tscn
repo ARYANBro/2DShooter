@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Bullet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Player/Gun/PlayerBullet.cs" type="Script" id=2]
 [ext_resource path="res://Sprites/Gun/Bullet.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Effects/Player Bullet Particles.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.91873
@@ -13,9 +14,9 @@ height = 6.9546
 [node name="Bullet" parent="." instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 damage = 25
+hitParticlesScene = ExtResource( 4 )
 
 [node name="Bullet Sprite" parent="Bullet" index="0"]
-material = null
 position = Vector2( 0, -0.462472 )
 rotation = 4.71239
 scale = Vector2( 1.5, 1.5 )

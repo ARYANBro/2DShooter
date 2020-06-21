@@ -2,26 +2,21 @@
 
 [ext_resource path="res://Scripts/Player/Gun/Gun.cs" type="Script" id=1]
 [ext_resource path="res://Sprites/Gun/Gun.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/Gun/PlayerBullet.tscn" type="PackedScene" id=3]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 19.0481, 16.1312 )
 
-[node name="Gun" type="KinematicBody2D"]
+
+[node name="Gun" type="Node2D"]
 scale = Vector2( 0.4, 0.4 )
-collision_mask = 6
 script = ExtResource( 1 )
 fireSpeed = 2000.0
+bulletScene = ExtResource( 3 )
 
 [node name="Gun Sprite" type="Sprite" parent="."]
-rotation = 4.71239
+rotation = -1.5708
 scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 offset = Vector2( 17, 2.376 )
-
-[node name="Gun Collision" type="CollisionShape2D" parent="."]
-position = Vector2( 8.45817, -64.3149 )
-scale = Vector2( 1, 2 )
-shape = SubResource( 1 )
 
 [node name="Firepoint" type="Position2D" parent="."]
 position = Vector2( 0, -116.973 )
