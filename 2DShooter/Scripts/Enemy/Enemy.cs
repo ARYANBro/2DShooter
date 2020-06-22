@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.Configuration;
 using Godot;
 
 public class Enemy : KinematicBody2D
@@ -45,8 +43,6 @@ public class Enemy : KinematicBody2D
 		// For shooting.
 		timeBetweenShots = startTimeBetweenShots;
 		Position = new Vector2((float)GD.RandRange(0, 320), (float)GD.RandRange(0, 180));
-		// Debuging
-		GD.Print(Position);
 	}
 
 

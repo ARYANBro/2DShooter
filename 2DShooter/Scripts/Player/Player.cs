@@ -3,8 +3,8 @@ using Godot;
 
 public class Player : KinematicBody2D
 {
-	[Signal]
-	public delegate void PlayerDamaged();
+    [Signal]
+    public delegate void PlayerDamaged();
 
 	[Export]
 	public float sprintSpeed;
@@ -19,6 +19,7 @@ public class Player : KinematicBody2D
     [Export]
 	public int hp;
     public Particles2D playerSprintParticles;
+	public bool canSprint = true;
 
     private Vector2 velocity = Vector2.Zero;
 
@@ -41,7 +42,7 @@ public class Player : KinematicBody2D
 		inputVector = inputVector.Normalized();
 
         // Sprinting 
-        if (Input.IsActionPressed("Sprint"))
+        if (Input.IsActionPressed("Sprint") && canSprint)
 		{
 			if (inputVector != Vector2.Zero)
 				velocity = velocity.MoveToward(inputVector * sprintSpeed, sprintAccelerations * delta);
@@ -51,7 +52,7 @@ public class Player : KinematicBody2D
 			// Set sprint particles emitting to true.
 			playerSprintParticles.Emitting = true;
 		}
-		else
+        else
 		{
 			// Set sprint particles emitting to false.
 			playerSprintParticles.Emitting = false;
@@ -73,6 +74,7 @@ public class Player : KinematicBody2D
 		if (hp <= 0)
 		{
 			Hide();
+			// Player died signal is in healthbar when healthbar reaches to zero.
 		}
 
 		EmitSignal("PlayerDamaged");

@@ -1,12 +1,14 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
+[ext_resource path="res://Sprites/Stamina Bar/Over.png" type="Texture" id=1]
 [ext_resource path="res://Sprites/Healthbar/Healthbar/Health bar over.png" type="Texture" id=2]
 [ext_resource path="res://Sprites/Healthbar/Healthbar/Health bar progress.png" type="Texture" id=3]
 [ext_resource path="res://Sprites/Healthbar/Healthbar/Helath bar under.png" type="Texture" id=4]
 [ext_resource path="res://Sprites/Healthbar/Healthbar heart new.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Player/Healthbar.cs" type="Script" id=6]
-
-
+[ext_resource path="res://Sprites/Stamina Bar/Progress.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/Stamina Bar/Under.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Player/StaminaBar.cs" type="Script" id=9]
 
 [sub_resource type="VisualShaderNodeTexture" id=1]
 texture = ExtResource( 5 )
@@ -70,6 +72,7 @@ nodes/fragment/connections = PoolIntArray( 3, 0, 0, 1, 2, 1, 3, 0, 5, 0, 0, 0, 5
 shader = SubResource( 4 )
 
 [node name="Healtbar" type="Node2D"]
+position = Vector2( 0.669403, 0 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -80,7 +83,7 @@ margin_top = 15.409
 margin_right = 376.093
 margin_bottom = 43.409
 rect_scale = Vector2( 0.5, 0.4 )
-value = 2.0
+value = 100.0
 texture_under = ExtResource( 4 )
 texture_over = ExtResource( 2 )
 texture_progress = ExtResource( 3 )
@@ -100,3 +103,24 @@ texture = ExtResource( 5 )
 [node name="Heart" type="Sprite" parent="Heart"]
 position = Vector2( 302.461, 13.5172 )
 texture = ExtResource( 5 )
+
+[node name="TextureProgress" type="TextureProgress" parent="."]
+margin_left = 236.508
+margin_top = 26.5429
+margin_right = 296.508
+margin_bottom = 38.5429
+rect_scale = Vector2( 1.09476, 0.364035 )
+max_value = 400.0
+value = 400.0
+allow_greater = true
+allow_lesser = true
+texture_under = ExtResource( 8 )
+texture_over = ExtResource( 1 )
+texture_progress = ExtResource( 7 )
+tint_under = Color( 0.796078, 0.796078, 0.796078, 1 )
+tint_progress = Color( 0.866667, 0.878431, 1, 1 )
+radial_fill_degrees = 0.0
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
