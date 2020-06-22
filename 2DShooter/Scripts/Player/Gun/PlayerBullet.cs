@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections;
+using System.Dynamic;
 using System.IO.Ports;
 
 public class PlayerBullet : Bullet
@@ -28,9 +30,6 @@ public class PlayerBullet : Bullet
 		hitParticle.Position = Position;
 		GetTree().CurrentScene.AddChild(hitParticle);
 		hitParticle.Emitting = true;
-
-		// Delete the hit particle.
-		// Todo.
 
 		QueueFree();
 	}

@@ -141,12 +141,8 @@ shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
 scale = Vector2( 0.9784, 1.02804 )
 script = ExtResource( 3 )
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource( 8 )
-
 [node name="Main Cam" type="Camera2D" parent="."]
 position = Vector2( 160, 90 )
-scale = Vector2( 1.02854, 0.916211 )
 current = true
 script = ExtResource( 4 )
 __meta__ = {
@@ -223,6 +219,18 @@ rotation = -1.57079
 [node name="Enemy Sprite" parent="Enemies/Enemy4" index="0"]
 material = SubResource( 12 )
 texture = SubResource( 13 )
+
+[node name="Enviornment" type="Node2D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
+environment = ExtResource( 8 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+scale = Vector2( 1, 1 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 0, 1.94545 )
+polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -3.06623, 175.09, 323.998, 175.09, 323.998, 0, -3.06623, 0, -3.06623, 176.063, 0, 201.354, -32.7065, 201.354 )
 [connection signal="timeout" from="Main Cam/Shake Timer" to="Main Cam" method="OnShakeTimerTimeout"]
 [connection signal="PlayerDied" from="Hud/Healtbar/Healthbar" to="." method="OnPlayerDied"]
 [connection signal="EnemyDiedSignal" from="Enemies/Enemy1" to="Hud/Counter" method="OnEnemyDied"]

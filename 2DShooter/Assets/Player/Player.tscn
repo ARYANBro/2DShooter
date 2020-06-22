@@ -76,8 +76,8 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
-sprintSpeed = 160.0
-acceleration = 150.0
+sprintSpeed = 250.0
+acceleration = 500.0
 sprintAccelerations = 350.0
 friction = 200.0
 speed = 70.0

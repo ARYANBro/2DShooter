@@ -54,6 +54,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Effects\PlayerBulletParticles.cs" />
     <Compile Include="Assets\Player\Healthbar.cs" />
     <Compile Include="Assets\Player\StaminaBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
