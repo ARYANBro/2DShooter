@@ -40,6 +40,7 @@ public class Enemy : KinematicBody2D
 		gun = player.GetNode<Gun>("Gun");
 		sprite = GetNode<Sprite>("Enemy Sprite");
 		sprite.Material.Set("shader_param/Color", color);
+
 		// For shooting.
 		timeBetweenShots = startTimeBetweenShots;
 		Position = new Vector2((float)GD.RandRange(0, 320), (float)GD.RandRange(0, 180));

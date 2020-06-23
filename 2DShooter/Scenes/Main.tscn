@@ -1,141 +1,20 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Player/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Assets/Enemy/Enemy.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Player/Healthpack.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/GameRules.cs" type="Script" id=3]
 [ext_resource path="res://Scripts/CameraShake.cs" type="Script" id=4]
 [ext_resource path="res://Fonts/Ubuntu/Ubuntu-Medium.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Scripts/Counter.cs" type="Script" id=6]
 [ext_resource path="res://Assets/Player/Healtbar.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Evn/New_Enviornment.tres" type="Environment" id=8]
+[ext_resource path="res://Assets/Enemy/Enemy.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/Player/StaminaPack.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 50
 use_filter = true
 font_data = ExtResource( 5 )
-
-[sub_resource type="VisualShaderNodeColorUniform" id=2]
-uniform_name = "Color"
-
-[sub_resource type="VisualShader" id=3]
-code = "shader_type canvas_item;
-uniform vec4 Color : hint_color;
-
-
-
-void vertex() {
-// Output:0
-
-}
-
-void fragment() {
-// ColorUniform:2
-	vec3 n_out2p0 = Color.rgb;
-	float n_out2p1 = Color.a;
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-
-}
-
-void light() {
-// Output:0
-
-}
-"
-mode = 1
-flags/light_only = false
-nodes/fragment/2/node = SubResource( 2 )
-nodes/fragment/2/position = Vector2( 177, 186 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
-
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 3 )
-shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
-
-[sub_resource type="ProxyTexture" id=5]
-
-[sub_resource type="VisualShader" id=6]
-code = "shader_type canvas_item;
-uniform vec4 Color : hint_color;
-
-
-
-void vertex() {
-// Output:0
-
-}
-
-void fragment() {
-// ColorUniform:2
-	vec3 n_out2p0 = Color.rgb;
-	float n_out2p1 = Color.a;
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-
-}
-
-void light() {
-// Output:0
-
-}
-"
-mode = 1
-flags/light_only = false
-nodes/fragment/2/node = SubResource( 2 )
-nodes/fragment/2/position = Vector2( 177, 186 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
-
-[sub_resource type="ShaderMaterial" id=7]
-shader = SubResource( 6 )
-shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
-
-[sub_resource type="ProxyTexture" id=8]
-
-[sub_resource type="VisualShader" id=9]
-code = "shader_type canvas_item;
-uniform vec4 Color : hint_color;
-
-
-
-void vertex() {
-// Output:0
-
-}
-
-void fragment() {
-// ColorUniform:2
-	vec3 n_out2p0 = Color.rgb;
-	float n_out2p1 = Color.a;
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-
-}
-
-void light() {
-// Output:0
-
-}
-"
-mode = 1
-flags/light_only = false
-nodes/fragment/2/node = SubResource( 2 )
-nodes/fragment/2/position = Vector2( 177, 186 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
-
-[sub_resource type="ShaderMaterial" id=10]
-shader = SubResource( 9 )
-shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
-
-[sub_resource type="ProxyTexture" id=11]
-
-[sub_resource type="ShaderMaterial" id=12]
-shader = SubResource( 3 )
-shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
-
-[sub_resource type="ProxyTexture" id=13]
 
 [node name="Main" type="Node2D"]
 scale = Vector2( 0.9784, 1.02804 )
@@ -161,6 +40,35 @@ wait_time = 0.1
 ] instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
 
+[node name="Staminapack" parent="." instance=ExtResource( 10 )]
+position = Vector2( 218.725, 96.2998 )
+scale = Vector2( 1, 1 )
+
+[node name="Healthpack" parent="." instance=ExtResource( 2 )]
+position = Vector2( 98.1194, 95.327 )
+scale = Vector2( 1, 1 )
+
+[node name="Enemies" type="Node2D" parent="."]
+scale = Vector2( 1, 1 )
+
+[node name="Enemy1" parent="Enemies" instance=ExtResource( 9 )]
+show_behind_parent = false
+position = Vector2( 117.539, 46.6908 )
+scale = Vector2( 1, 1 )
+
+[node name="Enviornment" type="Node2D" parent="."]
+scale = Vector2( 1, 1 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
+environment = ExtResource( 8 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Enviornment"]
+scale = Vector2( 1, 1 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Enviornment/StaticBody2D"]
+position = Vector2( 0, 1.94545 )
+polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -3.06623, 175.09, 323.998, 175.09, 323.998, 0, -3.06623, 0, -3.06623, 176.063, 0, 201.354, -32.7065, 201.354 )
+
 [node name="Hud" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
@@ -185,67 +93,10 @@ __meta__ = {
 }
 
 [node name="Healtbar" parent="Hud" instance=ExtResource( 7 )]
-
-[node name="Enemies" type="Node2D" parent="."]
-
-[node name="Enemy1" parent="Enemies" instance=ExtResource( 2 )]
-position = Vector2( 102.473, 45.63 )
-
-[node name="Enemy Sprite" parent="Enemies/Enemy1" index="0"]
-material = SubResource( 4 )
-texture = SubResource( 5 )
-
-[node name="Enemy2" parent="Enemies" instance=ExtResource( 2 )]
-position = Vector2( 169.419, 45.7595 )
-rotation = -1.57079
-
-[node name="Enemy Sprite" parent="Enemies/Enemy2" index="0"]
-material = SubResource( 7 )
-texture = SubResource( 8 )
-
-[node name="Enemy3" parent="Enemies" instance=ExtResource( 2 )]
-position = Vector2( 212.569, 100.745 )
-rotation = -1.57079
-
-[node name="Enemy Sprite" parent="Enemies/Enemy3" index="0"]
-material = SubResource( 10 )
-position = Vector2( 1.24153, 3.91353 )
-texture = SubResource( 11 )
-
-[node name="Enemy4" parent="Enemies" instance=ExtResource( 2 )]
-position = Vector2( 85.0898, 91.5473 )
-rotation = -1.57079
-
-[node name="Enemy Sprite" parent="Enemies/Enemy4" index="0"]
-material = SubResource( 12 )
-texture = SubResource( 13 )
-
-[node name="Enviornment" type="Node2D" parent="."]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
-environment = ExtResource( 8 )
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-scale = Vector2( 1, 1 )
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-position = Vector2( 0, 1.94545 )
-polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -3.06623, 175.09, 323.998, 175.09, 323.998, 0, -3.06623, 0, -3.06623, 176.063, 0, 201.354, -32.7065, 201.354 )
 [connection signal="timeout" from="Main Cam/Shake Timer" to="Main Cam" method="OnShakeTimerTimeout"]
 [connection signal="PlayerDied" from="Hud/Healtbar/Healthbar" to="." method="OnPlayerDied"]
-[connection signal="EnemyDiedSignal" from="Enemies/Enemy1" to="Hud/Counter" method="OnEnemyDied"]
-[connection signal="EnemyDiedSignal" from="Enemies/Enemy2" to="Hud/Counter" method="OnEnemyDied"]
-[connection signal="EnemyDiedSignal" from="Enemies/Enemy3" to="Hud/Counter" method="OnEnemyDied"]
-[connection signal="EnemyDiedSignal" from="Enemies/Enemy4" to="Hud/Counter" method="OnEnemyDied"]
+[connection signal="PlayerDied" from="Hud/Healtbar/Healthbar" to="Player" method="OnPlayerDied"]
 
 [editable path="Player"]
 
 [editable path="Hud/Healtbar"]
-
-[editable path="Enemies/Enemy1"]
-
-[editable path="Enemies/Enemy2"]
-
-[editable path="Enemies/Enemy3"]
-
-[editable path="Enemies/Enemy4"]

@@ -6,7 +6,7 @@ public class GameRules : Node2D
 {
 	private void OnPlayerDied()
 	{
-		GetTree().Paused = true;
+		GetTree().Quit();
 	}
 
 

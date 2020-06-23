@@ -3,8 +3,8 @@ using Godot;
 
 public class Player : KinematicBody2D
 {
-    [Signal]
-    public delegate void PlayerDamaged();
+	[Signal]
+	public delegate void PlayerDamaged();
 
 	[Export]
 	public float sprintSpeed;
@@ -15,46 +15,54 @@ public class Player : KinematicBody2D
 	[Export]
 	public float friction;
 	[Export]
-    public float speed;
-    [Export]
+	public float speed;
+	[Export]
 	public int hp;
-    public Particles2D playerSprintParticles;
+	public Particles2D playerSprintParticles;
 	public bool canSprint = true;
+	public float stamina = 400f;
 
-    private Vector2 velocity = Vector2.Zero;
+	public Vector2 velocity = Vector2.Zero;
 
 	public override void _Ready()
 	{
 		playerSprintParticles = GetNode<Particles2D>("Player Sprite Paritcles");
 	}
 
-	public override void _PhysicsProcess(float delta)
+	public override void _Process(float delta)
 	{
-		Movement(delta);
-	}
+		// hp and stamina.
+		hp = Mathf.Clamp(hp, 0, 100);
+		stamina = Mathf.Clamp((int)stamina, 0, 400);
 
-	// Movement
-	private void Movement(float delta)
-	{
+		if (Input.IsActionPressed("Sprint") && canSprint && velocity != Vector2.Zero)
+			stamina -= 3;
+		else
+			stamina += 1;
+
+		if (stamina <= 0)
+			canSprint = false;
+		else if (stamina >= 400)
+			canSprint = true;
+
+		// Movement.
 		Vector2 inputVector = Vector2.Zero;
 		inputVector.x = Input.GetActionStrength("MoveRight") - Input.GetActionStrength("MoveLeft");
 		inputVector.y = Input.GetActionStrength("MoveDown") - Input.GetActionStrength("MoveUp");
 		inputVector = inputVector.Normalized();
 
-        // Sprinting 
-        if (Input.IsActionPressed("Sprint") && canSprint)
+		// Sprinting 
+		if (Input.IsActionPressed("Sprint") && canSprint)
 		{
 			if (inputVector != Vector2.Zero)
 				velocity = velocity.MoveToward(inputVector * sprintSpeed, sprintAccelerations * delta);
 			else
 				velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
 
-			// Set sprint particles emitting to true.
 			playerSprintParticles.Emitting = true;
 		}
-        else
+		else
 		{
-			// Set sprint particles emitting to false.
 			playerSprintParticles.Emitting = false;
 
 			if (inputVector != Vector2.Zero)
@@ -62,21 +70,23 @@ public class Player : KinematicBody2D
 			else
 				velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
 		}
+	}
 
+	public override void _PhysicsProcess(float delta)
+	{
 		velocity = MoveAndSlide(velocity);
 	}
+
 
 	// When player is damaged can be called by any one.
 	public void TakeDamage(int damage)
 	{
 		hp -= damage;
-
-		if (hp <= 0)
-		{
-			Hide();
-			// Player died signal is in healthbar when healthbar reaches to zero.
-		}
-
 		EmitSignal("PlayerDamaged");
+	}
+	
+	private void OnPlayerDied()
+	{
+		Hide();
 	}
 }

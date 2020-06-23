@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/Enemy/Enemy.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Enemy/Enemy Bullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Enemy/EnemyHealthbar.tscn" type="PackedScene" id=3]
 
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
 uniform_name = "Color"
@@ -73,5 +74,11 @@ shape = SubResource( 5 )
 
 [node name="Hit Timer" type="Timer" parent="."]
 wait_time = 0.07
+
+[node name="Enemy Healthbar" parent="." instance=ExtResource( 3 )]
+margin_left = -15.611
+margin_top = -25.2265
+margin_right = 16.389
+margin_bottom = 6.77347
 [connection signal="EnemyHurt" from="." to="." method="OnEnemyHurt"]
 [connection signal="timeout" from="Hit Timer" to="." method="OnHitTimerTimeout"]

@@ -12,12 +12,12 @@ public class Healthbar : TextureProgress
 	public override void _Ready()
 	{
 		player =  GetTree().CurrentScene.GetNode<Player>("Player");
-		player.Connect("PlayerDamaged", this, "OnPlayerDamaged");
 	}
-	private void OnPlayerDamaged()
+
+	public override void _Process(float delta)
 	{
 		Value = Mathf.Lerp((float)Value, player.hp, 0.5f);
-		
+
 		if (Value <= 2)
 			EmitSignal("PlayerDied");
 	}

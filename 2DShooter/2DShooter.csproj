@@ -55,8 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Effects\PlayerBulletParticles.cs" />
+    <Compile Include="Assets\Enemy\EnemyHealthbar.cs" />
     <Compile Include="Assets\Player\Healthbar.cs" />
+    <Compile Include="Assets\Player\Healthpack.cs" />
     <Compile Include="Assets\Player\StaminaBar.cs" />
+    <Compile Include="Assets\Player\StaminaPack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\CameraShake.cs" />
     <Compile Include="Scripts\Counter.cs" />

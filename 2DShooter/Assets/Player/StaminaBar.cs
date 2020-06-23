@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Runtime.InteropServices;
 
 public class StaminaBar : TextureProgress
 {
@@ -7,21 +8,12 @@ public class StaminaBar : TextureProgress
 
 	public override void _Ready()
 	{
-		player = (Player)GetTree().CurrentScene.FindNode("Player", true, true);
+		player = GetTree().CurrentScene.GetNode<Player>("Player");
 	}
 
 	public override void _Process(float delta)
 	{
-		if (Input.IsActionPressed("Sprint") && player.canSprint)
-			Value -= 3;
-		else if (!player.canSprint || !Input.IsActionPressed("Sprint"))
-			Value += 1;
-
-		Value = Mathf.Clamp((int)Value, 0, 400);
-
-		if (Value <= 0)
-			player.canSprint = false;
-		else if (Value >= 400)
-			player.canSprint = true;
+		Value = player.stamina;
+		Value = Mathf.Lerp((float)Value, player.stamina, 0.5f);
 	}
 }
