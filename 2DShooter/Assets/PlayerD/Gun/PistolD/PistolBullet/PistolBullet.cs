@@ -4,7 +4,7 @@ using System.Collections;
 using System.Dynamic;
 using System.IO.Ports;
 
-public class PistolBullet : Bullet
+public class PistolBullet : BulletComponent
 {
 	[Export] 
 	public int damage = 20;

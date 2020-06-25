@@ -2,9 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\2DShooter",
+    "\\2DShooter\\Assets",
+    "\\2DShooter\\Assets\\PlayerD",
     "\\2DShooter\\Assets\\PlayerD\\Gun",
-    "\\2DShooter\\Sprites\\Healthbar\\Healthbar"
+    "\\2DShooter\\Assets\\PlayerD\\Gun\\RocketLauncherD",
+    "\\2DShooter\\Assets\\PlayerD\\Gun\\RocketLauncherD\\RocketLauncher"
   ],
-  "SelectedNode": "\\2DShooter\\Sprites",
+  "SelectedNode": "\\2DShooter\\Assets\\PlayerD\\Gun\\RocketLauncherD\\RocketLauncher\\RocketLauncher.cs",
   "PreviewInSolutionExplorer": false
 }

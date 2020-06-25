@@ -37,7 +37,7 @@ abstract public class GunComponent : Node2D
 	virtual public void Shoot(Vector2 lookDir)
 	{
 		Node2D bulletNode2D = (Node2D)bulletScene.Instance();
-		Bullet bullet = bulletNode2D.GetNode<Bullet>("Bullet Component");
+		BulletComponent bullet = bulletNode2D.GetNode<BulletComponent>("Bullet Component");
 
 		bullet.Position = firepoint.GlobalPosition;
 		bullet.Rotation = Rotation;

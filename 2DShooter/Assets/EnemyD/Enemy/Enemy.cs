@@ -27,7 +27,7 @@ public class Enemy : KinematicBody2D
 	public Color color;
 
 	public Player player;
-	public Gun gun;
+	public GunComponent gun;
 
 	private Vector2 velocity;
 	private float timeBetweenShots;
@@ -37,7 +37,7 @@ public class Enemy : KinematicBody2D
 	{
 		GD.Randomize();
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
-		gun = player.GetNode<Gun>("Gun");
+		gun = player.GetNode<GunComponent>("Gun");
 		sprite = GetNode<Sprite>("Enemy Sprite");
 		sprite.Material.Set("shader_param/Color", color);
 
@@ -90,7 +90,7 @@ public class Enemy : KinematicBody2D
 		if (timeBetweenShots <= 0)
 		{
 			Node2D enemyBulletNode2D = (Node2D)enemyBulletScene.Instance();
-			EnemyBullet enemyBullet = enemyBulletNode2D.GetNode<EnemyBullet>("Bullet");
+			BulletComponent enemyBullet = enemyBulletNode2D.GetNode<BulletComponent>("Bullet");
 			Vector2 playerPos = enemyBullet.Position - player.Position;
 			enemyBullet.Position = Position;
 
