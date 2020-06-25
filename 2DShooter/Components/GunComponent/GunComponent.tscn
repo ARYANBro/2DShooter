@@ -1,0 +1,10 @@
+[gd_scene format=2]
+
+[node name="GunComponent" type="Node2D"]
+
+[node name="GunSprite" type="Sprite" parent="."]
+rotation = -1.5708
+offset = Vector2( 21, 6.004 )
+
+[node name="Firepoint" type="Position2D" parent="."]
+position = Vector2( 0, -56 )

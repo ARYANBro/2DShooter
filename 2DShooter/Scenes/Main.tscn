@@ -1,24 +1,25 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://Assets/Player/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Assets/Player/Healthpack.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scripts/GameRules.cs" type="Script" id=3]
-[ext_resource path="res://Scripts/CameraShake.cs" type="Script" id=4]
-[ext_resource path="res://Fonts/Ubuntu/Ubuntu-Medium.ttf" type="DynamicFontData" id=5]
-[ext_resource path="res://Scripts/Counter.cs" type="Script" id=6]
-[ext_resource path="res://Assets/Player/Healtbar.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Evn/New_Enviornment.tres" type="Environment" id=8]
-[ext_resource path="res://Assets/Enemy/Enemy.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Assets/Player/StaminaPack.tscn" type="PackedScene" id=10]
-
-[sub_resource type="DynamicFont" id=1]
-size = 50
-use_filter = true
-font_data = ExtResource( 5 )
+[ext_resource path="res://Assets/PlayerD/Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://GlobalScripts/GameRules.cs" type="Script" id=3]
+[ext_resource path="res://GlobalScripts/CameraShake.cs" type="Script" id=4]
+[ext_resource path="res://Assets/UI/Healthbar/Healtbar.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Enviornments/New_Enviornment.tres" type="Environment" id=8]
+[ext_resource path="res://Assets/EnemyD/Enemy/Enemy.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Sprites/Guns/RocketLauncher/Rocket Launcher.png" type="Texture" id=11]
+[ext_resource path="res://Sprites/Guns/RocketLauncher/Rocket Launcher Rocket.png" type="Texture" id=12]
 
 [node name="Main" type="Node2D"]
 scale = Vector2( 0.9784, 1.02804 )
 script = ExtResource( 3 )
+
+[node name="Rocket Launcher" type="Sprite" parent="."]
+position = Vector2( 156.378, 134.236 )
+texture = ExtResource( 11 )
+
+[node name="Rocket" type="Sprite" parent="Rocket Launcher"]
+position = Vector2( 39.8607, -0.972702 )
+texture = ExtResource( 12 )
 
 [node name="Main Cam" type="Camera2D" parent="."]
 position = Vector2( 160, 90 )
@@ -40,30 +41,26 @@ wait_time = 0.1
 ] instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
 
-[node name="Staminapack" parent="." instance=ExtResource( 10 )]
-position = Vector2( 218.725, 96.2998 )
-scale = Vector2( 1, 1 )
-
-[node name="Healthpack" parent="." instance=ExtResource( 2 )]
-position = Vector2( 98.1194, 95.327 )
-scale = Vector2( 1, 1 )
-
 [node name="Enemies" type="Node2D" parent="."]
-scale = Vector2( 1, 1 )
 
 [node name="Enemy1" parent="Enemies" instance=ExtResource( 9 )]
 show_behind_parent = false
-position = Vector2( 117.539, 46.6908 )
-scale = Vector2( 1, 1 )
+position = Vector2( 105.274, 44.7453 )
+
+[node name="Enemy2" parent="Enemies" instance=ExtResource( 9 )]
+show_behind_parent = false
+position = Vector2( 156.378, 44.7453 )
+
+[node name="Enemy3" parent="Enemies" instance=ExtResource( 9 )]
+show_behind_parent = false
+position = Vector2( 217.702, 44.7453 )
 
 [node name="Enviornment" type="Node2D" parent="."]
-scale = Vector2( 1, 1 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
 environment = ExtResource( 8 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Enviornment"]
-scale = Vector2( 1, 1 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Enviornment/StaticBody2D"]
 position = Vector2( 0, 1.94545 )
@@ -76,27 +73,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Counter" type="Label" parent="Hud"]
-margin_left = -0.370997
-margin_top = 4.23708
-margin_right = 63.629
-margin_bottom = 68.2371
-rect_scale = Vector2( 0.5, 0.5 )
-custom_fonts/font = SubResource( 1 )
-text = "0"
-align = 1
-valign = 1
-uppercase = true
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Healtbar" parent="Hud" instance=ExtResource( 7 )]
 [connection signal="timeout" from="Main Cam/Shake Timer" to="Main Cam" method="OnShakeTimerTimeout"]
-[connection signal="PlayerDied" from="Hud/Healtbar/Healthbar" to="." method="OnPlayerDied"]
-[connection signal="PlayerDied" from="Hud/Healtbar/Healthbar" to="Player" method="OnPlayerDied"]
 
 [editable path="Player"]
+
+[editable path="Enemies/Enemy1"]
+
+[editable path="Enemies/Enemy2"]
+
+[editable path="Enemies/Enemy3"]
 
 [editable path="Hud/Healtbar"]

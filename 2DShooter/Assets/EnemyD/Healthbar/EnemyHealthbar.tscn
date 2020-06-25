@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/EnemyD/Healthbar/EnemyHealthbar.cs" type="Script" id=1]
+[ext_resource path="res://Sprites/Enemy/Enemy Healthbar/Over.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Enemy/Enemy Healthbar/Progress.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/Enemy/Enemy Healthbar/Under.png" type="Texture" id=4]
+
+
+[node name="TextureProgress" type="TextureProgress"]
+margin_right = 27.0
+margin_bottom = 4.0
+rect_scale = Vector2( 1, 0.8 )
+max_value = 50.0
+value = 50.0
+texture_under = ExtResource( 4 )
+texture_over = ExtResource( 2 )
+texture_progress = ExtResource( 3 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

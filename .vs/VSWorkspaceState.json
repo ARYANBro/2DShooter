@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\2DShooter",
-    "\\2DShooter\\Scripts"
+    "\\2DShooter\\Assets\\PlayerD\\Gun",
+    "\\2DShooter\\Sprites\\Healthbar\\Healthbar"
   ],
-  "SelectedNode": "\\2DShooter\\2DShooter.sln",
+  "SelectedNode": "\\2DShooter\\Sprites",
   "PreviewInSolutionExplorer": false
 }
