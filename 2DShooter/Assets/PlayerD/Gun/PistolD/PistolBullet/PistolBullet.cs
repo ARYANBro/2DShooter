@@ -1,10 +1,7 @@
 using Godot;
 using System;
-using System.Collections;
-using System.Dynamic;
-using System.IO.Ports;
 
-public class PistolBullet : BulletComponent
+public class PistolBullet : Node2D
 {
 	[Export] 
 	public int damage = 20;
@@ -16,10 +13,9 @@ public class PistolBullet : BulletComponent
 	public override void _Ready()
 	{
 		hitParticle = (Particles2D)hitParticlesScene.Instance();
-		LinearVelocity = -Transform.y * speed;
 	}
 
-	private void OnBulletBodyEntered(object body)
+	public void OnBulletBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Enemy")
 		{
@@ -27,7 +23,7 @@ public class PistolBullet : BulletComponent
 			enemy.TakeDamage(damage);
 		}
 
-		hitParticle.Position = Position;
+		hitParticle.GlobalPosition = GlobalPosition;
 		GetTree().CurrentScene.AddChild(hitParticle);
 		hitParticle.Emitting = true;
 

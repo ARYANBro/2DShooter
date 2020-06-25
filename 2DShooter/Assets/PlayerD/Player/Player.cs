@@ -26,7 +26,7 @@ public class Player : KinematicBody2D
 
 	public override void _Ready()
 	{
-		playerSprintParticles = GetNode<Particles2D>("Player Sprite Paritcles");
+		playerSprintParticles = GetNode<Particles2D>("PlayerSpriteParitcles");
 	}
 
 	public override void _Process(float delta)

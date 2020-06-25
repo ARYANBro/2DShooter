@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-public class EnemyBullet : Bullet
+public class EnemyBullet : Node2D
 {
 	[Export]
 	public int damage = 10;
@@ -11,7 +11,7 @@ public class EnemyBullet : Bullet
 		var playerPos = -Position.DirectionTo(GetTree().CurrentScene.GetNode<Player>("Player").Position);
 		float angle = Mathf.Atan2(playerPos.y, playerPos.x);
 		RotationDegrees = Mathf.Rad2Deg(angle) - 90;
-		LinearVelocity = -Transform.y * speed;
+		//LinearVelocity = -Transform.y * speed;
 	}
 
 	protected void OnBulletBodyEntered(object body)

@@ -38,7 +38,7 @@ public class Enemy : KinematicBody2D
 		GD.Randomize();
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
 		gun = player.GetNode<GunComponent>("Gun");
-		sprite = GetNode<Sprite>("Enemy Sprite");
+		sprite = GetNode<Sprite>("EnemySprite");
 		sprite.Material.Set("shader_param/Color", color);
 
 		// For shooting.
@@ -60,7 +60,7 @@ public class Enemy : KinematicBody2D
 
 		if (hp <= 0)
 		{
-			CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("Main Cam");
+			CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
 			cameraShake.StartShake();
 			EmitSignal("EnemyDiedSignal");
 			QueueFree();
@@ -73,7 +73,7 @@ public class Enemy : KinematicBody2D
 	{
 		// Setting color to white when enemy is damaged.
 		sprite.Material.Set("shader_param/Color", new Color(1f, 1f, 1f, 1f));
-		var hitTimer = GetNode<Timer>("Hit Timer");
+		var hitTimer = GetNode<Timer>("HitTimer");
 		hitTimer.Start();
 	}
 
@@ -90,9 +90,9 @@ public class Enemy : KinematicBody2D
 		if (timeBetweenShots <= 0)
 		{
 			Node2D enemyBulletNode2D = (Node2D)enemyBulletScene.Instance();
-			BulletComponent enemyBullet = enemyBulletNode2D.GetNode<BulletComponent>("Bullet");
-			Vector2 playerPos = enemyBullet.Position - player.Position;
-			enemyBullet.Position = Position;
+			BulletComponent bullet = enemyBulletNode2D.GetNode<BulletComponent>("BulletComponent");
+			Vector2 playerPos = bullet.Position - player.Position;
+			bullet.Position = Position;
 
 			GetTree().CurrentScene.AddChild(enemyBulletNode2D);
 
