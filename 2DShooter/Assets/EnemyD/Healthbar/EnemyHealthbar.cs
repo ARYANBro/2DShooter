@@ -12,6 +12,6 @@ public class EnemyHealthbar : TextureProgress
 
 	public override void _Process(float delta)
 	{
-		Value = Mathf.Lerp((float)Value, enemy.hp, 0.5f);
+		Value = Mathf.Lerp((float)Value, enemy.Hp, 0.5f);
 	}
 }

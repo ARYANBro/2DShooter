@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Collections;
 
 public class PistolBulletParticles : Particles2D
 {

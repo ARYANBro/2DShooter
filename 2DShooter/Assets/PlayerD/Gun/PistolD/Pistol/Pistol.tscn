@@ -7,10 +7,11 @@
 
 [node name="Pistol" type="Node2D"]
 script = ExtResource( 4 )
-bulletScene = ExtResource( 2 )
-firepointPath = NodePath("GunComponent/Firepoint")
 
 [node name="GunComponent" parent="." instance=ExtResource( 3 )]
+fireSpeed = 500.0
+startTimeBetweenShots = 0.5
+bulletScene = ExtResource( 2 )
 
 [node name="GunSprite" parent="GunComponent" index="0"]
 texture = ExtResource( 1 )

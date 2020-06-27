@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class RocketLauncher : GunComponent
+public class RocketLauncher : Node2D
 {
 
 }

@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/PlayerD/Player/Player.cs" type="Script" id=1]
-[ext_resource path="res://Assets/PlayerD/Gun/PistolD/Pistol/Pistol.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncher/RocketLauncher.tscn" type="PackedScene" id=3]
 
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
 uniform_name = "Color"
@@ -90,7 +90,8 @@ texture = SubResource( 4 )
 visible = false
 shape = SubResource( 5 )
 
-[node name="Gun" parent="." instance=ExtResource( 2 )]
+[node name="RocketLauncher" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, -12.5 )
 
 [node name="PlayerSpriteParitcles" type="Particles2D" parent="."]
 emitting = false

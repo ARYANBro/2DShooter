@@ -1,6 +1,6 @@
 using Godot;
 using System;
 
-public class Pistol : GunComponent
+public class Pistol : Node2D
 {
 }

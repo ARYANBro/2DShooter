@@ -1,8 +1,46 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Components/BulletComponentD/BulletComponent.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/Guns/RocketLauncher/RocketLauncherRocket.png" type="Texture" id=2]
+[ext_resource path="res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncherRocket/RocketLauncherRocket.cs" type="Script" id=3]
+[ext_resource path="res://Assets/Effects/RocketLauncherRocketHitParticle/RocketLauncherRocketHitParticle.tscn" type="PackedScene" id=4]
 
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 3.5
+height = 12.0
 
-[node name="RocketLauncher Rocket" type="Node2D"]
+[sub_resource type="CircleShape2D" id=2]
+radius = 45.0
+
+[node name="RocketLauncherRocket" type="Node2D"]
+script = ExtResource( 3 )
+damage = 30
+DamageAreaCollisionPath = NodePath("BulletComponent/DamageArea/DamageAreaCollision")
+hitParticlesScene = ExtResource( 4 )
 
 [node name="BulletComponent" parent="." instance=ExtResource( 1 )]
+
+[node name="BulletSprite" parent="BulletComponent" index="0"]
+rotation = 4.71239
+scale = Vector2( 1.2, 1.2 )
+texture = ExtResource( 2 )
+
+[node name="BulletCollision" parent="BulletComponent" index="1"]
+position = Vector2( -0.5, 0 )
+shape = SubResource( 1 )
+
+[node name="VisibilityNotifier2D" parent="BulletComponent" index="2"]
+position = Vector2( -1, 0 )
+scale = Vector2( 1, 1.3 )
+
+[node name="DamageArea" type="Area2D" parent="BulletComponent"]
+collision_layer = 0
+collision_mask = 6
+
+[node name="DamageAreaCollision" type="CollisionShape2D" parent="BulletComponent/DamageArea"]
+shape = SubResource( 2 )
+disabled = true
+[connection signal="body_entered" from="BulletComponent" to="." method="OnBulletBodyEntered"]
+[connection signal="body_entered" from="BulletComponent/DamageArea" to="." method="OnDamageAreaBodyEntered"]
+
+[editable path="BulletComponent"]

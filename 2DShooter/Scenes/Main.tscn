@@ -1,13 +1,14 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/PlayerD/Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/PlayerD/Collectables/EnergyDrink/EnergyDrink.tscn" type="PackedScene" id=2]
 [ext_resource path="res://GlobalScripts/GameRules.cs" type="Script" id=3]
 [ext_resource path="res://GlobalScripts/CameraShake.cs" type="Script" id=4]
+[ext_resource path="res://Assets/PlayerD/Collectables/Healthpack/Healthpack.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/UI/StaminaBar/StaminaBar.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/UI/Healthbar/Healtbar.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Enviornments/New_Enviornment.tres" type="Environment" id=8]
 [ext_resource path="res://Assets/EnemyD/Enemy/Enemy.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Sprites/Guns/RocketLauncher/Rocket Launcher.png" type="Texture" id=11]
-[ext_resource path="res://Sprites/Guns/RocketLauncher/Rocket Launcher Rocket.png" type="Texture" id=12]
 
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
 uniform_name = "Color"
@@ -38,6 +39,7 @@ void light() {
 
 }
 "
+custom_defines = ""
 mode = 1
 flags/light_only = false
 nodes/fragment/2/node = SubResource( 1 )
@@ -60,13 +62,11 @@ shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
 scale = Vector2( 0.9784, 1.02804 )
 script = ExtResource( 3 )
 
-[node name="Rocket Launcher" type="Sprite" parent="."]
-position = Vector2( 156.378, 134.236 )
-texture = ExtResource( 11 )
+[node name="EnergyDrink" parent="." instance=ExtResource( 2 )]
+position = Vector2( 89.9428, 133.263 )
 
-[node name="Rocket" type="Sprite" parent="Rocket Launcher"]
-position = Vector2( 39.8607, -0.972702 )
-texture = ExtResource( 12 )
+[node name="Healthpack" parent="." instance=ExtResource( 5 )]
+position = Vector2( 50.0818, 132.291 )
 
 [node name="MainCam" type="Camera2D" parent="."]
 position = Vector2( 160, 90 )
@@ -76,8 +76,8 @@ __meta__ = {
 "_edit_lock_": true
 }
 randomness = 50.0
-speed = 30.0
-decay = 30.0
+speed = 40.0
+decay = 40.0
 shake = false
 
 [node name="Shake Timer" type="Timer" parent="MainCam"]
@@ -121,13 +121,18 @@ position = Vector2( 0, 1.94545 )
 polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -3.06623, 175.09, 323.998, 175.09, 323.998, 0, -3.06623, 0, -3.06623, 176.063, 0, 201.354, -32.7065, 201.354 )
 
 [node name="Hud" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 246.321
+margin_top = 12.6454
+margin_right = 286.321
+margin_bottom = 52.6454
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Healtbar" parent="Hud" instance=ExtResource( 7 )]
+
+[node name="StaminaBar" parent="Hud" instance=ExtResource( 6 )]
+position = Vector2( 1.02208, 14.5909 )
 [connection signal="timeout" from="MainCam/Shake Timer" to="MainCam" method="OnShakeTimerTimeout"]
 
 [editable path="Player"]
@@ -137,5 +142,3 @@ __meta__ = {
 [editable path="Enemies/Enemy2"]
 
 [editable path="Enemies/Enemy3"]
-
-[editable path="Hud/Healtbar"]
