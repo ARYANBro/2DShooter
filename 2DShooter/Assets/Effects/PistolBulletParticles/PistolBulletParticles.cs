@@ -10,11 +10,11 @@ public class PistolBulletParticles : Particles2D
 		tween = GetNode<Tween>("Tween");
 		tween.InterpolateCallback(this, 1.0f, "DeleteParticle");
 		tween.Start();
+		GetTree().CreateTimer(1f).Connect("timeout", this, "DeleteParticle");
 	}
 
 	void DeleteParticle()
 	{
 		QueueFree();
 	}
-
 }

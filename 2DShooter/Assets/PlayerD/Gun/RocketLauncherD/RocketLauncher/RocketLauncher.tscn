@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Components/GunComponentD/GunComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncherRocket/RocketLauncherRocket.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Sprites/Guns/RocketLauncher/RocketLauncher.png" type="Texture" id=3]
 [ext_resource path="res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncher/RocketLauncher.cs" type="Script" id=4]
+
+[sub_resource type="CapsuleShape2D" id=1]
+height = 42.0
 
 [node name="RocketLauncher" type="Node2D"]
 script = ExtResource( 4 )
@@ -22,5 +25,13 @@ texture = ExtResource( 3 )
 
 [node name="Firepoint" parent="GunComponent" index="1"]
 position = Vector2( 0, -65 )
+
+[node name="EquipArea" type="Area2D" parent="."]
+collision_layer = 2147483648
+
+[node name="EquipAreaCollision" type="CollisionShape2D" parent="EquipArea"]
+position = Vector2( -1, -22 )
+shape = SubResource( 1 )
+[connection signal="body_entered" from="EquipArea" to="." method="OnEquipAreaBodyEntered"]
 
 [editable path="GunComponent"]

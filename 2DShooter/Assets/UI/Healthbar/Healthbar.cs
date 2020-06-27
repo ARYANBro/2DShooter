@@ -1,11 +1,9 @@
 using System;
-using System.Text.RegularExpressions;
 using Godot;
 
 public class Healthbar : TextureProgress
 {
-	[Signal]
-	public delegate void PlayerDied();
+	[Signal] public delegate void PlayerDied();
 
 	public Player player;
 
@@ -16,7 +14,7 @@ public class Healthbar : TextureProgress
 
 	public override void _Process(float delta)
 	{
-		Value = Mathf.Lerp((float)Value, player.hp, 0.5f);
+		Value = Mathf.Lerp((float)Value, player.Hp, 0.5f);
 
 		if (Value <= 2)
 			EmitSignal("PlayerDied");

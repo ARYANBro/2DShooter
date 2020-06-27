@@ -58,6 +58,7 @@ Hp = 50.0
 speed = 50
 accel = 250
 stoppingDistance = 50
+hitTimerWaitTime = 0.15
 retreatDistance = 50
 enemyBulletScene = ExtResource( 2 )
 startTimeBetweenShots = 3.0
@@ -72,13 +73,9 @@ texture = SubResource( 4 )
 visible = false
 shape = SubResource( 5 )
 
-[node name="HitTimer" type="Timer" parent="."]
-wait_time = 0.07
-
 [node name="EnemyHealthbar" parent="." instance=ExtResource( 3 )]
 margin_left = -15.611
 margin_top = -25.2265
 margin_right = 16.389
 margin_bottom = 6.77347
 [connection signal="EnemyHurt" from="." to="." method="OnEnemyHurt"]
-[connection signal="timeout" from="HitTimer" to="." method="OnHitTimerTimeout"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/PlayerD/Player/Player.cs" type="Script" id=1]
+[ext_resource path="res://Assets/PlayerD/Player/Inventory.cs" type="Script" id=2]
 [ext_resource path="res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncher/RocketLauncher.tscn" type="PackedScene" id=3]
 
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
@@ -32,6 +33,7 @@ void light() {
 
 }
 "
+custom_defines = ""
 graph_offset = Vector2( -609, 116 )
 mode = 1
 flags/light_only = false
@@ -79,7 +81,6 @@ acceleration = 500.0
 sprintAccelerations = 350.0
 friction = 200.0
 speed = 70.0
-hp = 100
 
 [node name="PlayerSprite" type="Sprite" parent="."]
 material = SubResource( 3 )
@@ -90,11 +91,15 @@ texture = SubResource( 4 )
 visible = false
 shape = SubResource( 5 )
 
-[node name="RocketLauncher" parent="." instance=ExtResource( 3 )]
-position = Vector2( 0, -12.5 )
-
 [node name="PlayerSpriteParitcles" type="Particles2D" parent="."]
 emitting = false
 speed_scale = 2.0
 local_coords = false
 process_material = SubResource( 10 )
+
+[node name="Inventory" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="RocketLauncher" parent="Inventory" instance=ExtResource( 3 )]
+position = Vector2( 0, -12.5 )
+inventoryPath = NodePath("..")

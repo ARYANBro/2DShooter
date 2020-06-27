@@ -3,8 +3,7 @@ using System;
 
 public class EnergyDrink : Area2D
 {
-	[Export]
-	public int increaseStaminaBy;
+	[Export] public int increaseStaminaBy;
 	public Player player;
 
 	public override void _Ready()
@@ -16,12 +15,11 @@ public class EnergyDrink : Area2D
 	{
 		if (body.GetType().Name == "Player")
 		{
-			if (player.stamina < 400)
+			if (player.Stamina < 400)
 			{
-				player.stamina += increaseStaminaBy;
+				player.Stamina += increaseStaminaBy;
 				QueueFree();
 			}
-
 		}
 	}
 }

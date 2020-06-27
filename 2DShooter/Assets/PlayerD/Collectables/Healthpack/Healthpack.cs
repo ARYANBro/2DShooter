@@ -3,8 +3,7 @@ using System;
 
 public class Healthpack : Area2D
 {
-	[Export]
-	public int increaseHpBy;
+	[Export] public int increaseHpBy;
 	public Player player;
 
 	public override void _Ready()
@@ -16,9 +15,9 @@ public class Healthpack : Area2D
 	{
 		if (body.GetType().Name == "Player")
 		{
-			if (player.hp < 100)
+			if (player.Hp < 100)
 			{
-				player.hp += increaseHpBy;
+				player.Hp += increaseHpBy;
 				QueueFree();
 			}
 

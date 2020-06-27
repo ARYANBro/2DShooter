@@ -6,18 +6,14 @@ public class CameraShake : Camera2D
     [Export] public float randomness = 3.0f;
     [Export] public float speed = 1.5f;
     [Export] public float decay = 0.6f;
-    [Export] public bool shake = true;
-
-    private Vector2 orignalPos;
-
-    public Timer shakeTimer;
+    [Export] public float shakeTimerWaitTime;
+    public bool shake = false;
 
     private RandomNumberGenerator randNumGenerator = new RandomNumberGenerator();
-
+    private Vector2 orignalPos;
     public override void _Ready()
     {
         randNumGenerator.Randomize();
-        shakeTimer = GetNode<Timer>("Shake Timer");
         orignalPos = Offset;
     }
 
@@ -36,7 +32,7 @@ public class CameraShake : Camera2D
     public void StartShake()
     {
         shake = true;
-        shakeTimer.Start();
+        GetTree().CreateTimer(shakeTimerWaitTime).Connect("timeout", this, "OnShakeTimerTimeout");
     }
 
     public void Shake(float _randomness, float _speed, float _decay)
@@ -45,7 +41,7 @@ public class CameraShake : Camera2D
         speed = _speed;
         decay = _decay;
         shake = true;
-        shakeTimer.Start();
+        GetTree().CreateTimer(shakeTimerWaitTime).Connect("timeout", this, "OnShakeTimerTimeout");
     }
 
     private void OnShakeTimerTimeout()

@@ -3,10 +3,8 @@ using System;
 
 public class PistolBullet : Node2D
 {
-	[Export] 
-	public int damage = 20;
-	[Export]
-	public PackedScene hitParticlesScene;
+	[Export] public int damage = 20;
+	[Export] public PackedScene hitParticlesScene;
 
 	private Particles2D hitParticle;
 

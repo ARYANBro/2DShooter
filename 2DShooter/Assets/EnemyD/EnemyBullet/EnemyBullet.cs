@@ -3,12 +3,9 @@ using Godot;
 
 public class EnemyBullet : Node2D
 {
-	[Export]
-	public int damage = 10;
+	[Export] public int damage = 10;
 
-	public BulletComponent bulletComp;
-
-	protected void OnBulletBodyEntered(object body)
+	private void OnBulletBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Player")
 		{
@@ -17,10 +14,8 @@ public class EnemyBullet : Node2D
 			
 			CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
 			cameraShake.Shake(50.0f, 50.0f, 50.0f);
-			
 		}
 		
 		QueueFree();
 	}
-
 }

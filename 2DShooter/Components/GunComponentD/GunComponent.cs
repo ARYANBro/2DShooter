@@ -3,14 +3,10 @@ using Godot;
 
 abstract public class GunComponent : Node2D
 {
-	[Export]
-	public float fireSpeed;
-	[Export]
-	public float startTimeBetweenShots;
-	[Export]
-	public PackedScene bulletScene;
-	[Export]
-	public NodePath firepointPath;
+	[Export] public float fireSpeed;
+	[Export] public float startTimeBetweenShots;
+	[Export] public PackedScene bulletScene;
+	[Export] public NodePath firepointPath;
 	public Position2D firepoint;
 
 	private float timeBetweenShots;

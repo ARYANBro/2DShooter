@@ -3,26 +3,54 @@ using Godot;
 
 public class Player : KinematicBody2D
 {
-	[Signal]
-	public delegate void PlayerDamaged();
+	[Signal] public delegate void PlayerDamaged();
 
+	[Export] public float sprintSpeed;
+	[Export] public float acceleration;
+	[Export] public float sprintAccelerations;
+	[Export] public float friction;
+	[Export] public float speed;
 	[Export]
-	public float sprintSpeed;
-	[Export]
-	public float acceleration;
-	[Export]
-	public float sprintAccelerations;
-	[Export]
-	public float friction;
-	[Export]
-	public float speed;
-	[Export]
-	public int hp;
+	public int Hp
+	{
+		get
+		{
+			return hp;
+		}
+		set
+		{
+			if (value <= 0)
+				hp = 0;
+			else if (value >= 100)
+				hp = 100;
+			else
+				hp = value;
+		}
+	}
+	
+	[Export] public float Stamina
+    {
+        get
+        {
+			return stamina;
+        }
+		set
+        {
+			if (value <= 0)
+				stamina = 0;
+			else if (value >= 400)
+				stamina = 400;
+			else
+				stamina = value;
+		}
+    }
 	public Particles2D playerSprintParticles;
 	public bool canSprint = true;
-	public float stamina = 400f;
-
+	
 	public Vector2 velocity = Vector2.Zero;
+
+	private int hp = 100;
+	private float stamina = 400f;
 
 	public override void _Ready()
 	{
@@ -31,18 +59,15 @@ public class Player : KinematicBody2D
 
 	public override void _Process(float delta)
 	{
-		// hp and stamina.
-		hp = Mathf.Clamp(hp, 0, 100);
-		stamina = Mathf.Clamp((int)stamina, 0, 400);
-
+		
 		if (Input.IsActionPressed("Sprint") && canSprint && velocity != Vector2.Zero)
-			stamina -= 3;
+			Stamina -= 3;
 		else
-			stamina += 1;
+			Stamina += 1;
 
-		if (stamina <= 0)
+		if (Stamina <= 0)
 			canSprint = false;
-		else if (stamina >= 400)
+		else if (Stamina >= 400)
 			canSprint = true;
 
 		// Movement.
@@ -81,7 +106,7 @@ public class Player : KinematicBody2D
 	// When player is damaged can be called by any one.
 	public void TakeDamage(int damage)
 	{
-		hp -= damage;
+		Hp -= damage;
 		EmitSignal("PlayerDamaged");
 	}
 	

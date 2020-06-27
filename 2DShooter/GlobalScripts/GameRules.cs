@@ -4,11 +4,7 @@ using Godot;
 // Game Rules
 public class GameRules : Node2D
 {
-	private void OnPlayerDied()
-	{
-		GetTree().Quit();
-	}
-
+	private void OnPlayerDied() => GetTree().Quit();
 
 	public override void _Process(float delta)
 	{
@@ -18,8 +14,6 @@ public class GameRules : Node2D
 			OS.WindowFullscreen = true;
 
 		if (Input.IsActionJustPressed("Reload"))
-		{
 			GetTree().ReloadCurrentScene();
-		}
 	}
 }

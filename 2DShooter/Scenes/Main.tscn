@@ -78,10 +78,7 @@ __meta__ = {
 randomness = 50.0
 speed = 40.0
 decay = 40.0
-shake = false
-
-[node name="Shake Timer" type="Timer" parent="MainCam"]
-wait_time = 0.1
+shakeTimerWaitTime = 0.1
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
@@ -133,7 +130,6 @@ __meta__ = {
 
 [node name="StaminaBar" parent="Hud" instance=ExtResource( 6 )]
 position = Vector2( 1.02208, 14.5909 )
-[connection signal="timeout" from="MainCam/Shake Timer" to="MainCam" method="OnShakeTimerTimeout"]
 
 [editable path="Player"]
 

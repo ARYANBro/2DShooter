@@ -4,12 +4,9 @@ using System.Security.Policy;
 
 public class RocketLauncherRocket : Node2D
 {
-	[Export]
-	public int damage;
-	[Export]
-	public NodePath DamageAreaCollisionPath;
-	[Export]
-	public PackedScene hitParticlesScene;
+	[Export] public int damage;
+	[Export] public NodePath DamageAreaCollisionPath;
+	[Export] public PackedScene hitParticlesScene;
 
 	private Enemy rocketCollidedEnemy;
 

@@ -3,19 +3,13 @@ using Godot;
 
 public class Enemy : KinematicBody2D
 {
-	[Signal]
-	public delegate void EnemyDiedSignal();
-	[Signal]
-	public delegate void EnemyHurt();
+	[Signal]public delegate void EnemyDiedSignal();
+	[Signal] public delegate void EnemyHurt();
 
-	[Export]
-	public int speed;
-	[Export]
-	public int accel;
-	[Export]
-	public int stoppingDistance;
-	[Export]
-	public float Hp
+	[Export] public int speed;
+	[Export] public int accel;
+	[Export] public int stoppingDistance;
+	[Export] public float Hp
 	{
 		get
 		{
@@ -27,15 +21,11 @@ public class Enemy : KinematicBody2D
 			Mathf.Clamp(hp, 0, 50);
 		}
 	}
-
-	[Export]
-	public int retreatDistance;
-	[Export]
-	public PackedScene enemyBulletScene;
-	[Export]
-	public float startTimeBetweenShots;
-	[Export]
-	public Color color;
+	[Export] public float hitTimerWaitTime;
+	[Export] public int retreatDistance;
+	[Export] public PackedScene enemyBulletScene;
+	[Export] public float startTimeBetweenShots;
+	[Export] public Color color;
 	public Player player;
 
 	private Vector2 velocity;
@@ -76,8 +66,7 @@ public class Enemy : KinematicBody2D
 	private void OnEnemyHurt()
 	{
 		sprite.Material.Set("shader_param/Color", new Color(1f, 1f, 1f, 1f));
-		Timer hitTimer = GetNode<Timer>("HitTimer");
-		hitTimer.Start();
+		GetTree().CreateTimer(hitTimerWaitTime).Connect("timeout", this, "OnHitTimerTimeout");
 	}
 
 
