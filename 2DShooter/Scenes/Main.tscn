@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/PlayerD/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/PlayerD/Collectables/EnergyDrink/EnergyDrink.tscn" type="PackedScene" id=2]
@@ -8,55 +8,8 @@
 [ext_resource path="res://Assets/UI/StaminaBar/StaminaBar.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/UI/Healthbar/Healtbar.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Enviornments/New_Enviornment.tres" type="Environment" id=8]
-[ext_resource path="res://Assets/EnemyD/Enemy/Enemy.tscn" type="PackedScene" id=9]
-
-[sub_resource type="VisualShaderNodeColorUniform" id=1]
-uniform_name = "Color"
-
-[sub_resource type="VisualShader" id=2]
-code = "shader_type canvas_item;
-uniform vec4 Color : hint_color;
-
-
-
-void vertex() {
-// Output:0
-
-}
-
-void fragment() {
-// ColorUniform:2
-	vec3 n_out2p0 = Color.rgb;
-	float n_out2p1 = Color.a;
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-
-}
-
-void light() {
-// Output:0
-
-}
-"
-custom_defines = ""
-mode = 1
-flags/light_only = false
-nodes/fragment/2/node = SubResource( 1 )
-nodes/fragment/2/position = Vector2( 177, 186 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
-
-[sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
-shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
-
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 2 )
-shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
-
-[sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 2 )
-shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
+[ext_resource path="res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncher/RocketLauncher.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/PlayerD/Gun/PistolD/Pistol/Pistol.tscn" type="PackedScene" id=10]
 
 [node name="Main" type="Node2D"]
 scale = Vector2( 0.9784, 1.02804 )
@@ -83,29 +36,6 @@ shakeTimerWaitTime = 0.1
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
 
-[node name="Enemies" type="Node2D" parent="."]
-
-[node name="Enemy1" parent="Enemies" instance=ExtResource( 9 )]
-show_behind_parent = false
-position = Vector2( 105.274, 44.7453 )
-
-[node name="EnemySprite" parent="Enemies/Enemy1" index="0"]
-material = SubResource( 3 )
-
-[node name="Enemy2" parent="Enemies" instance=ExtResource( 9 )]
-show_behind_parent = false
-position = Vector2( 156.378, 44.7453 )
-
-[node name="EnemySprite" parent="Enemies/Enemy2" index="0"]
-material = SubResource( 4 )
-
-[node name="Enemy3" parent="Enemies" instance=ExtResource( 9 )]
-show_behind_parent = false
-position = Vector2( 217.702, 44.7453 )
-
-[node name="EnemySprite" parent="Enemies/Enemy3" index="0"]
-material = SubResource( 5 )
-
 [node name="Enviornment" type="Node2D" parent="."]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
@@ -131,10 +61,12 @@ __meta__ = {
 [node name="StaminaBar" parent="Hud" instance=ExtResource( 6 )]
 position = Vector2( 1.02208, 14.5909 )
 
+[node name="RocketLauncher" parent="." instance=ExtResource( 9 )]
+position = Vector2( 95.0532, 105.054 )
+path = "res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncher/RocketLauncher.tscn"
+
+[node name="Pistol" parent="." instance=ExtResource( 10 )]
+position = Vector2( 212.592, 112.836 )
+path = "res://Assets/PlayerD/Gun/PistolD/Pistol/Pistol.tscn"
+
 [editable path="Player"]
-
-[editable path="Enemies/Enemy1"]
-
-[editable path="Enemies/Enemy2"]
-
-[editable path="Enemies/Enemy3"]

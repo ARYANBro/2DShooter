@@ -1,7 +1,15 @@
 {
   "ExpandedNodes": [
     "",
-    "\\2DShooter"
+    "\\2DShooter",
+    "\\2DShooter\\mono",
+    "\\2DShooter\\mono\\temp",
+    "\\2DShooter\\mono\\temp\\bin",
+    "\\2DShooter\\mono\\temp\\bin\\Debug",
+    "\\2DShooter\\mono\\temp\\bin\\ExportDebug",
+    "\\2DShooter\\mono\\temp\\bin\\ExportRelease",
+    "\\2DShooter\\Properties",
+    "\\2DShooter\\Scenes"
   ],
   "SelectedNode": "\\2DShooter\\2DShooter.sln",
   "PreviewInSolutionExplorer": false

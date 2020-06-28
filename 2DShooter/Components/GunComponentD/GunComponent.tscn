@@ -12,3 +12,7 @@ offset = Vector2( 21, 6.004 )
 
 [node name="Firepoint" type="Position2D" parent="."]
 position = Vector2( 0, -56 )
+
+[node name="GunComponentCollision" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GunComponentCollision"]
