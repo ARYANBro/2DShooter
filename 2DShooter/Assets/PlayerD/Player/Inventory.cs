@@ -8,7 +8,7 @@ public class Inventory : Node2D
 	public void AddItemToInventory(IPickable _pickable)
 	{
 		Pickable = GD.Load<PackedScene>(_pickable.path);
-		if (Pickable != null)
+		if (Pickable != null && GetChildCount() == 0)
 		{
 			var pickable = Pickable.Instance();
 			CallDeferred("add_child", pickable, true);

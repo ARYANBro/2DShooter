@@ -15,7 +15,7 @@ public class Enemy : KinematicBody2D
 		{
 			return hp;
 		}
-		set
+		private set
 		{
 			hp = value;
 			Mathf.Clamp(hp, 0, 50);
@@ -67,15 +67,15 @@ public class Enemy : KinematicBody2D
 	{
 		sprite.Material.Set("shader_param/Color", new Color(1f, 1f, 1f, 1f));
 		GetTree().CreateTimer(hitTimerWaitTime).Connect("timeout", this, "OnHitTimerTimeout");
+		Action OnHitTimerTimeout = () => sprite.Material.Set("shader_param/Color", color);
 	}
-
 
 	// Set the color back too orignal
 	private void OnHitTimerTimeout()
 	{
 		sprite.Material.Set("shader_param/Color", color);
 	}
-
+	
 	// Shooting
 	private void Shoot(float delta)
 	{
@@ -112,5 +112,4 @@ public class Enemy : KinematicBody2D
 
 		MoveAndSlide(velocity);
 	}
-
 }

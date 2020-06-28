@@ -13,6 +13,7 @@ script = ExtResource( 4 )
 __meta__ = {
 "_editor_description_": ""
 }
+path = "res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncher/RocketLauncher.tscn"
 
 [node name="GunComponent" parent="." instance=ExtResource( 1 )]
 fireSpeed = 200.0

@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Net;
 
 public class RocketLauncher : Node2D, IPickable
 {
@@ -9,42 +8,52 @@ public class RocketLauncher : Node2D, IPickable
 	public Inventory inventory { get; set; }
 	public bool isEquiped { get; set; }
 
+	private PackedScene RocketLauncherScene;
+	private Vector2 playerPos;
+
 	public override void _Ready()
 	{
 		inventory = (Inventory)GetTree().CurrentScene.FindNode("Inventory", true, false);
+		RocketLauncherScene = GD.Load<PackedScene>(path);
 	}
 
 	public void OnBodyEntered(object body)
 	{
-		if (body.GetType().Name == "Player" && !isEquiped)
+		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0
+		)
+		{
+			var player = body as Player;
+			playerPos = player.GlobalPosition;
 			Equip();
+		}
 	}
 
 	public override void _Process(float delta)
 	{
 		if (Input.IsActionJustPressed("UnEquip") && isEquiped)
 			UnEquip();
-		   
 
-		ParentCheck();
+		isEquiped = ParentCheck();
 	}
 
-	public void ParentCheck()
+	public bool ParentCheck()
 	{
-		if (GetParent().GetType().Name == "Inventory")
-			isEquiped = true;
-		else
-			isEquiped = false;
+		return GetParent().GetType().Name == "Inventory";
 	}
 
 	public void Equip()
 	{
 		inventory.AddItemToInventory(this);
 		isEquiped = true;
+		QueueFree();
 	}
 
 	public void UnEquip()
 	{
 		inventory.RemoveItemFromInventory(this);
+		RocketLauncher rocketLauncher = (RocketLauncher)RocketLauncherScene.Instance();
+		rocketLauncher.GlobalPosition = playerPos;
+
+		GetTree().CurrentScene.AddChild(rocketLauncher);
 	}
 }

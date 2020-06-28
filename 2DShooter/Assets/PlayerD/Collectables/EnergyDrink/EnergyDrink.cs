@@ -16,7 +16,7 @@ public class EnergyDrink : Area2D
 		if (body.GetType().Name == "Player")
 		{
 			if (player.Stamina < 400)
-			{
+			{	
 				player.Stamina += increaseStaminaBy;
 				QueueFree();
 			}

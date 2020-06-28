@@ -7,7 +7,7 @@ using System;
 	Inventory inventory { get; set; }
 	String path { get; set; }
 
-	void ParentCheck();
+	bool ParentCheck();
 	void Equip();
 	void UnEquip();
 	void OnBodyEntered(object body);

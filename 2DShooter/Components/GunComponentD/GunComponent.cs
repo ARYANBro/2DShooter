@@ -12,7 +12,10 @@ abstract public class GunComponent : Node2D
 	private float timeBetweenShots;
 	private Vector2 mousePos;
 
-	public override void _Ready() => firepoint = GetNode<Position2D>(firepointPath);
+	public override void _Ready()
+	{
+		firepoint = GetNode<Position2D>(firepointPath);
+	}
 
 	public override void _Process(float delta)
 	{

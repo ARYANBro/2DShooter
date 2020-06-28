@@ -3,7 +3,7 @@ using System;
 
 public class EnemyHealthbar : TextureProgress
 {
-	public Enemy enemy;
+	public Enemy enemy { get; private set; }
 
 	public override void _Ready()
 	{
