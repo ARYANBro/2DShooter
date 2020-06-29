@@ -3,40 +3,47 @@ using System;
 
 public class Pistol : Node2D, IPickable
 {
-	[Export(PropertyHint.File, "Pistol.tscn")] public String path { get; set; }
+	[Export(PropertyHint.File, "Pistol.tscn")] public string path { get; set; }
+
 	public Inventory inventory { get; set; }
 	public bool isEquiped { get; set; }
+	public bool wantToEquipGun { get; set; }
 
 	private PackedScene PistolScene;
 
 	public override void _Ready()
 	{
-		inventory = (Inventory)GetTree().CurrentScene.FindNode("Inventory", true, false);
+		inventory = GetTree().CurrentScene.FindNode("Inventory", true, false) as Inventory;
 		PistolScene = GD.Load<PackedScene>(path);
 	}
-	
+
 	public void OnBodyEntered(object body)
 	{
-		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 )
-		{
-			Equip();
-		}
+		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0)
+			wantToEquipGun = true;
+	}
+
+	public void OnBodyExited(object body)
+	{
+		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0)
+			wantToEquipGun = false;
 	}
 
 	public override void _Process(float delta)
 	{
 		if (Input.IsActionJustPressed("UnEquip") && isEquiped)
 			UnEquip();
+		if (wantToEquipGun && Input.IsActionJustPressed("Equip"))
+			Equip();
+		if (!ParentCheck)
+			GetNode<GunComponent>("GunComponent").SetProcess(false);
 		
-		isEquiped = ParentCheck();
+		isEquiped = ParentCheck;
 	}
 
-	public bool ParentCheck()
-	{
-		return GetParent().GetType().Name == "Inventory";
-	}
+    public bool ParentCheck => GetParent().GetType().Name == "Inventory";
 
-	public void Equip()
+    public void Equip()
 	{
 		inventory.AddItemToInventory(this);
 		isEquiped = true;
@@ -46,7 +53,9 @@ public class Pistol : Node2D, IPickable
 	public void UnEquip()
 	{
 		inventory.RemoveItemFromInventory(this);
-		Pistol pistol = (Pistol)PistolScene.Instance();
+		Pistol pistol = PistolScene.Instance() as Pistol;
+		pistol.Position = GetTree().CurrentScene.GetNode<Player>("Player").Position;
+		pistol.RotationDegrees = Utlities.LookAtMouse(GetGlobalMousePosition(), pistol.Position);
 		GetTree().CurrentScene.AddChild(pistol);
 	}
 }

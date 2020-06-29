@@ -8,7 +8,10 @@ public class PistolBullet : Node2D
 
 	private Particles2D hitParticle;
 
-	public override void _Ready() => hitParticle = (Particles2D)hitParticlesScene.Instance();
+	public override void _Ready()
+	{
+		hitParticle = (Particles2D)hitParticlesScene.Instance();
+	}
 	
 	public void OnBulletBodyEntered(object body)
 	{
@@ -18,10 +21,9 @@ public class PistolBullet : Node2D
 			enemy.TakeDamage(damage);
 		}
 
-		Vector2 bulletCompPos = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
-		hitParticle.Position = bulletCompPos;
-		GetParent().AddChild(hitParticle);
+		hitParticle.Position = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
 		hitParticle.Emitting = true;
+		GetParent().AddChild(hitParticle);
 		QueueFree();
 	}
 }

@@ -4,5 +4,6 @@
     <RemoteDebugEnabled>false</RemoteDebugEnabled>
     <StartAction>Project</StartAction>
     <StartProgram>C:\Dev\Godot\Projects\2DShooter\2DShooter\.mono\assemblies\Debug</StartProgram>
+    <StartWorkingDirectory>C:\Dev\Godot\Projects\2DShooter\2DShooter\.mono\temp\bin\Debug\</StartWorkingDirectory>
   </PropertyGroup>
 </Project>

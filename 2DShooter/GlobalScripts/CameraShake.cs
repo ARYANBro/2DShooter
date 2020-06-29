@@ -11,6 +11,7 @@ public class CameraShake : Camera2D
 
     private RandomNumberGenerator randNumGenerator = new RandomNumberGenerator();
     private Vector2 orignalPos;
+
     public override void _Ready()
     {
         randNumGenerator.Randomize();
@@ -44,8 +45,5 @@ public class CameraShake : Camera2D
         GetTree().CreateTimer(shakeTimerWaitTime).Connect("timeout", this, "OnShakeTimerTimeout");
     }
 
-    private void OnShakeTimerTimeout()
-    {
-        shake = false;
-    }
+    private void OnShakeTimerTimeout() => shake = false;
 }

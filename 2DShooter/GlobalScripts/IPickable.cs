@@ -4,11 +4,14 @@ using System;
  public interface IPickable
 {
 	bool isEquiped { get; set; }
+	bool wantToEquipGun { get; set; }
 	Inventory inventory { get; set; }
-	String path { get; set; }
+	string path { get; set; }
 
-	bool ParentCheck();
-	void Equip();
+    bool ParentCheck { get; }
+
+    void Equip();
 	void UnEquip();
 	void OnBodyEntered(object body);
+	void OnBodyExited(object body);
 }

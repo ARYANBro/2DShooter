@@ -14,39 +14,32 @@ public class RocketLauncherRocket : Node2D
 	{
 		if (body.GetType().Name == "Enemy")
 		{
-			rocketCollidedEnemy = (Enemy)body;
+			rocketCollidedEnemy = body as Enemy;
 			rocketCollidedEnemy.TakeDamage(damage);
 		}
-		var DamageAreaCollision = GetNode<CollisionShape2D>(DamageAreaCollisionPath);
-		DamageAreaCollision.SetDeferred("disabled", false);
+
+		CollisionShape2D damageAreaCollision = GetNode<CollisionShape2D>(DamageAreaCollisionPath);
+		damageAreaCollision.SetDeferred("disabled", false);
 		if (hitParticlesScene != null)
 		{
-			var hitParticleRoot = (Node2D)hitParticlesScene.Instance();
+			Node2D hitParticleRoot = hitParticlesScene.Instance() as Node2D;
 			hitParticleRoot.GetNode<Particles2D>("HitParticle").Emitting = true;
-			var bulletCompPos = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
-
-			hitParticleRoot.GlobalPosition = bulletCompPos;
-
+			hitParticleRoot.GlobalPosition = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
 			GetTree().Root.AddChild(hitParticleRoot);
 		}
 
-		CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
-		cameraShake.Shake(100 , 80, 80);
+		GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(100, 80, 80);
 		GetTree().CreateTimer(0.1f).Connect("timeout", this, "OnTimerTimeout");
-
 	}
 
 	private void OnDamageAreaBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Enemy" && body != rocketCollidedEnemy)
 		{
-			Enemy enemy = (Enemy)body;
+			Enemy enemy = body as Enemy;
 			enemy.TakeDamage(damage / 1.5f);
 		}
 	}
 
-	private void OnTimerTimeout()
-	{
-		QueueFree();
-	}
+	private void OnTimerTimeout() => QueueFree();
 }

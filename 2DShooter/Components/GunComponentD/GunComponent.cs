@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-abstract public class GunComponent : Node2D
+public class GunComponent : Node2D
 {
 	[Export] public float fireSpeed;
 	[Export] public float startTimeBetweenShots;
@@ -10,8 +10,7 @@ abstract public class GunComponent : Node2D
 	public Position2D firepoint;
 
 	private float timeBetweenShots;
-	private Vector2 mousePos;
-
+	
 	public override void _Ready()
 	{
 		firepoint = GetNode<Position2D>(firepointPath);
@@ -19,13 +18,8 @@ abstract public class GunComponent : Node2D
 
 	public override void _Process(float delta)
 	{
-		mousePos = GetGlobalMousePosition();
-
-		// Gun to look at mouse.
-		Vector2 lookDir = mousePos - GlobalPosition;
-		float angle = Mathf.Atan2(lookDir.y, lookDir.x);
-		RotationDegrees = Mathf.Rad2Deg(angle) + 90;
-		
+		Vector2 lookDir = GetGlobalMousePosition() - GlobalPosition;
+		RotationDegrees = Utlities.LookAtMouse(GetGlobalMousePosition(), GlobalPosition);
 		Shoot(lookDir, delta);
 	}
 
@@ -35,9 +29,8 @@ abstract public class GunComponent : Node2D
 		{
 			if (Input.IsActionPressed("Shoot"))
 			{
-				Node2D bulletNode2D = (Node2D)bulletScene.Instance();
+				Node bulletNode2D = bulletScene.Instance();
 				BulletComponent bullet = bulletNode2D.GetNode<BulletComponent>("BulletComponent");
-
 				bullet.Position = firepoint.GlobalPosition;
 				bullet.Rotation = Rotation;
 				bullet.speed = fireSpeed;

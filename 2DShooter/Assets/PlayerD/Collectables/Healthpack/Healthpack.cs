@@ -20,7 +20,6 @@ public class Healthpack : Area2D
 				player.Hp += increaseHpBy;
 				QueueFree();
 			}
-
 		}
 	}
 }

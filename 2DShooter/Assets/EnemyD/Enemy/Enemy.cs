@@ -70,24 +70,17 @@ public class Enemy : KinematicBody2D
 		Action OnHitTimerTimeout = () => sprite.Material.Set("shader_param/Color", color);
 	}
 
-	// Set the color back too orignal
-	private void OnHitTimerTimeout()
-	{
-		sprite.Material.Set("shader_param/Color", color);
-	}
-	
-	// Shooting
-	private void Shoot(float delta)
+    // Set the color back too orignal
+    private void OnHitTimerTimeout() => sprite.Material.Set("shader_param/Color", color);
+
+    // Shooting
+    private void Shoot(float delta)
 	{
 		if (timeBetweenShots <= 0)
 		{
 			Node2D enemyBulletNode2D = (Node2D)enemyBulletScene.Instance();
 			BulletComponent bullet = enemyBulletNode2D.GetNode<BulletComponent>("BulletComponent");
-
-			Vector2 playerPos = Position - player.Position;
-			float angle = Mathf.Atan2(playerPos.y, playerPos.x);
-
-			bullet.Rotation = angle - 1.5708f; // Adding 90 degrees in radians
+			bullet.Rotation = Mathf.Atan2((Position - player.Position).y, (Position - player.Position).x) - 1.5708f;
 			bullet.Position = Position;
 			GetTree().CurrentScene.AddChild(enemyBulletNode2D);
 			timeBetweenShots = startTimeBetweenShots;

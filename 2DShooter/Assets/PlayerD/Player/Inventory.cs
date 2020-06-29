@@ -10,17 +10,17 @@ public class Inventory : Node2D
 		Pickable = GD.Load<PackedScene>(_pickable.path);
 		if (Pickable != null && GetChildCount() == 0)
 		{
-			var pickable = Pickable.Instance();
-			CallDeferred("add_child", pickable, true);
+			Node pickable = Pickable.Instance();
+			AddChild(pickable, true);
 		}
 	}
-
+	
 	public void RemoveItemFromInventory(IPickable pickable)
 	{
-		foreach (var child in GetChildren())
+		foreach (Node child in GetChildren())
 		{
 			if (pickable.GetType().Name == child.GetType().Name)
-				((Node)child).QueueFree();
+				child.QueueFree();
 		}
 	}
 }

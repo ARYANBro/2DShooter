@@ -10,8 +10,7 @@ public class Player : KinematicBody2D
     [Export] public float sprintAccelerations;
     [Export] public float friction;
     [Export] public float speed;
-    [Export]
-    public int Hp
+    [Export] public int Hp
     {
         get
         {
@@ -27,9 +26,7 @@ public class Player : KinematicBody2D
                 hp = value;
         }
     }
-
-    [Export]
-    public float Stamina
+    [Export] public float Stamina
     {
         get
         {
@@ -89,7 +86,6 @@ public class Player : KinematicBody2D
         else
         {
             playerSprintParticles.Emitting = false;
-
             if (inputVector != Vector2.Zero)
                 velocity = velocity.MoveToward(inputVector * speed, acceleration * delta);
             else
@@ -110,8 +106,5 @@ public class Player : KinematicBody2D
         EmitSignal("PlayerDamaged");
     }
 
-    private void OnPlayerDied()
-    {
-        Hide();
-    }
+    private void OnPlayerDied() => Hide();
 }

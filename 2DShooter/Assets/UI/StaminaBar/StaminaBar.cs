@@ -13,7 +13,6 @@ public class StaminaBar : TextureProgress
 
 	public override void _Process(float delta)
 	{
-		Value = player.Stamina;
 		Value = Mathf.Lerp((float)Value, player.Stamina, 0.5f);
 	}
 }
