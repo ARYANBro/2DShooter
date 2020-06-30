@@ -1,7 +1,6 @@
 using System;
 using Godot;
 
-// Game Rules
 public class GameRules : Node2D
 {
 	private void OnPlayerDied() => GetTree().Quit();

@@ -8,13 +8,16 @@ public class RocketLauncher : Node2D, IPickable
     public Inventory inventory { get; set; }
     public bool isEquiped { get; set; }
     public bool wantToEquipGun { get; set; }
+    [Export] public Texture outLineSprite;
 
     private PackedScene RocketLauncherScene;
+    private Texture orignalTexture;
 
     public override void _Ready()
     {
-        inventory = (Inventory)GetTree().CurrentScene.FindNode("Inventory", true, false);
+        inventory = GetTree().CurrentScene.FindNode("Inventory", true, false) as Inventory;
         RocketLauncherScene = GD.Load<PackedScene>(path);
+        orignalTexture = GetNode<Sprite>("GunComponent/GunSprite").Texture;
     }
 
     public void OnBodyEntered(object body)
@@ -39,6 +42,14 @@ public class RocketLauncher : Node2D, IPickable
             Equip();
 
         isEquiped = ParentCheck;
+        if (!ParentCheck)
+        {
+            if (outLineSprite != null)
+                GetNode<Sprite>("GunComponent/GunSprite").Texture = outLineSprite;
+        }
+        else
+            GetNode<Sprite>("GunComponent/GunSprite").Texture = orignalTexture;
+
     }
 
     public bool ParentCheck => GetParent().GetType().Name == "Inventory";

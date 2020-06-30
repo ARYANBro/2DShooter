@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/PlayerD/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/PlayerD/Collectables/EnergyDrink/EnergyDrink.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncher/RocketLauncher.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Assets/PlayerD/Gun/PistolD/Pistol/Pistol.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/EnemyD/Enemy/Enemy.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Sprites/Hat/Hat.png" type="Texture" id=12]
 
 [node name="Main" type="Node2D"]
 scale = Vector2( 0.9784, 1.02804 )
@@ -42,6 +43,11 @@ shakeTimerWaitTime = 0.1
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
+
+[node name="Hat" type="Sprite" parent="Player/PlayerSprite" index="0"]
+position = Vector2( -0.0406952, -0.573273 )
+scale = Vector2( 0.0666667, 0.0666667 )
+texture = ExtResource( 12 )
 
 [node name="Enviornment" type="Node2D" parent="."]
 
@@ -77,6 +83,12 @@ position = Vector2( 212.592, 112.836 )
 [node name="Enemy" type="Node2D" parent="."]
 
 [node name="Enemy" parent="Enemy" instance=ExtResource( 11 )]
+position = Vector2( 181.93, 50.5817 )
+
+[node name="Enemy2" parent="Enemy" instance=ExtResource( 11 )]
+position = Vector2( 131.848, 48.6362 )
+
+[node name="Enemy3" parent="Enemy" instance=ExtResource( 11 )]
 position = Vector2( 159.444, 66.1453 )
 
 [editable path="Player"]

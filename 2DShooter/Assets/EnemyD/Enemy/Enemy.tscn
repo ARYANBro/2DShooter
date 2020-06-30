@@ -41,6 +41,7 @@ nodes/fragment/2/position = Vector2( 177, 186 )
 nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=3]
+resource_local_to_scene = true
 shader = SubResource( 2 )
 shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
 
