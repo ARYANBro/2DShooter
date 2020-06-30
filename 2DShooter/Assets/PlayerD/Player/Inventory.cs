@@ -12,6 +12,9 @@ public class Inventory : Node2D
 		{
 			Node pickable = Pickable.Instance();
 			AddChild(pickable, true);
+
+			((Node2D)pickable).Hide();
+			GetTree().CreateTimer(0.02f).Connect("timeout", ((Node2D)pickable), "show");
 		}
 	}
 	
