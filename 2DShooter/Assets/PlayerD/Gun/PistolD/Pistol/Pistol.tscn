@@ -17,7 +17,7 @@ outLineSprite = ExtResource( 5 )
 
 [node name="GunComponent" parent="." instance=ExtResource( 3 )]
 fireSpeed = 500.0
-startTimeBetweenShots = 0.5
+startTimeBetweenShots = 0.2
 bulletScene = ExtResource( 2 )
 
 [node name="GunSprite" parent="GunComponent" index="0"]

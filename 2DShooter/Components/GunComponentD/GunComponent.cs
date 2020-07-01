@@ -31,10 +31,13 @@ public class GunComponent : Node2D
 			{
 				Node bulletNode2D = bulletScene.Instance();
 				BulletComponent bullet = bulletNode2D.GetNode<BulletComponent>("BulletComponent");
+
 				bullet.Position = firepoint.GlobalPosition;
 				bullet.Rotation = Rotation;
 				bullet.speed = fireSpeed;
+
 				GetTree().CurrentScene.AddChild(bulletNode2D);
+
 				timeBetweenShots = startTimeBetweenShots;
 			}
 		}

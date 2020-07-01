@@ -36,11 +36,14 @@ public class Enemy : KinematicBody2D
 	public override void _Ready()
 	{
 		GD.Randomize();
+
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
 		sprite = GetNode<Sprite>("EnemySprite");
+
+		GlobalPosition = Utlities.RandPosition(new Vector2(320f, 180f), GlobalPosition);
 		sprite.Material.Set("shader_param/Color", color);
 		timeBetweenShots = startTimeBetweenShots;
-		Position = new Vector2((float)GD.RandRange(0, 320), (float)GD.RandRange(0, 180));
+		GetTree().CurrentScene.Connect("EnemyDiedSignal", GetTree().CurrentScene, "OnEnemyDied");
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -55,11 +58,12 @@ public class Enemy : KinematicBody2D
 		if (Hp <= 0)
 		{
 			CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
+
 			cameraShake.StartShake();
 			EmitSignal("EnemyDiedSignal");
+
 			QueueFree();
 		}
-
 		EmitSignal("EnemyHurt");
 	}
 
@@ -67,21 +71,26 @@ public class Enemy : KinematicBody2D
 	{
 		sprite.Material.Set("shader_param/Color", new Color(1f, 1f, 1f, 1f));
 		GetTree().CreateTimer(hitTimerWaitTime).Connect("timeout", this, "OnHitTimerTimeout");
-		Action OnHitTimerTimeout = () => sprite.Material.Set("shader_param/Color", color);
 	}
 
-    // Set the color back too orignal
-    private void OnHitTimerTimeout() => sprite.Material.Set("shader_param/Color", color);
+	// Set the color back too orignal
+	private void OnHitTimerTimeout()
+	{
+		if ((Color)sprite.Material.Get("shader_param/Color") != color)
+			sprite.Material.Set("shader_param/Color", color);
+		else return;
+	}
 
-    // Shooting
     private void Shoot(float delta)
 	{
 		if (timeBetweenShots <= 0)
 		{
-			Node2D enemyBulletNode2D = (Node2D)enemyBulletScene.Instance();
+			Node2D enemyBulletNode2D = enemyBulletScene.Instance() as Node2D;
 			BulletComponent bullet = enemyBulletNode2D.GetNode<BulletComponent>("BulletComponent");
-			bullet.Rotation = Mathf.Atan2((Position - player.Position).y, (Position - player.Position).x) - 1.5708f;
-			bullet.Position = Position;
+
+			bullet.RotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition);
+			bullet.Position = GlobalPosition;
+
 			GetTree().CurrentScene.AddChild(enemyBulletNode2D);
 			timeBetweenShots = startTimeBetweenShots;
 		}
@@ -93,16 +102,16 @@ public class Enemy : KinematicBody2D
 	private void Movement(float delta)
 	{
 		Vector2 inputVector = Vector2.Zero;
-		inputVector = player.Position - Position;
+		inputVector = player.GlobalPosition - GlobalPosition;
 		inputVector = inputVector.Normalized();
 
-		if (Position.DistanceTo(player.Position) > stoppingDistance)
+		if (GlobalPosition.DistanceTo(player.GlobalPosition) > stoppingDistance)
 			velocity = velocity.MoveToward(inputVector * speed, accel * delta);
-		else if (Position.DistanceTo(player.Position) < retreatDistance)
+		else if (GlobalPosition.DistanceTo(player.GlobalPosition) < retreatDistance)
 			velocity = velocity.MoveToward(-inputVector * speed, accel * delta);
 		else
 			velocity = velocity.MoveToward(Vector2.Zero, accel * delta);
 
-		MoveAndSlide(velocity);
+		velocity = MoveAndSlide(velocity);
 	}
 }

@@ -11,23 +11,27 @@
 [ext_resource path="res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncher/RocketLauncher.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Assets/PlayerD/Gun/PistolD/Pistol/Pistol.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/EnemyD/Enemy/Enemy.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Sprites/Hat/Hat.png" type="Texture" id=12]
+[ext_resource path="res://Assets/EnemyD/Enemy/BigEnemy.tscn" type="PackedScene" id=13]
 
 [node name="Main" type="Node2D"]
 scale = Vector2( 0.9784, 1.02804 )
 script = ExtResource( 3 )
+maxNumOfEnemies = 10
+maxNumOfBigEnemies = 3
+enemyScene = ExtResource( 11 )
+bigEnemyScene = ExtResource( 13 )
 
 [node name="EnergyDrink" parent="." instance=ExtResource( 2 )]
-position = Vector2( 189.084, 140.072 )
+position = Vector2( 200.327, 56.418 )
 
 [node name="EnergyDrink2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 190.106, 162.445 )
+position = Vector2( 215.658, 142.018 )
 
 [node name="Healthpack" parent="." instance=ExtResource( 5 )]
-position = Vector2( 149.223, 139.1 )
+position = Vector2( 129.804, 131.318 )
 
 [node name="Healthpack2" parent="." instance=ExtResource( 5 )]
-position = Vector2( 150.245, 158.554 )
+position = Vector2( 54.1701, 147.854 )
 
 [node name="MainCam" type="Camera2D" parent="."]
 position = Vector2( 160, 90 )
@@ -44,10 +48,8 @@ shakeTimerWaitTime = 0.1
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
 
-[node name="Hat" type="Sprite" parent="Player/PlayerSprite" index="0"]
-position = Vector2( -0.0406952, -0.573273 )
-scale = Vector2( 0.0666667, 0.0666667 )
-texture = ExtResource( 12 )
+[node name="PlayerCollision" parent="Player" index="1"]
+position = Vector2( 0.411758, 0.155396 )
 
 [node name="Enviornment" type="Node2D" parent="."]
 
@@ -79,16 +81,5 @@ position = Vector2( 97.0973, 130.345 )
 
 [node name="Pistol" parent="." instance=ExtResource( 10 )]
 position = Vector2( 212.592, 112.836 )
-
-[node name="Enemy" type="Node2D" parent="."]
-
-[node name="Enemy" parent="Enemy" instance=ExtResource( 11 )]
-position = Vector2( 181.93, 50.5817 )
-
-[node name="Enemy2" parent="Enemy" instance=ExtResource( 11 )]
-position = Vector2( 131.848, 48.6362 )
-
-[node name="Enemy3" parent="Enemy" instance=ExtResource( 11 )]
-position = Vector2( 159.444, 66.1453 )
 
 [editable path="Player"]

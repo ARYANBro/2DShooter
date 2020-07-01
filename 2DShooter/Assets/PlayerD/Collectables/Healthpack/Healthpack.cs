@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Resources;
 
 public class Healthpack : Area2D
 {
@@ -8,6 +9,7 @@ public class Healthpack : Area2D
 
 	public override void _Ready()
 	{
+		GlobalPosition = Utlities.RandPosition(new Vector2(320, 180), GlobalPosition);
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
 	}
 

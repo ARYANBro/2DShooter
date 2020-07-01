@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/PlayerD/Player/Player.cs" type="Script" id=1]
 [ext_resource path="res://Assets/PlayerD/Player/Inventory.cs" type="Script" id=2]
+[ext_resource path="res://Sprites/Hat/Hat.png" type="Texture" id=3]
 
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
 uniform_name = "Color"
@@ -97,3 +98,7 @@ process_material = SubResource( 10 )
 
 [node name="Inventory" type="Node2D" parent="."]
 script = ExtResource( 2 )
+
+[node name="Hat" type="Sprite" parent="."]
+position = Vector2( 0, -8.5 )
+texture = ExtResource( 3 )

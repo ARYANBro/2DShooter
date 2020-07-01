@@ -14,7 +14,7 @@ radius = 45.0
 
 [node name="RocketLauncherRocket" type="Node2D"]
 script = ExtResource( 3 )
-damage = 30
+damage = 45
 DamageAreaCollisionPath = NodePath("BulletComponent/DamageArea/DamageAreaCollision")
 hitParticlesScene = ExtResource( 4 )
 

@@ -9,6 +9,7 @@ public class EnergyDrink : Area2D
 	public override void _Ready()
 	{
 		player = GetTree().CurrentScene.GetNode<Player>("Player");
+		GlobalPosition = Utlities.RandPosition(new Vector2(320, 180), GlobalPosition);
 	}
 
 	private void OnStaminapackBodyEntered(object body)

@@ -50,7 +50,9 @@ shader_param/Color = Color( 0.937255, 0, 0.203922, 1 )
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 7, 7 )
 
-[node name="Enemy" type="KinematicBody2D"]
+[node name="Enemy" type="Node2D"]
+
+[node name="Enemy" type="KinematicBody2D" parent="."]
 show_behind_parent = true
 collision_layer = 2
 collision_mask = 7
@@ -62,21 +64,21 @@ stoppingDistance = 50
 hitTimerWaitTime = 0.15
 retreatDistance = 50
 enemyBulletScene = ExtResource( 2 )
-startTimeBetweenShots = 3.0
+startTimeBetweenShots = 4.0
 color = Color( 0.937255, 0, 0.203922, 1 )
 
-[node name="EnemySprite" type="Sprite" parent="."]
+[node name="EnemySprite" type="Sprite" parent="Enemy"]
 material = SubResource( 3 )
 scale = Vector2( 15, 15 )
 texture = SubResource( 4 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
 visible = false
 shape = SubResource( 5 )
 
-[node name="EnemyHealthbar" parent="." instance=ExtResource( 3 )]
+[node name="EnemyHealthbar" parent="Enemy" instance=ExtResource( 3 )]
 margin_left = -15.611
 margin_top = -25.2265
 margin_right = 16.389
 margin_bottom = 6.77347
-[connection signal="EnemyHurt" from="." to="." method="OnEnemyHurt"]
+[connection signal="EnemyHurt" from="Enemy" to="Enemy" method="OnEnemyHurt"]

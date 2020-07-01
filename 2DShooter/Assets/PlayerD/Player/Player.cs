@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 public class Player : KinematicBody2D
@@ -10,7 +9,8 @@ public class Player : KinematicBody2D
     [Export] public float sprintAccelerations;
     [Export] public float friction;
     [Export] public float speed;
-    [Export] public int Hp
+    [Export]
+    public int Hp
     {
         get
         {
@@ -26,7 +26,8 @@ public class Player : KinematicBody2D
                 hp = value;
         }
     }
-    [Export] public float Stamina
+    [Export]
+    public float Stamina
     {
         get
         {
