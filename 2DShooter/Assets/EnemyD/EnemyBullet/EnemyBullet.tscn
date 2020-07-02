@@ -32,6 +32,7 @@ void light() {
 
 }
 "
+custom_defines = ""
 graph_offset = Vector2( -156, 52 )
 mode = 1
 flags/light_only = false
@@ -53,7 +54,7 @@ script = ExtResource( 2 )
 
 [node name="BulletComponent" parent="." instance=ExtResource( 1 )]
 collision_layer = 0
-collision_mask = 5
+collision_mask = 1
 speed = 200.0
 
 [node name="BulletSprite" parent="BulletComponent" index="0"]

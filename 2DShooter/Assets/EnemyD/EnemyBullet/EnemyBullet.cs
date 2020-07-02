@@ -11,11 +11,10 @@ public class EnemyBullet : Node2D
 		{
 			Player player = GetTree().CurrentScene.GetNode<Player>("Player");
 			player.TakeDamage(damage);
-			
+
 			CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
 			cameraShake.Shake(50.0f, 50.0f, 50.0f);
 		}
-		
 		QueueFree();
 	}
 }

@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using Godot;
 
 public class GameRules : Node2D
@@ -8,18 +8,23 @@ public class GameRules : Node2D
     [Export] public int maxNumOfBigEnemies;
     [Export] public PackedScene enemyScene;
     [Export] public PackedScene bigEnemyScene;
+    public List<Node> enemies = new List<Node>();
+    public Node2D enemiesNode;
 
     public override void _Ready()
     {
+        enemiesNode = GetNode<Node2D>("Enemies");
 
         for (int i = 0; i < Utlities.randNumGenerator.RandiRange(1, maxNumOfEnemies); i++)
         {
             Node enemy = enemyScene.Instance();
             if (i >= maxNumOfEnemies / maxNumOfBigEnemies)
                 enemy = bigEnemyScene.Instance();
-
-            AddChild(enemy);
+            enemies.Add(enemy);
         }
+
+        for (int i = 0; i < enemies.Count; i++)
+            enemiesNode.AddChild(enemies[i], true);
     }
 
     public override void _UnhandledInput(InputEvent @event)

@@ -19,16 +19,19 @@ public class RocketLauncherRocket : Node2D
 		}
 
 		CollisionShape2D damageAreaCollision = GetNode<CollisionShape2D>(DamageAreaCollisionPath);
+
 		damageAreaCollision.SetDeferred("disabled", false);
 		if (hitParticlesScene != null)
 		{
 			Node2D hitParticleRoot = hitParticlesScene.Instance() as Node2D;
+
 			hitParticleRoot.GetNode<Particles2D>("HitParticle").Emitting = true;
 			hitParticleRoot.GlobalPosition = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
+
 			GetTree().Root.AddChild(hitParticleRoot);
 		}
 
-		GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(100, 80, 80);
+		GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(180, 90, 80);
 		GetTree().CreateTimer(0.1f).Connect("timeout", this, "OnTimerTimeout");
 	}
 
@@ -37,7 +40,8 @@ public class RocketLauncherRocket : Node2D
 		if (body.GetType().Name == "Enemy" && body != rocketCollidedEnemy)
 		{
 			Enemy enemy = body as Enemy;
-			enemy.TakeDamage(damage / 1.5f);
+
+			enemy.TakeDamage(damage * 0.5f);
 		}
 	}
 

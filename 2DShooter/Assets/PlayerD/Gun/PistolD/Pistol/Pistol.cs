@@ -15,19 +15,19 @@ public class Pistol : Node2D, IPickable
 	public override void _Ready()
 	{
 		inventory = GetTree().CurrentScene.FindNode("Inventory", true, false) as Inventory;
-		PistolScene = GD.Load<PackedScene>(path);
 		orignalTexture = GetNode<Sprite>("GunComponent/GunSprite").Texture;
+		PistolScene = GD.Load<PackedScene>(path);
 	}
 
 	public void OnBodyEntered(object body)
 	{
-		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0)
+		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 && body.GetType().Name != "RocketLauncher")
 			wantToEquipGun = true;
 	}
 
 	public void OnBodyExited(object body)
 	{
-		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0)
+		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 && body.GetType().Name != "RocketLauncher")
 			wantToEquipGun = false;
 	}
 
@@ -63,8 +63,10 @@ public class Pistol : Node2D, IPickable
 	{
 		inventory.RemoveItemFromInventory(this);
 		Pistol pistol = PistolScene.Instance() as Pistol;
+
 		pistol.Position = GetTree().CurrentScene.GetNode<Player>("Player").Position;
 		pistol.RotationDegrees = Utlities.LookAtMouse(GetGlobalMousePosition(), pistol.Position);
+
 		GetTree().CurrentScene.AddChild(pistol);
 	}
 }

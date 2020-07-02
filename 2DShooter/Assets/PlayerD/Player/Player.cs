@@ -57,7 +57,25 @@ public class Player : KinematicBody2D
 
     public override void _Process(float delta)
     {
+        Move(delta);
+        
+    }
 
+    public override void _PhysicsProcess(float delta)
+    {
+        velocity = MoveAndSlide(velocity);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Hp -= damage;
+        EmitSignal("PlayerDamaged");
+    }
+
+    private void OnPlayerDied() => Hide();
+
+    private void Move(float delta)
+    {
         if (Input.IsActionPressed("Sprint") && canSprint && velocity != Vector2.Zero)
             Stamina -= 3;
         else
@@ -68,13 +86,11 @@ public class Player : KinematicBody2D
         else if (Stamina >= 400)
             canSprint = true;
 
-        // Movement.
         Vector2 inputVector = Vector2.Zero;
         inputVector.x = Input.GetActionStrength("MoveRight") - Input.GetActionStrength("MoveLeft");
         inputVector.y = Input.GetActionStrength("MoveDown") - Input.GetActionStrength("MoveUp");
         inputVector = inputVector.Normalized();
 
-        // Sprinting 
         if (Input.IsActionPressed("Sprint") && canSprint)
         {
             if (inputVector != Vector2.Zero)
@@ -93,19 +109,4 @@ public class Player : KinematicBody2D
                 velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
         }
     }
-
-    public override void _PhysicsProcess(float delta)
-    {
-        velocity = MoveAndSlide(velocity);
-    }
-
-
-    // When player is damaged can be called by any one.
-    public void TakeDamage(int damage)
-    {
-        Hp -= damage;
-        EmitSignal("PlayerDamaged");
-    }
-
-    private void OnPlayerDied() => Hide();
 }

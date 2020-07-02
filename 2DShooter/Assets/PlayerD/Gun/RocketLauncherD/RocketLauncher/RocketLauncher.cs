@@ -22,13 +22,15 @@ public class RocketLauncher : Node2D, IPickable
 
 	public void OnBodyEntered(object body)
 	{
-		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0)
+		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 &&
+			body.GetType().Name != "Pistol")
 			wantToEquipGun = true;
 	}
 
 	public void OnBodyExited(object body)
 	{
-		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0)
+		if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 && 
+			body.GetType().Name != "Pistol")
 			wantToEquipGun = false;
 	}
 
@@ -49,7 +51,6 @@ public class RocketLauncher : Node2D, IPickable
 		}
 		else
 			GetNode<Sprite>("GunComponent/GunSprite").Texture = orignalTexture;
-
 	}
 
 	public bool ParentCheck => GetParent().GetType().Name == "Inventory";

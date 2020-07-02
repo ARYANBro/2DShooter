@@ -48,9 +48,6 @@ shakeTimerWaitTime = 0.1
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
 
-[node name="PlayerCollision" parent="Player" index="1"]
-position = Vector2( 0.411758, 0.155396 )
-
 [node name="Enviornment" type="Node2D" parent="."]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
@@ -81,5 +78,7 @@ position = Vector2( 97.0973, 130.345 )
 
 [node name="Pistol" parent="." instance=ExtResource( 10 )]
 position = Vector2( 212.592, 112.836 )
+
+[node name="Enemies" type="Node2D" parent="."]
 
 [editable path="Player"]

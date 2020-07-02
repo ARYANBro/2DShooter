@@ -20,7 +20,7 @@ public class Inventory : Node2D
     {
         foreach (Node child in GetChildren())
         {
-            if (pickable.GetType().Name == child.GetType().Name)
+            if (pickable.GetType().Name == child.GetType().Name && !child.IsQueuedForDeletion())
                 child.QueueFree();
         }
     }
