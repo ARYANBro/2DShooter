@@ -7,7 +7,8 @@ public class EnemyHealthbar : TextureProgress
 
 	public override void _Ready()
 	{
-		enemy = GetParent<Enemy>();
+		if (GetParent().GetType().Name == "Enemy") enemy = GetParent<Enemy>();
+		else if (GetParent().GetType().Name == "BigEnemy") enemy = GetParent<BigEnemy>();
 	}
 
 	public override void _Process(float delta)

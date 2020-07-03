@@ -14,7 +14,7 @@ public class GameRules : Node2D
     public override void _Ready()
     {
         enemiesNode = GetNode<Node2D>("Enemies");
-
+        
         for (int i = 0; i < Utlities.randNumGenerator.RandiRange(1, maxNumOfEnemies); i++)
         {
             Node enemy = enemyScene.Instance();
@@ -25,6 +25,8 @@ public class GameRules : Node2D
 
         for (int i = 0; i < enemies.Count; i++)
             enemiesNode.AddChild(enemies[i], true);
+
+        GD.Print("Enemies spawned: " + enemiesNode.GetChildCount()) ;
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -35,10 +37,12 @@ public class GameRules : Node2D
                 GetTree().ReloadCurrentScene();
         }
     }
+
     private void OnPlayerDied() => GetTree().Quit();
 
     private void OnEnemyDied()
     {
-        GD.Print("Enemy Died");
+        if (enemiesNode.GetChildCount() - 1 == 1)
+            GD.Print("You Win");
     }
 }

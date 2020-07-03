@@ -30,7 +30,7 @@ public class GunComponent : Node2D
 			if (Input.IsActionPressed("Shoot"))
 			{
 				Node bulletNode2D = bulletScene.Instance();
-				BulletComponent bullet = bulletNode2D.GetNode<BulletComponent>("BulletComponent");
+				var bullet = bulletNode2D.GetNode<BulletComponent>("BulletComponent");
 
 				bullet.Position = firepoint.GlobalPosition;
 				bullet.Rotation = Rotation;
@@ -41,7 +41,6 @@ public class GunComponent : Node2D
 				timeBetweenShots = startTimeBetweenShots;
 			}
 		}
-		else
-			timeBetweenShots -= delta;
+		else timeBetweenShots -= delta;
 	}
 }

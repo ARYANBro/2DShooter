@@ -25,4 +25,20 @@ public class Utlities : Node
         return globalPosition = new Vector2(randNumGenerator.RandfRange(0f, resolution.x),
                 randNumGenerator.RandfRange(0f, resolution.y));
     }
+
+    public static void AddChildWithParams(Node parent, Node2D node, Vector2 globalPos, float rotDegrees)
+    {
+        node.GlobalPosition = globalPos;
+        node.RotationDegrees = rotDegrees;
+        parent.AddChild(node);
+    }
+
+    public static Node2D SetNode2DParams(Node2D node, Vector2 globalPos, float rotDegrees)
+    {
+        if (!node.IsInsideTree()) node.Position = globalPos; 
+        else node.GlobalPosition = globalPos;
+
+        node.RotationDegrees = rotDegrees;
+        return node;
+    }
 }

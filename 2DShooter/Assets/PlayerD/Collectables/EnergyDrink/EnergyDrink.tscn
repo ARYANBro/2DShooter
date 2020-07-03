@@ -9,7 +9,7 @@ height = 10.0
 
 [node name="EnergyDrink" type="Area2D"]
 script = ExtResource( 1 )
-increaseStaminaBy = 65
+increaseStaminaBy = 70
 
 [node name="StaminapackSprite" type="Sprite" parent="."]
 scale = Vector2( 0.8, 0.8 )

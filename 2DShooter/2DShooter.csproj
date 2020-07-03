@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Assets\Effects\PistolBulletParticles\PistolBulletParticles.cs" />
     <Compile Include="Assets\EnemyD\EnemyBullet\EnemyBullet.cs" />
+    <Compile Include="Assets\EnemyD\Enemy\BigEnemy.cs" />
     <Compile Include="Assets\EnemyD\Enemy\Enemy.cs" />
     <Compile Include="Assets\EnemyD\Healthbar\EnemyHealthbar.cs" />
     <Compile Include="Assets\PlayerD\Collectables\EnergyDrink\EnergyDrink.cs" />

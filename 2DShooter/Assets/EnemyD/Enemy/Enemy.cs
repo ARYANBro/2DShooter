@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using Godot;
 
 public class Enemy : KinematicBody2D
@@ -17,7 +15,7 @@ public class Enemy : KinematicBody2D
 		{
 			return hp;
 		}
-		private set
+		protected set
 		{
 			hp = value;
 			Mathf.Clamp(hp, 0, 50);
@@ -30,11 +28,10 @@ public class Enemy : KinematicBody2D
 	[Export] public Color color;
 	public Player player;
 
-	private float timeBetweenShots;
-	private Vector2 velocity;
-	private Sprite sprite;
-	private float hp;
-	private bool retreat;
+	protected float timeBetweenShots;
+	protected Vector2 velocity;
+	protected Sprite sprite;
+	protected float hp;
 
 	public override void _Ready()
 	{
@@ -45,6 +42,8 @@ public class Enemy : KinematicBody2D
 
 		sprite.Material.SetDeferred("shader_param/Color", color);
 		timeBetweenShots = startTimeBetweenShots;
+
+		Connect("EnemyDiedSignal", GetTree().CurrentScene, "OnEnemyDied");
 	}
 
 	public override void _Process(float delta)
@@ -68,8 +67,9 @@ public class Enemy : KinematicBody2D
 			cameraShake.StartShake();
 			EmitSignal("EnemyDiedSignal");
 
-			QueueFree();
+			GetParent().QueueFree();
 		}
+
 		EmitSignal("EnemyHurt");
 	}
 
@@ -86,17 +86,17 @@ public class Enemy : KinematicBody2D
 		else return;
 	}
 
-	private void Shoot(float delta)
+	virtual protected void Shoot(float delta)
 	{
 		if (timeBetweenShots <= 0)
 		{
-			Node2D enemyBulletNode2D = enemyBulletScene.Instance() as Node2D;
-			BulletComponent bullet = enemyBulletNode2D.GetNode<BulletComponent>("BulletComponent");
+			var bulletRoot = InstanceBullet(enemyBulletScene);
+			var bullet = bulletRoot.GetNode<BulletComponent>("BulletComponent");
 
-			bullet.RotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition);
-			bullet.Position = GlobalPosition;
+			float rotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition);
+			bullet = Utlities.SetNode2DParams(bullet, GlobalPosition, rotationDegrees) as BulletComponent;
+			GetTree().CurrentScene.AddChild(bulletRoot);
 
-			GetTree().CurrentScene.AddChild(enemyBulletNode2D);
 			timeBetweenShots = startTimeBetweenShots;
 		}
 		else
@@ -120,5 +120,11 @@ public class Enemy : KinematicBody2D
 			velocity = velocity.MoveToward(-inputVector * speed, accel * delta);
 		else
 			velocity = velocity.MoveToward(Vector2.Zero, accel * delta);
+	}
+
+	protected EnemyBullet InstanceBullet(PackedScene scene)
+    {
+		var bulletRoot = scene.Instance() as EnemyBullet;
+		return bulletRoot;
 	}
 }

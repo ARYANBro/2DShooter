@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/EnemyD/Enemy/Enemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/EnemyD/Enemy/BigEnemy.cs" type="Script" id=2]
 
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
 uniform_name = "Color"
@@ -51,12 +52,11 @@ shader_param/Color = Color( 0.658824, 0.105882, 0.254902, 1 )
 scale = Vector2( 2, 2 )
 
 [node name="Enemy" parent="Enemy" index="0"]
+script = ExtResource( 2 )
 Hp = 120.0
-speed = 20
-accel = 200
-stoppingDistance = 70
-retreatDistance = 70
+startTimeBetweenShots = 6.0
 color = Color( 0.658824, 0.105882, 0.254902, 1 )
+maxBullets = 10
 
 [node name="EnemySprite" parent="Enemy/Enemy" index="0"]
 material = SubResource( 3 )

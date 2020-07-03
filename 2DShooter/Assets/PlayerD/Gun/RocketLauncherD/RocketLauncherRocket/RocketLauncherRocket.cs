@@ -1,6 +1,5 @@
 using Godot;
-using System.Linq.Expressions;
-using System.Security.Policy;
+using System;
 
 public class RocketLauncherRocket : Node2D
 {
@@ -17,6 +16,11 @@ public class RocketLauncherRocket : Node2D
 			rocketCollidedEnemy = body as Enemy;
 			rocketCollidedEnemy.TakeDamage(damage);
 		}
+		else if (body.GetType().Name == "BigEnemy")
+        {
+			rocketCollidedEnemy = body as BigEnemy;
+			rocketCollidedEnemy.TakeDamage(damage);
+        }
 
 		CollisionShape2D damageAreaCollision = GetNode<CollisionShape2D>(DamageAreaCollisionPath);
 
@@ -40,9 +44,13 @@ public class RocketLauncherRocket : Node2D
 		if (body.GetType().Name == "Enemy" && body != rocketCollidedEnemy)
 		{
 			Enemy enemy = body as Enemy;
-
 			enemy.TakeDamage(damage * 0.5f);
 		}
+		else if (body.GetType().Name == "BigEnemy" && body != rocketCollidedEnemy)
+        {
+			BigEnemy enemy = body as BigEnemy;
+			enemy.TakeDamage(damage * 0.5f);
+        }
 	}
 
 	private void OnTimerTimeout() => QueueFree();
