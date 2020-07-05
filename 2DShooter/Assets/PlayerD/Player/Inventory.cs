@@ -12,7 +12,7 @@ public class Inventory : Node2D
             Node2D pickable = Pickable.Instance() as Node2D;
             HideForSeconds(0.02f, pickable, GetTree());
 
-            AddChild(pickable, true);
+            CallDeferred("add_child", pickable, true);
         }
     }
 
@@ -24,7 +24,7 @@ public class Inventory : Node2D
                 GetTree().CurrentScene.FindNode(pickable.GetType().Name, true, true) == null &&
                 !child.IsQueuedForDeletion())
             {
-                child.QueueFree();
+                child.CallDeferred("queue_free");
             }
         }
     }

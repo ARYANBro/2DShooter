@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Runtime.InteropServices;
 
 public class StaminaBar : TextureProgress
 {
@@ -13,6 +12,6 @@ public class StaminaBar : TextureProgress
 
 	public override void _Process(float delta)
 	{
-		Value = Mathf.Lerp((float)Value, player.Stamina, 0.5f);
+		Value = Mathf.Lerp((float)Value, player.Stamina, 0.8f);
 	}
 }

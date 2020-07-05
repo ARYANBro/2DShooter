@@ -6,7 +6,7 @@
     <ProjectGuid>{7549082D-57AA-4F8F-BF13-24F8B1669E76}</ProjectGuid>
     <OutputType>Library</OutputType>
     <OutputPath>.mono\temp\bin\$(Configuration)</OutputPath>
-    <RootNamespace>DShooter</RootNamespace>
+    <RootNamespace>Shooter</RootNamespace>
     <AssemblyName>2DShooter</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <GodotProjectGeneratorVersion>1.0.7374.16792</GodotProjectGeneratorVersion>
@@ -36,8 +36,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>$(GodotDefineConstants);GODOT;DEBUG;TOOLS;</DefineConstants>
+    <Optimize>true</Optimize>
+    <DefineConstants>DEBUG;GODOT;TOOLS;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>

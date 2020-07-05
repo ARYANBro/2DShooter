@@ -35,7 +35,8 @@ public class RocketLauncherRocket : Node2D
 		{
 			hitParticleRoot.GetNode<Particles2D>("HitParticle").Emitting = true;
 			hitParticleRoot.GlobalPosition = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
-			GetTree().Root.AddChild(hitParticleRoot);
+			if (hitParticleRoot.GetParent() != GetTree().CurrentScene)
+				GetTree().CurrentScene.AddChild(hitParticleRoot);
 
 			GetTree().CreateTimer(0.1f).Connect("timeout", this, "OnHitParticleTimerTimeout");
 		}

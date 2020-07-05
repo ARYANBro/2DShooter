@@ -16,8 +16,8 @@
 [node name="Main" type="Node2D"]
 scale = Vector2( 0.9784, 1.02804 )
 script = ExtResource( 3 )
-maxNumOfEnemies = 10
-maxNumOfBigEnemies = 3
+maxNumOfEnemies = 15
+maxNumOfBigEnemies = 4
 enemyScene = ExtResource( 11 )
 bigEnemyScene = ExtResource( 13 )
 healthPackScene = ExtResource( 5 )

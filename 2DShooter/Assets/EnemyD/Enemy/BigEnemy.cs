@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 class BigEnemy : Enemy
 {
-    [Export] public int maxBullets;
+    [Export] public int maxBullets = 1;
 
     protected override void Shoot(float delta)
     {

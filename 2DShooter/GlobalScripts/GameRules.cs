@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Security.Policy;
 using Godot;
 
@@ -13,25 +14,14 @@ public class GameRules : Node2D
     [Export] public PackedScene bigEnemyScene;
     [Export] public PackedScene healthPackScene;
     [Export] public PackedScene energyDrinkScene;
-    public List<Node> enemies = new List<Node>();
+    public List<Node> enemies;
     public Node2D enemiesNode;
 
     public override void _Ready()
     {
+        enemies = new List<Node>();
         enemiesNode = GetNode<Node2D>("Enemies");
-
-        for (int i = 0; i < Utlities.randNumGenerator.RandiRange(1, maxNumOfEnemies); i++)
-        {
-            Node enemy = enemyScene.Instance();
-            if (i >= maxNumOfEnemies / maxNumOfBigEnemies)
-                enemy = bigEnemyScene.Instance();
-            enemies.Add(enemy);
-        }
-
-        for (int i = 0; i < enemies.Count; i++)
-            enemiesNode.AddChild(enemies[i], true);
-
-        GD.Print("Enemies spawned: " + enemiesNode.GetChildCount());
+        SpawnEnemies();
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -45,26 +35,61 @@ public class GameRules : Node2D
 
     private void OnPlayerDied() => GetTree().Quit();
 
-    public override void _Process(float delta)
-    {
-        if (enemiesNode.GetChildCount() == 0)
-        {
-            EmitSignal("SPlayerWon");
-        }
-    }
-
     private void OnEnemyDied()
     {
+        if (enemiesNode.GetChildCount() == 1)
+            EmitSignal("SPlayerWon");
     }
 
     private void OnPlayerWon()
     {
-        GD.Print("Player Won");
+        SpawnConsumables();
+        GetTree().CreateTimer(5f).Connect("timeout", this, "SpawnEnemies");
+    }
+
+    private void SpawnEnemies()
+    {
+        enemies.Clear();
+        Utlities.randNumGenerator.Randomize();
+        for (int i = 0; i < Utlities.randNumGenerator.RandiRange(1, maxNumOfEnemies); i++)
+        {
+            Node enemy = enemyScene.Instance();
+            if (i >= maxNumOfEnemies / maxNumOfBigEnemies)
+                enemy = bigEnemyScene.Instance();
+            enemies.Add(enemy);
+        }
+
+        for (int i = 0; i < enemies.Count; i++)
+            enemiesNode.AddChild(enemies[i], true);
+    }
+
+    private void SpawnConsumables()
+    {
+        int randNum = Utlities.randNumGenerator.RandiRange(0, 1);
+        GD.Print(randNum);
 
         var healthpack = healthPackScene.Instance();
         var energyDrink = energyDrinkScene.Instance();
 
-        GetTree().CurrentScene.CallDeferred("add_child", healthpack);
-        GetTree().CurrentScene.CallDeferred("add_child", energyDrink);
+        Action spawnHealthpack = () =>
+        {
+           if (healthpack.GetParent() != GetTree().CurrentScene)
+            GetTree().CurrentScene.CallDeferred("add_child", healthpack, true);
+        };
+
+        Action spawnEnergydrink = () =>
+        {
+            if (energyDrink.GetParent() != GetTree().CurrentScene)
+                GetTree().CurrentScene.CallDeferred("add_child", energyDrink, true);
+        };
+
+        if (randNum == 0)
+        {
+            spawnEnergydrink();
+        }
+        else if (randNum == 1)
+        {
+            spawnHealthpack();
+        }
     }
 }
