@@ -20,18 +20,19 @@ maxNumOfEnemies = 10
 maxNumOfBigEnemies = 3
 enemyScene = ExtResource( 11 )
 bigEnemyScene = ExtResource( 13 )
+healthPackScene = ExtResource( 5 )
+energyDrinkScene = ExtResource( 2 )
 
-[node name="EnergyDrink" parent="." instance=ExtResource( 2 )]
-position = Vector2( 200.327, 56.418 )
+[node name="Enviornment" type="Node2D" parent="."]
 
-[node name="EnergyDrink2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 215.658, 142.018 )
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
+environment = ExtResource( 8 )
 
-[node name="Healthpack" parent="." instance=ExtResource( 5 )]
-position = Vector2( 129.804, 131.318 )
+[node name="Walls" type="StaticBody2D" parent="Enviornment"]
 
-[node name="Healthpack2" parent="." instance=ExtResource( 5 )]
-position = Vector2( 54.1701, 147.854 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Enviornment/Walls"]
+position = Vector2( 0, 1.94545 )
+polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -3.06623, 175.09, 323.998, 175.09, 323.998, 0, -3.06623, 0, -3.06623, 176.063, 0, 201.354, -32.7065, 201.354 )
 
 [node name="MainCam" type="Camera2D" parent="."]
 position = Vector2( 160, 90 )
@@ -47,17 +48,6 @@ shakeTimerWaitTime = 0.1
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
-
-[node name="Enviornment" type="Node2D" parent="."]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
-environment = ExtResource( 8 )
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Enviornment"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Enviornment/StaticBody2D"]
-position = Vector2( 0, 1.94545 )
-polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -3.06623, 175.09, 323.998, 175.09, 323.998, 0, -3.06623, 0, -3.06623, 176.063, 0, 201.354, -32.7065, 201.354 )
 
 [node name="Hud" type="Control" parent="."]
 margin_left = 246.321
@@ -80,5 +70,6 @@ position = Vector2( 97.0973, 130.345 )
 position = Vector2( 212.592, 112.836 )
 
 [node name="Enemies" type="Node2D" parent="."]
+[connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
 
 [editable path="Player"]

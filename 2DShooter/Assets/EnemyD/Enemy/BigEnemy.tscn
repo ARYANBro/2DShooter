@@ -44,25 +44,19 @@ resource_local_to_scene = true
 shader = SubResource( 2 )
 shader_param/Color = Color( 0.658824, 0.105882, 0.254902, 1 )
 
-[node name="BigEnemy" type="Node2D" groups=[
-"Enemy",
-]]
-
-[node name="Enemy" parent="." instance=ExtResource( 1 )]
+[node name="Enemy" instance=ExtResource( 1 )]
 scale = Vector2( 2, 2 )
 
-[node name="Enemy" parent="Enemy" index="0"]
+[node name="Enemy" parent="." index="0"]
 script = ExtResource( 2 )
 Hp = 120.0
 startTimeBetweenShots = 6.0
 color = Color( 0.658824, 0.105882, 0.254902, 1 )
 maxBullets = 10
 
-[node name="EnemySprite" parent="Enemy/Enemy" index="0"]
+[node name="EnemySprite" parent="Enemy" index="0"]
 material = SubResource( 3 )
 
-[node name="EnemyHealthbar" parent="Enemy/Enemy" index="2"]
+[node name="EnemyHealthbar" parent="Enemy" index="2"]
 max_value = 120.0
 value = 120.0
-
-[editable path="Enemy"]

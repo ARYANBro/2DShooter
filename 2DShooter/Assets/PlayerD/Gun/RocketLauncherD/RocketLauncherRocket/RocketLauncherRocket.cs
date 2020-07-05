@@ -8,8 +8,14 @@ public class RocketLauncherRocket : Node2D
 	[Export] public PackedScene hitParticlesScene;
 
 	private Enemy rocketCollidedEnemy;
+	public Node2D hitParticleRoot;
 
-	private void OnBulletBodyEntered(object body)
+    public override void _Ready()
+    {
+		hitParticleRoot = hitParticlesScene.Instance() as Node2D;
+	}
+
+    private void OnBulletBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Enemy")
 		{
@@ -27,12 +33,11 @@ public class RocketLauncherRocket : Node2D
 		damageAreaCollision.SetDeferred("disabled", false);
 		if (hitParticlesScene != null)
 		{
-			Node2D hitParticleRoot = hitParticlesScene.Instance() as Node2D;
-
 			hitParticleRoot.GetNode<Particles2D>("HitParticle").Emitting = true;
 			hitParticleRoot.GlobalPosition = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
-
 			GetTree().Root.AddChild(hitParticleRoot);
+
+			GetTree().CreateTimer(0.1f).Connect("timeout", this, "OnHitParticleTimerTimeout");
 		}
 
 		GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(180, 90, 80);
@@ -54,4 +59,6 @@ public class RocketLauncherRocket : Node2D
 	}
 
 	private void OnTimerTimeout() => QueueFree();
+
+	private void OnHitParticleTimerTimeout() => hitParticleRoot.QueueFree();
 }

@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <RemoteDebugEnabled>false</RemoteDebugEnabled>
-    <StartAction>Project</StartAction>
+    <StartAction>Program</StartAction>
     <StartProgram>C:\Dev\Godot\Projects\2DShooter\2DShooter\.mono\assemblies\Debug</StartProgram>
     <StartWorkingDirectory>C:\Dev\Godot\Projects\2DShooter\2DShooter\.mono\temp\bin\Debug\</StartWorkingDirectory>
   </PropertyGroup>

@@ -22,28 +22,14 @@ class BigEnemy : Enemy
             {
                 float rotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition) + (45 * i);
                 var bullet = bullets[i].GetNode<BulletComponent>("BulletComponent");
+
                 bullet = Utlities.SetNode2DParams(bullet, GlobalPosition, rotationDegrees) as BulletComponent;
+
                 GetTree().CurrentScene.AddChild(bullets[i]);
             }
 
             timeBetweenShots = startTimeBetweenShots;
         }
         else timeBetweenShots -= delta;
-    }
-
-    public void TakeDamage(float damage)
-    {
-        Hp -= damage;
-        if (Hp <= 0)
-        {
-            CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
-
-            cameraShake.StartShake();
-            EmitSignal("EnemyDiedSignal");
-
-            GetParent().GetParent().QueueFree();
-        }
-
-        EmitSignal("EnemyHurt");
     }
 }
