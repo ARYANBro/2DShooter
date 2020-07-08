@@ -9,10 +9,20 @@ public class RocketLauncherRocket : Node2D
 
 	private Enemy rocketCollidedEnemy;
 	public Node2D hitParticleRoot;
+	private bool enalbeSlowMo = false;
 
     public override void _Ready()
     {
 		hitParticleRoot = hitParticlesScene.Instance() as Node2D;
+	}
+
+	public override void _Process(float delta)
+	{
+		if (enalbeSlowMo)
+		{
+			Engine.TimeScale = 0.5f;
+		}
+		else Engine.TimeScale = 1.0f;
 	}
 
     private void OnBulletBodyEntered(object body)
@@ -28,6 +38,9 @@ public class RocketLauncherRocket : Node2D
 			rocketCollidedEnemy.TakeDamage(damage);
         }
 
+		enalbeSlowMo = true;
+		GetTree().CreateTimer(0.05f).Connect("timeout", this, "SetSlowMoToFalse");
+
 		CollisionShape2D damageAreaCollision = GetNode<CollisionShape2D>(DamageAreaCollisionPath);
 
 		damageAreaCollision.SetDeferred("disabled", false);
@@ -38,11 +51,16 @@ public class RocketLauncherRocket : Node2D
 			if (hitParticleRoot.GetParent() != GetTree().CurrentScene)
 				GetTree().CurrentScene.AddChild(hitParticleRoot);
 
-			GetTree().CreateTimer(0.1f).Connect("timeout", this, "OnHitParticleTimerTimeout");
+			GetTree().CreateTimer(0.5f).Connect("timeout", hitParticleRoot, "queue_free");
 		}
 
 		GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(180, 90, 80);
-		GetTree().CreateTimer(0.1f).Connect("timeout", this, "OnTimerTimeout");
+		GetTree().CreateTimer(0.1f).Connect("timeout", this, "queue_free");
+	}
+
+	private void SetSlowMoToFalse()
+	{
+		enalbeSlowMo = false;
 	}
 
 	private void OnDamageAreaBodyEntered(object body)
@@ -55,11 +73,7 @@ public class RocketLauncherRocket : Node2D
 		else if (body.GetType().Name == "BigEnemy" && body != rocketCollidedEnemy)
         {
 			BigEnemy enemy = body as BigEnemy;
-			enemy.TakeDamage(damage * 0.5f);
+			enemy.TakeDamage(damage * 0.8f);
         }
 	}
-
-	private void OnTimerTimeout() => QueueFree();
-
-	private void OnHitParticleTimerTimeout() => hitParticleRoot.QueueFree();
 }

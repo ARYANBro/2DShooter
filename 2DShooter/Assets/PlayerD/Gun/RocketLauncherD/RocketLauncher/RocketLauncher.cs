@@ -1,13 +1,9 @@
 using Godot;
 using System;
 
-public class RocketLauncher : Node2D, IPickable
+public class RocketLauncher : Gun, IPickable
 {
 	[Export(PropertyHint.File, "RocketLauncher.tscn")] public string path { get; set; }
-
-	public Inventory inventory { get; set; }
-	public bool isEquiped { get; set; }
-	public bool wantToEquipGun { get; set; }
 	[Export] public Texture outLineSprite;
 
 	private PackedScene RocketLauncherScene;
@@ -53,16 +49,7 @@ public class RocketLauncher : Node2D, IPickable
 			GetNode<Sprite>("GunComponent/GunSprite").Texture = orignalTexture;
 	}
 
-	public bool ParentCheck => GetParent().GetType().Name == "Inventory";
-
-	public void Equip()
-	{
-		inventory.AddItemToInventory(this);
-		isEquiped = true;
-		QueueFree();
-	}
-
-	public void UnEquip()
+	public override void UnEquip()
 	{
 		inventory.RemoveItemFromInventory(this);
 		RocketLauncher rocketLauncher = RocketLauncherScene.Instance() as RocketLauncher;

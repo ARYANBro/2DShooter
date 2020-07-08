@@ -1,8 +1,6 @@
+using Godot;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Security.Policy;
-using Godot;
 
 public class GameRules : Node2D
 {
@@ -17,11 +15,19 @@ public class GameRules : Node2D
     public List<Node> enemies;
     public Node2D enemiesNode;
 
+    private int waveCount = 0;
+    private int Points = 0;
+
     public override void _Ready()
     {
         enemies = new List<Node>();
         enemiesNode = GetNode<Node2D>("Enemies");
+        Player player = GetNode<Player>("Player");
+        if (player != null)
+            player.Connect("SPlayerDied", this, "OnPlayerDied");
+
         SpawnEnemies();
+
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -33,12 +39,12 @@ public class GameRules : Node2D
         }
     }
 
-    private void OnPlayerDied() => GetTree().Quit();
-
     private void OnEnemyDied()
     {
-        if (enemiesNode.GetChildCount() == 1)
-            EmitSignal("SPlayerWon");
+        enemies.RemoveAt(0);
+        if (enemies.Count == 0) EmitSignal("SPlayerWon");
+        
+        Points += 20;
     }
 
     private void OnPlayerWon()
@@ -47,8 +53,14 @@ public class GameRules : Node2D
         GetTree().CreateTimer(5f).Connect("timeout", this, "SpawnEnemies");
     }
 
+    private void OnPlayerDied()
+    {
+        // Player Diedl
+    }
+
     private void SpawnEnemies()
     {
+        waveCount++;
         enemies.Clear();
         Utlities.randNumGenerator.Randomize();
         for (int i = 0; i < Utlities.randNumGenerator.RandiRange(1, maxNumOfEnemies); i++)
@@ -66,15 +78,13 @@ public class GameRules : Node2D
     private void SpawnConsumables()
     {
         int randNum = Utlities.randNumGenerator.RandiRange(0, 1);
-        GD.Print(randNum);
-
         var healthpack = healthPackScene.Instance();
         var energyDrink = energyDrinkScene.Instance();
 
         Action spawnHealthpack = () =>
         {
-           if (healthpack.GetParent() != GetTree().CurrentScene)
-            GetTree().CurrentScene.CallDeferred("add_child", healthpack, true);
+            if (healthpack.GetParent() != GetTree().CurrentScene)
+                GetTree().CurrentScene.CallDeferred("add_child", healthpack, true);
         };
 
         Action spawnEnergydrink = () =>
@@ -83,13 +93,7 @@ public class GameRules : Node2D
                 GetTree().CurrentScene.CallDeferred("add_child", energyDrink, true);
         };
 
-        if (randNum == 0)
-        {
-            spawnEnergydrink();
-        }
-        else if (randNum == 1)
-        {
-            spawnHealthpack();
-        }
+        if (randNum == 0) spawnEnergydrink();
+        else if (randNum == 1) spawnHealthpack();
     }
 }

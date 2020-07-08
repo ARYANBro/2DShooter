@@ -43,4 +43,5 @@ public class GunComponent : Node2D
 		}
 		else timeBetweenShots -= delta;
 	}
+
 }

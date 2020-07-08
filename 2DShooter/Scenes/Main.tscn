@@ -71,5 +71,6 @@ position = Vector2( 212.592, 112.836 )
 
 [node name="Enemies" type="Node2D" parent="."]
 [connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
+[connection signal="SPlayerDied" from="Player" to="Player" method="OnPlayerDied"]
 
 [editable path="Player"]

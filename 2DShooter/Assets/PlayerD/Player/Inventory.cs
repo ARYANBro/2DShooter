@@ -1,4 +1,5 @@
 using Godot;
+using System;
 
 public class Inventory : Node2D
 {
@@ -16,16 +17,21 @@ public class Inventory : Node2D
         }
     }
 
+    public override void _Process(float delta)
+    {
+        if (GetChildCount() == 2)
+        {
+            var gun = GetChild(0) as Gun;
+            gun.UnEquip();
+        }
+    }
+
     public void RemoveItemFromInventory(IPickable pickable)
     {
         foreach (Node child in GetChildren())
         {
-            if (pickable.GetType().Name == child.GetType().Name &&
-                GetTree().CurrentScene.FindNode(pickable.GetType().Name, true, true) == null &&
-                !child.IsQueuedForDeletion())
-            {
+            if (pickable.GetType().Name == child.GetType().Name && !child.IsQueuedForDeletion())
                 child.CallDeferred("queue_free");
-            }
         }
     }
 
