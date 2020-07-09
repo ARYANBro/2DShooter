@@ -6,6 +6,7 @@ public class GameRules : Node2D
 {
     [Signal] public delegate void SPlayerWon();
 
+
     [Export] public int maxNumOfEnemies;
     [Export] public int maxNumOfBigEnemies;
     [Export] public PackedScene enemyScene;
