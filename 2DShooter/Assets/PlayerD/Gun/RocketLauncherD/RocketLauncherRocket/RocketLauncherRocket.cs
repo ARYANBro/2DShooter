@@ -19,9 +19,8 @@ public class RocketLauncherRocket : Node2D
 	public override void _Process(float delta)
 	{
 		if (enalbeSlowMo)
-		{
 			Engine.TimeScale = 0.5f;
-		}
+
 		else Engine.TimeScale = 1.0f;
 	}
 
@@ -56,6 +55,12 @@ public class RocketLauncherRocket : Node2D
 
 		GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(180, 90, 80);
 		GetTree().CreateTimer(0.1f).Connect("timeout", this, "queue_free");
+	}
+
+	private void SlowMo(float time, float scale)
+	{
+		enalbeSlowMo = true;
+		GetTree().CreateTimer(time).Connect("timeout", this, "SetSlowMoToFalse");
 	}
 
 	private void SetSlowMoToFalse()

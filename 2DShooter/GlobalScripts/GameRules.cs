@@ -6,7 +6,6 @@ public class GameRules : Node2D
 {
     [Signal] public delegate void SPlayerWon();
 
-
     [Export] public int maxNumOfEnemies;
     [Export] public int maxNumOfBigEnemies;
     [Export] public PackedScene enemyScene;
@@ -17,7 +16,7 @@ public class GameRules : Node2D
     public Node2D enemiesNode;
 
     private int waveCount = 0;
-    private int Points = 0;
+    private int points = 0;
 
     public override void _Ready()
     {
@@ -28,7 +27,11 @@ public class GameRules : Node2D
             player.Connect("SPlayerDied", this, "OnPlayerDied");
 
         SpawnEnemies();
+    }
 
+    public override void _Process(float delta)
+    {
+        GD.Print(points);
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -45,7 +48,7 @@ public class GameRules : Node2D
         enemies.RemoveAt(0);
         if (enemies.Count == 0) EmitSignal("SPlayerWon");
         
-        Points += 20;
+        points += 20;
     }
 
     private void OnPlayerWon()
@@ -56,7 +59,7 @@ public class GameRules : Node2D
 
     private void OnPlayerDied()
     {
-        // Player Diedl
+        // Player Died
     }
 
     private void SpawnEnemies()
