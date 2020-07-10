@@ -13,11 +13,13 @@ public class GameRules : Node2D
     [Export] public PackedScene bigEnemyScene;
     [Export] public PackedScene healthPackScene;
     [Export] public PackedScene energyDrinkScene;
+    [Export] public PackedScene enemyPointsSpawnScene;
     public List<Node> enemies;
     public Node2D enemiesNode;
 
     private int waveCount = 0;
     private int points = 0;
+    // private int highScore;
 
     public override void _Ready()
     {
@@ -39,13 +41,13 @@ public class GameRules : Node2D
         }
     }
 
-    private void OnEnemyDied()
+    private void OnEnemyDied(int _points)
     {
         enemies.RemoveAt(0);
         if (enemies.Count == 0) EmitSignal("SPlayerWon");
 
-        EmitSignal("SIncreasePoints", 20);
-        //points += 20;
+        EmitSignal("SIncreasePoints", _points);
+        //points += points;
     }
 
     private void OnPlayerWon()
@@ -96,5 +98,14 @@ public class GameRules : Node2D
 
         if (randNum == 0) spawnEnergydrink();
         else if (randNum == 1) spawnHealthpack();
+    }
+
+    private void SpawnPoints(Vector2 position)
+    {
+        Node2D enemyPointsSpawn = enemyPointsSpawnScene.Instance() as Node2D;
+        enemyPointsSpawn.GlobalPosition = position;
+        var animPlayer = enemyPointsSpawn.GetNode<AnimationPlayer>("PointsAnimPlayer");
+        animPlayer.Play("PointsAnim");
+        GetTree().CurrentScene.AddChild(enemyPointsSpawn, true);  
     }
 }

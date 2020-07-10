@@ -32,4 +32,21 @@ class BigEnemy : Enemy
         }
         else timeBetweenShots -= delta;
     }
+
+    public override void TakeDamage(float damage)
+    {
+        Hp -= damage;
+        if (Hp <= 0)
+        {
+            CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
+
+            cameraShake.StartShake();
+            EmitSignal("SEnemyDied", 25);
+            EmitSignal("SSpawnPoints", GlobalPosition);
+
+            GetParent().QueueFree();
+        }
+
+        EmitSignal("EnemyHurt");
+    }
 }
