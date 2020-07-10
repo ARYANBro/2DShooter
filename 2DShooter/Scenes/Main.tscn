@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Assets/PlayerD/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/PlayerD/Collectables/EnergyDrink/EnergyDrink.tscn" type="PackedScene" id=2]
@@ -11,7 +11,15 @@
 [ext_resource path="res://Assets/PlayerD/Gun/RocketLauncherD/RocketLauncher/RocketLauncher.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Assets/PlayerD/Gun/PistolD/Pistol/Pistol.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/EnemyD/Enemy/Enemy.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Assets/Fonts/Roboto/Roboto-Black.ttf" type="DynamicFontData" id=12]
 [ext_resource path="res://Assets/EnemyD/Enemy/BigEnemy.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Assets/UI/Score.cs" type="Script" id=14]
+
+[sub_resource type="DynamicFont" id=1]
+size = 15
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 12 )
 
 [node name="Main" type="Node2D"]
 scale = Vector2( 0.9784, 1.02804 )
@@ -22,6 +30,32 @@ enemyScene = ExtResource( 11 )
 bigEnemyScene = ExtResource( 13 )
 healthPackScene = ExtResource( 5 )
 energyDrinkScene = ExtResource( 2 )
+
+[node name="Hud" type="Control" parent="."]
+margin_left = 246.321
+margin_top = 12.6454
+margin_right = 286.321
+margin_bottom = 52.6454
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Healtbar" parent="Hud" instance=ExtResource( 7 )]
+
+[node name="StaminaBar" parent="Hud" instance=ExtResource( 6 )]
+position = Vector2( 1.02208, 14.5909 )
+
+[node name="Score" type="Label" parent="Hud"]
+margin_left = -245.299
+margin_top = -9.72723
+margin_right = -222.299
+margin_bottom = 38.2728
+custom_fonts/font = SubResource( 1 )
+text = "0"
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Enviornment" type="Node2D" parent="."]
 
@@ -49,20 +83,6 @@ shakeTimerWaitTime = 0.1
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
 
-[node name="Hud" type="Control" parent="."]
-margin_left = 246.321
-margin_top = 12.6454
-margin_right = 286.321
-margin_bottom = 52.6454
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Healtbar" parent="Hud" instance=ExtResource( 7 )]
-
-[node name="StaminaBar" parent="Hud" instance=ExtResource( 6 )]
-position = Vector2( 1.02208, 14.5909 )
-
 [node name="RocketLauncher" parent="." instance=ExtResource( 9 )]
 position = Vector2( 97.0973, 130.345 )
 
@@ -70,6 +90,7 @@ position = Vector2( 97.0973, 130.345 )
 position = Vector2( 212.592, 112.836 )
 
 [node name="Enemies" type="Node2D" parent="."]
+[connection signal="SIncreasePoints" from="." to="Hud/Score" method="IncreasePoints"]
 [connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
 [connection signal="SPlayerDied" from="Player" to="Player" method="OnPlayerDied"]
 

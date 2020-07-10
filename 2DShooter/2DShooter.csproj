@@ -69,6 +69,7 @@
     <Compile Include="Assets\PlayerD\Player\Inventory.cs" />
     <Compile Include="Assets\PlayerD\Player\Player.cs" />
     <Compile Include="Assets\UI\Healthbar\Healthbar.cs" />
+    <Compile Include="Assets\UI\Score.cs" />
     <Compile Include="Assets\UI\StaminaBar\StaminaBar.cs" />
     <Compile Include="GlobalScripts\CameraShake.cs" />
     <Compile Include="GlobalScripts\GameRules.cs" />

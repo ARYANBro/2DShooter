@@ -50,7 +50,7 @@ public class RocketLauncherRocket : Node2D
 			if (hitParticleRoot.GetParent() != GetTree().CurrentScene)
 				GetTree().CurrentScene.AddChild(hitParticleRoot);
 
-			GetTree().CreateTimer(0.5f).Connect("timeout", hitParticleRoot, "queue_free");
+			SlowMo(1f, 0.1f);
 		}
 
 		GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(180, 90, 80);
@@ -60,7 +60,7 @@ public class RocketLauncherRocket : Node2D
 	private void SlowMo(float time, float scale)
 	{
 		enalbeSlowMo = true;
-		GetTree().CreateTimer(time).Connect("timeout", this, "SetSlowMoToFalse");
+		GetTree().CreateTimer(time).CallDeferred("connect", "timeout", this, "SetSlowMoToFalse");
 	}
 
 	private void SetSlowMoToFalse()

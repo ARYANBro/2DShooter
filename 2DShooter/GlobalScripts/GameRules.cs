@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GameRules : Node2D
 {
     [Signal] public delegate void SPlayerWon();
+    [Signal] public delegate void SIncreasePoints(int points);
 
     [Export] public int maxNumOfEnemies;
     [Export] public int maxNumOfBigEnemies;
@@ -29,11 +30,6 @@ public class GameRules : Node2D
         SpawnEnemies();
     }
 
-    public override void _Process(float delta)
-    {
-        GD.Print(points);
-    }
-
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event is InputEventKey eventKey)
@@ -47,8 +43,9 @@ public class GameRules : Node2D
     {
         enemies.RemoveAt(0);
         if (enemies.Count == 0) EmitSignal("SPlayerWon");
-        
-        points += 20;
+
+        EmitSignal("SIncreasePoints", 20);
+        //points += 20;
     }
 
     private void OnPlayerWon()

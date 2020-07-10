@@ -51,6 +51,7 @@ extents = Vector2( 4, 4 )
 
 [node name="EnemyBullet" type="Node2D"]
 script = ExtResource( 2 )
+damage = 8
 
 [node name="BulletComponent" parent="." instance=ExtResource( 1 )]
 collision_layer = 0
