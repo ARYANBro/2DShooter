@@ -54,7 +54,13 @@ public class RocketLauncherRocket : Node2D
 		}
 
 		GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(180, 90, 80);
-		GetTree().CreateTimer(0.1f).Connect("timeout", this, "queue_free");
+		GetTree().CreateTimer(0.1f).Connect("timeout", this, "DeleteRocket");
+	}
+
+	private void DeleteRocket()
+	{
+		hitParticleRoot.QueueFree();
+		QueueFree();
 	}
 
 	private void SlowMo(float time, float scale)

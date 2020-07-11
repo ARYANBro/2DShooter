@@ -13,7 +13,7 @@ public class GameRules : Node2D
     [Export] public PackedScene bigEnemyScene;
     [Export] public PackedScene healthPackScene;
     [Export] public PackedScene energyDrinkScene;
-    [Export] public PackedScene enemyPointsSpawnScene;
+    [Export] public PackedScene pointsScene;
     public List<Node> enemies;
     public Node2D enemiesNode;
 
@@ -47,7 +47,6 @@ public class GameRules : Node2D
         if (enemies.Count == 0) EmitSignal("SPlayerWon");
 
         EmitSignal("SIncreasePoints", _points);
-        //points += points;
     }
 
     private void OnPlayerWon()
@@ -58,7 +57,7 @@ public class GameRules : Node2D
 
     private void OnPlayerDied()
     {
-        // Player Died
+        GetTree().Paused = true;
     }
 
     private void SpawnEnemies()
@@ -100,12 +99,18 @@ public class GameRules : Node2D
         else if (randNum == 1) spawnHealthpack();
     }
 
-    private void SpawnPoints(Vector2 position)
+    private void SpawnPoints(Vector2 position, int _points, Vector2 size)
     {
-        Node2D enemyPointsSpawn = enemyPointsSpawnScene.Instance() as Node2D;
-        enemyPointsSpawn.GlobalPosition = position;
-        var animPlayer = enemyPointsSpawn.GetNode<AnimationPlayer>("PointsAnimPlayer");
-        animPlayer.Play("PointsAnim");
-        GetTree().CurrentScene.AddChild(enemyPointsSpawn, true);  
+        Node2D points = pointsScene.Instance() as Node2D;
+        Label pointsLabel = points.GetNode<Label>("PointsAnimPlayer/Points");
+        Node2D pointsNode2D = points.GetNode<Node2D>("PointsAnimPlayer");
+
+        pointsLabel.RectPosition = position;
+        pointsLabel.RectScale = size;
+        pointsLabel.Text = "+" + Convert.ToString(_points);
+
+        GetTree().CurrentScene.AddChild(points, true);
+
+        GetTree().CreateTimer(1f).Connect("timeout", points, "queue_free");
     }
 }

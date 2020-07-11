@@ -42,7 +42,7 @@ class BigEnemy : Enemy
 
             cameraShake.StartShake();
             EmitSignal("SEnemyDied", 25);
-            EmitSignal("SSpawnPoints", GlobalPosition);
+            EmitSignal("SSpawnPoints", GlobalPosition, 25, new Vector2(1.5f, 1.5f));
 
             GetParent().QueueFree();
         }
