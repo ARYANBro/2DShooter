@@ -40,7 +40,7 @@ public class RocketLauncherRocket : Node2D
 		enalbeSlowMo = true;
 		GetTree().CreateTimer(0.05f).Connect("timeout", this, "SetSlowMoToFalse");
 
-		CollisionShape2D damageAreaCollision = GetNode<CollisionShape2D>(DamageAreaCollisionPath);
+		var damageAreaCollision = GetNode<CollisionShape2D>(DamageAreaCollisionPath);
 
 		damageAreaCollision.SetDeferred("disabled", false);
 		if (hitParticlesScene != null)
@@ -59,7 +59,7 @@ public class RocketLauncherRocket : Node2D
 
 	private void DeleteRocket()
 	{
-		hitParticleRoot.QueueFree();
+		GetTree().CreateTimer(1f).Connect("timeout", hitParticleRoot, "queue_free");
 		QueueFree();
 	}
 
@@ -67,6 +67,9 @@ public class RocketLauncherRocket : Node2D
 	{
 		enalbeSlowMo = true;
 		GetTree().CreateTimer(time).CallDeferred("connect", "timeout", this, "SetSlowMoToFalse");
+		
+		var gameRules = GetTree().CurrentScene as GameRules;
+		gameRules.engineScaleCheck = true;
 	}
 
 	private void SetSlowMoToFalse()
@@ -78,12 +81,12 @@ public class RocketLauncherRocket : Node2D
 	{
 		if (body.GetType().Name == "Enemy" && body != rocketCollidedEnemy)
 		{
-			Enemy enemy = body as Enemy;
+			var enemy = body as Enemy;
 			enemy.TakeDamage(damage * 0.5f);
 		}
 		else if (body.GetType().Name == "BigEnemy" && body != rocketCollidedEnemy)
         {
-			BigEnemy enemy = body as BigEnemy;
+			var enemy = body as BigEnemy;
 			enemy.TakeDamage(damage * 0.8f);
         }
 	}

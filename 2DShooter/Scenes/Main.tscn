@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/PlayerD/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/PlayerD/Collectables/EnergyDrink/EnergyDrink.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://Assets/EnemyD/Enemy/BigEnemy.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Assets/UI/Score.cs" type="Script" id=14]
 [ext_resource path="res://Assets/EnemyD/PointsAnimPlayer.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Assets/PlayerD/Gun/Shotgun/Shotgun.tscn" type="PackedScene" id=16]
 
 [sub_resource type="DynamicFont" id=1]
 size = 15
@@ -126,6 +127,9 @@ position = Vector2( 97.0973, 130.345 )
 position = Vector2( 212.592, 112.836 )
 
 [node name="Enemies" type="Node2D" parent="."]
+
+[node name="Shotgun" parent="." instance=ExtResource( 16 )]
+position = Vector2( 52.1259, 96.2998 )
 [connection signal="SIncreasePoints" from="." to="Hud/Score Root/Score" method="IncreasePoints"]
 [connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
 [connection signal="SPlayerDied" from="Player" to="Player" method="OnPlayerDied"]

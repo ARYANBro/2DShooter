@@ -8,20 +8,17 @@ class BigEnemy : Enemy
 
     protected override void Shoot(float delta)
     {
-        List<EnemyBullet> bullets = new List<EnemyBullet>();
+        List<Node2D> bullets = new List<Node2D>();
 
         if (timeBetweenShots <= 0)
         {
             for (int i = 0; i < maxBullets; i++)
             {
-                var bullet = InstanceBullet(enemyBulletScene);
-                bullets.Add(bullet);
-            }
+                var bulletRoot = InstanceBullet(enemyBulletScene);
+                bullets.Add(bulletRoot);
 
-            for (int i = 0; i < bullets.Count; i++)
-            {
                 float rotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition) + (45 * i);
-                var bullet = bullets[i].GetNode<BulletComponent>("BulletComponent");
+                var bullet = bullets[i].GetNode<Node2D>("BulletComponent");
 
                 bullet = Utlities.SetNode2DParams(bullet, GlobalPosition, rotationDegrees) as BulletComponent;
 
@@ -29,6 +26,7 @@ class BigEnemy : Enemy
             }
 
             timeBetweenShots = startTimeBetweenShots;
+            bullets.Clear();
         }
         else timeBetweenShots -= delta;
     }
@@ -38,9 +36,9 @@ class BigEnemy : Enemy
         Hp -= damage;
         if (Hp <= 0)
         {
-            CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
-
+            var cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
             cameraShake.StartShake();
+
             EmitSignal("SEnemyDied", 25);
             EmitSignal("SSpawnPoints", GlobalPosition, 25, new Vector2(1.5f, 1.5f));
 

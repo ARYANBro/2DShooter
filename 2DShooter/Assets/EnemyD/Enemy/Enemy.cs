@@ -4,7 +4,7 @@ using Godot;
 public class Enemy : KinematicBody2D
 {
     [Signal] public delegate void SEnemyDied(float points);
-	[Signal] public delegate void SSpawnPoints(Vector2 position, int points, Vector2 size);
+    [Signal] public delegate void SSpawnPoints(Vector2 position, int points, Vector2 size);
     [Signal] public delegate void EnemyHurt();
 
     [Export] public int speed;
@@ -46,7 +46,7 @@ public class Enemy : KinematicBody2D
         timeBetweenShots = startTimeBetweenShots;
 
         Connect("SEnemyDied", GetTree().CurrentScene, "OnEnemyDied");
-		Connect("SSpawnPoints", GetTree().CurrentScene, "SpawnPoints");
+        Connect("SSpawnPoints", GetTree().CurrentScene, "SpawnPoints");
     }
 
     public override void _Process(float delta)
@@ -65,11 +65,11 @@ public class Enemy : KinematicBody2D
         Hp -= damage;
         if (Hp <= 0)
         {
-            CameraShake cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
+            var cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
 
             cameraShake.StartShake();
             EmitSignal("SEnemyDied", 15);
-			EmitSignal("SSpawnPoints", GlobalPosition, 15, new Vector2(1, 1));
+            EmitSignal("SSpawnPoints", GlobalPosition, 15, new Vector2(1f, 1f));
             GetParent().QueueFree();
         }
 
@@ -102,8 +102,7 @@ public class Enemy : KinematicBody2D
 
             timeBetweenShots = startTimeBetweenShots;
         }
-        else
-            timeBetweenShots -= delta;
+        else timeBetweenShots -= delta;
     }
 
     private void Move(float delta)
@@ -113,7 +112,7 @@ public class Enemy : KinematicBody2D
 
     private void GetMovementInput(float delta)
     {
-        Vector2 inputVector = Vector2.Zero;
+        var inputVector = Vector2.Zero;
         inputVector = player.GlobalPosition - GlobalPosition;
         inputVector = inputVector.Normalized();
 
@@ -121,13 +120,12 @@ public class Enemy : KinematicBody2D
             velocity = velocity.MoveToward(inputVector * speed, accel * delta);
         else if (GlobalPosition.DistanceTo(player.GlobalPosition) < retreatDistance)
             velocity = velocity.MoveToward(-inputVector * speed, accel * delta);
-        else
-            velocity = velocity.MoveToward(Vector2.Zero, accel * delta);
+        else velocity = velocity.MoveToward(Vector2.Zero, accel * delta);
     }
 
-    protected EnemyBullet InstanceBullet(PackedScene scene)
+    public Node2D InstanceBullet(PackedScene scene)
     {
-        var bulletRoot = scene.Instance() as EnemyBullet;
+        var bulletRoot = scene.Instance() as Node2D;
         return bulletRoot;
     }
 }

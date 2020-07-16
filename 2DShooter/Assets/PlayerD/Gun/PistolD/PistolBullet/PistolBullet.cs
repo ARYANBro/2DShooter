@@ -17,7 +17,7 @@ public class PistolBullet : Node2D
 	{
 		if (body.GetType().Name == "Enemy")
 		{
-			Enemy enemy = (Enemy)body;
+			Enemy enemy = body as Enemy;
 			enemy.TakeDamage(damage);
 		}
 		else if (body.GetType().Name == "BigEnemy")

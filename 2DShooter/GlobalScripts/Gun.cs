@@ -4,10 +4,10 @@ using System;
 public class Gun : Node2D
 {
     public Inventory inventory { get; set; }
-	public bool isEquiped { get; set; }
-	public bool wantToEquipGun { get; set; }
-	string path { get; set; }
-	public  PackedScene gunScene;
+    public bool isEquiped { get; set; }
+    public bool wantToEquipGun { get; set; }
+    string path { get; set; }
+    public PackedScene gunScene;
 
     public override void _Ready()
     {
@@ -17,12 +17,12 @@ public class Gun : Node2D
 
     public void Equip()
     {
-        inventory.AddItemToInventory( (IPickable)this );
-		isEquiped = true;
-		QueueFree();
+        inventory.AddItemToInventory((IPickable)this);
+        isEquiped = true;
+        QueueFree();
     }
 
-    public virtual void UnEquip() 
+    public virtual void UnEquip()
     {
         // Unequip
         // Called from child

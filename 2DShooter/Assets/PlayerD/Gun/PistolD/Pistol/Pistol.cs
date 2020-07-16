@@ -18,13 +18,15 @@ public class Pistol : Gun, IPickable
 
     public void OnBodyEntered(object body)
     {
-        if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 && body.GetType().Name != "RocketLauncher")
+        if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 && 
+        body.GetType().Name != "RocketLauncher" && body.GetType().Name != "Shotgun")
             wantToEquipGun = true;
     }
 
     public void OnBodyExited(object body)
     {
-        if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 && body.GetType().Name != "RocketLauncher")
+        if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 &&
+         body.GetType().Name != "RocketLauncher" && body.GetType().Name != "Shotgun")
             wantToEquipGun = false;
     }
 

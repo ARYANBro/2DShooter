@@ -16,16 +16,18 @@ public class GameRules : Node2D
     [Export] public PackedScene pointsScene;
     public List<Node> enemies;
     public Node2D enemiesNode;
-
     private int waveCount = 0;
     private int points = 0;
-    // private int highScore;
+
+    private bool spawnEnemies = false;
+    private bool enemyCondition = false;
+    public bool engineScaleCheck = false;
 
     public override void _Ready()
     {
         enemies = new List<Node>();
         enemiesNode = GetNode<Node2D>("Enemies");
-        Player player = GetNode<Player>("Player");
+        var player = GetNode<Player>("Player");
         if (player != null)
             player.Connect("SPlayerDied", this, "OnPlayerDied");
 
@@ -41,19 +43,51 @@ public class GameRules : Node2D
         }
     }
 
+    public override void _Process(float delta)
+    {
+        if (spawnEnemies == true)
+            SpawnEnemies();
+
+        if (enemyCondition == true)
+        {
+            if (enemiesNode.GetChildCount() == 0)
+            {
+                enemies.Clear();
+                EmitSignal("SPlayerWon");
+                enemyCondition = false;
+            }
+        }
+
+        if (engineScaleCheck == true)
+        {
+            if (Engine.TimeScale < 1.0f)
+            {
+                GetTree().CreateTimer(2f).Connect("timeout", this, "OnEnginScaleFixTimerFixTimeout");
+            }
+        }
+
+    }
+
+    void OnEnginScaleFixTimerFixTimeout()
+    {
+        Engine.TimeScale = 1.0f;
+
+        engineScaleCheck = false;
+    }
+
     private void OnEnemyDied(int _points)
     {
-        enemies.RemoveAt(0);
-        if (enemies.Count == 0) EmitSignal("SPlayerWon");
-
+        enemyCondition = true;
         EmitSignal("SIncreasePoints", _points);
     }
 
     private void OnPlayerWon()
     {
         SpawnConsumables();
-        GetTree().CreateTimer(5f).Connect("timeout", this, "SpawnEnemies");
+        GetTree().CreateTimer(5f).Connect("timeout", this, "OnTimerTimeoutEnemiesSpawn");
     }
+
+    private void OnTimerTimeoutEnemiesSpawn() => spawnEnemies = true;
 
     private void OnPlayerDied()
     {
@@ -67,7 +101,7 @@ public class GameRules : Node2D
         Utlities.randNumGenerator.Randomize();
         for (int i = 0; i < Utlities.randNumGenerator.RandiRange(1, maxNumOfEnemies); i++)
         {
-            Node enemy = enemyScene.Instance();
+            var enemy = enemyScene.Instance();
             if (i >= maxNumOfEnemies / maxNumOfBigEnemies)
                 enemy = bigEnemyScene.Instance();
             enemies.Add(enemy);
@@ -75,6 +109,8 @@ public class GameRules : Node2D
 
         for (int i = 0; i < enemies.Count; i++)
             enemiesNode.AddChild(enemies[i], true);
+
+        spawnEnemies = false;
     }
 
     private void SpawnConsumables()
@@ -101,16 +137,15 @@ public class GameRules : Node2D
 
     private void SpawnPoints(Vector2 position, int _points, Vector2 size)
     {
-        Node2D points = pointsScene.Instance() as Node2D;
-        Label pointsLabel = points.GetNode<Label>("PointsAnimPlayer/Points");
-        Node2D pointsNode2D = points.GetNode<Node2D>("PointsAnimPlayer");
+        var points = pointsScene.Instance() as Node2D;
+        var pointsLabel = points.GetNode<Label>("PointsAnimPlayer/Points");
+        var pointsNode2D = points.GetNode<Node2D>("PointsAnimPlayer");
 
         pointsLabel.RectPosition = position;
         pointsLabel.RectScale = size;
         pointsLabel.Text = "+" + Convert.ToString(_points);
 
         GetTree().CurrentScene.AddChild(points, true);
-
         GetTree().CreateTimer(1f).Connect("timeout", points, "queue_free");
     }
 }
