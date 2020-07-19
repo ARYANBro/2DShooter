@@ -18,9 +18,10 @@ public class GameRules : Node2D
     public Node2D enemiesNode;
     private int waveCount = 0;
     private int points = 0;
-
     private bool spawnEnemies = false;
     private bool enemyCondition = false;
+    private float highScore = 0;
+
     public bool engineScaleCheck = false;
 
     public override void _Ready()
@@ -34,6 +35,8 @@ public class GameRules : Node2D
         SpawnEnemies();
     }
 
+    /* Will remove later
+      just for testing */
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event is InputEventKey eventKey)
@@ -45,6 +48,8 @@ public class GameRules : Node2D
 
     public override void _Process(float delta)
     {
+        /* Spawn enemies if the spawn condition is true
+           i didn't have a better name for this */
         if (spawnEnemies == true)
             SpawnEnemies();
 
@@ -58,14 +63,12 @@ public class GameRules : Node2D
             }
         }
 
+        // Check if Engine scale is ok
         if (engineScaleCheck == true)
         {
             if (Engine.TimeScale < 1.0f)
-            {
                 GetTree().CreateTimer(2f).Connect("timeout", this, "OnEnginScaleFixTimerFixTimeout");
-            }
         }
-
     }
 
     void OnEnginScaleFixTimerFixTimeout()
@@ -77,12 +80,19 @@ public class GameRules : Node2D
 
     private void OnEnemyDied(int _points)
     {
+        // Spawn more enemies and Increase points
         enemyCondition = true;
         EmitSignal("SIncreasePoints", _points);
+        points += _points;
+        if (highScore < points)
+            highScore += _points;
+
+        GD.Print("HighScore: ", highScore);        
     }
 
     private void OnPlayerWon()
     {
+        // Spawn Consumables and Enemies
         SpawnConsumables();
         GetTree().CreateTimer(5f).Connect("timeout", this, "OnTimerTimeoutEnemiesSpawn");
     }
@@ -119,20 +129,16 @@ public class GameRules : Node2D
         var healthpack = healthPackScene.Instance();
         var energyDrink = energyDrinkScene.Instance();
 
-        Action spawnHealthpack = () =>
-        {
-            if (healthpack.GetParent() != GetTree().CurrentScene)
-                GetTree().CurrentScene.CallDeferred("add_child", healthpack, true);
-        };
-
-        Action spawnEnergydrink = () =>
+        if (randNum == 0)
         {
             if (energyDrink.GetParent() != GetTree().CurrentScene)
                 GetTree().CurrentScene.CallDeferred("add_child", energyDrink, true);
-        };
-
-        if (randNum == 0) spawnEnergydrink();
-        else if (randNum == 1) spawnHealthpack();
+        }
+        else if (randNum == 1)
+        {
+            if (healthpack.GetParent() != GetTree().CurrentScene)
+                GetTree().CurrentScene.CallDeferred("add_child", healthpack, true);
+        }
     }
 
     private void SpawnPoints(Vector2 position, int _points, Vector2 size)
