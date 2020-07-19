@@ -20,7 +20,7 @@ public class GameRules : Node2D
     private int points = 0;
     private bool spawnEnemies = false;
     private bool enemyCondition = false;
-    private float highScore = 0;
+    static private float highScore = 0;
 
     public bool engineScaleCheck = false;
 
@@ -84,10 +84,11 @@ public class GameRules : Node2D
         enemyCondition = true;
         EmitSignal("SIncreasePoints", _points);
         points += _points;
+
         if (highScore < points)
             highScore += _points;
 
-        GD.Print("HighScore: ", highScore);        
+        GD.Print("HighScore: ", highScore);
     }
 
     private void OnPlayerWon()
