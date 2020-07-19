@@ -61,6 +61,7 @@ bigEnemyScene = ExtResource( 13 )
 healthPackScene = ExtResource( 5 )
 energyDrinkScene = ExtResource( 2 )
 pointsScene = ExtResource( 15 )
+shotGunScene = ExtResource( 16 )
 
 [node name="Hud" type="Control" parent="."]
 margin_left = 246.321

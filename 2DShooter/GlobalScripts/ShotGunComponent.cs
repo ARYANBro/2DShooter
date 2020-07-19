@@ -29,7 +29,7 @@ public class ShotGunComponent : GunComponent
 
                 for (int i = 0; i < bullets.Count; i++)
                 {
-                    float rotationDegrees = Utlities.LookAtSomething(GetGlobalMousePosition(), GlobalPosition) + (10 * i);
+                    float rotationDegrees = Utlities.LookAtSomething(GetGlobalMousePosition(), GlobalPosition) + (20 * i);
                     var bullet = bullets[i].GetNode<BulletComponent>("BulletComponent");
 
                     bullet = Utlities.SetNode2DParams(bullet, firepoint.GlobalPosition, rotationDegrees) as BulletComponent;

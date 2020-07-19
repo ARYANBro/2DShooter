@@ -3,11 +3,10 @@ using System;
 
 public class Shotgun : Gun, IPickable
 {
-	
 	[Export(PropertyHint.File, "Shotgun.tscn")] public string path { get; set; }
 	[Export] public Texture outLineSprite;
+	public static bool isUnlocked = true;
 	
-
 	private PackedScene ShotgunScene;
 	private Texture orignalTexture;
 

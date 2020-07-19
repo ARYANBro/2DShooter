@@ -14,6 +14,7 @@ public class GameRules : Node2D
     [Export] public PackedScene healthPackScene;
     [Export] public PackedScene energyDrinkScene;
     [Export] public PackedScene pointsScene;
+    [Export] public PackedScene shotGunScene;
     public List<Node> enemies;
     public Node2D enemiesNode;
     private int waveCount = 0;
@@ -21,7 +22,6 @@ public class GameRules : Node2D
     private bool spawnEnemies = false;
     private bool enemyCondition = false;
     static private float highScore = 0;
-
     public bool engineScaleCheck = false;
 
     public override void _Ready()
@@ -29,14 +29,23 @@ public class GameRules : Node2D
         enemies = new List<Node>();
         enemiesNode = GetNode<Node2D>("Enemies");
         var player = GetNode<Player>("Player");
+        var shotgun = shotGunScene.Instance() as Shotgun;
+
+        /* Place shotgun in the level
+            if it is unlocked  */
+        if (Shotgun.isUnlocked)
+        {
+            shotgun = (Shotgun)Utlities.SetNode2DParams(shotgun, player.Position, player.RotationDegrees);
+            GetTree().CurrentScene.AddChild(shotgun);
+        }
+
         if (player != null)
             player.Connect("SPlayerDied", this, "OnPlayerDied");
 
         SpawnEnemies();
     }
 
-    /* Will remove later
-      just for testing */
+    // Will remove later just for testing
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event is InputEventKey eventKey)
@@ -80,15 +89,14 @@ public class GameRules : Node2D
 
     private void OnEnemyDied(int _points)
     {
-        // Spawn more enemies and Increase points
+        /* Spawn more enemies
+           and Increase points */
         enemyCondition = true;
         EmitSignal("SIncreasePoints", _points);
         points += _points;
 
         if (highScore < points)
-            highScore += _points;
-
-        GD.Print("HighScore: ", highScore);
+            highScore = points;
     }
 
     private void OnPlayerWon()
@@ -107,6 +115,7 @@ public class GameRules : Node2D
 
     private void SpawnEnemies()
     {
+        // Randomly spawn enemeis
         waveCount++;
         enemies.Clear();
         Utlities.randNumGenerator.Randomize();
@@ -130,6 +139,7 @@ public class GameRules : Node2D
         var healthpack = healthPackScene.Instance();
         var energyDrink = energyDrinkScene.Instance();
 
+        // Randomly spawn
         if (randNum == 0)
         {
             if (energyDrink.GetParent() != GetTree().CurrentScene)
@@ -144,6 +154,7 @@ public class GameRules : Node2D
 
     private void SpawnPoints(Vector2 position, int _points, Vector2 size)
     {
+        // On top of enemies
         var points = pointsScene.Instance() as Node2D;
         var pointsLabel = points.GetNode<Label>("PointsAnimPlayer/Points");
         var pointsNode2D = points.GetNode<Node2D>("PointsAnimPlayer");
