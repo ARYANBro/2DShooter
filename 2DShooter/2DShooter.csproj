@@ -76,8 +76,8 @@
     <Compile Include="GlobalScripts\CameraShake.cs" />
     <Compile Include="GlobalScripts\GameRules.cs" />
     <Compile Include="GlobalScripts\IPickable.cs" />
-    <Compile Include="GlobalScripts\Shop.cs" />
     <Compile Include="GlobalScripts\ShotGunComponent.cs" />
+    <Compile Include="GlobalScripts\Shop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\BulletComponentD\BulletComponent.cs" />
     <Compile Include="Components\GunComponentD\GunComponent.cs" />

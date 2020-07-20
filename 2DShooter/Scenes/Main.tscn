@@ -63,6 +63,29 @@ energyDrinkScene = ExtResource( 2 )
 pointsScene = ExtResource( 15 )
 shotGunScene = ExtResource( 16 )
 
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="MainCam" type="Camera2D" parent="."]
+position = Vector2( 160, 90 )
+current = true
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_lock_": true
+}
+randomness = 50.0
+speed = 40.0
+decay = 40.0
+shakeTimerWaitTime = 0.1
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 155.966, 98.0898 )
+
+[node name="RocketLauncher" parent="." instance=ExtResource( 9 )]
+position = Vector2( 97.0973, 130.345 )
+
+[node name="Pistol" parent="." instance=ExtResource( 10 )]
+position = Vector2( 212.592, 112.836 )
+
 [node name="Hud" type="Control" parent="."]
 margin_left = 246.321
 margin_top = 12.6454
@@ -105,32 +128,6 @@ environment = ExtResource( 8 )
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Enviornment/Walls"]
 position = Vector2( 0, 1.94545 )
 polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -3.06623, 175.09, 323.998, 175.09, 323.998, 0, -3.06623, 0, -3.06623, 176.063, 0, 201.354, -32.7065, 201.354 )
-
-[node name="MainCam" type="Camera2D" parent="."]
-position = Vector2( 160, 90 )
-current = true
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_lock_": true
-}
-randomness = 50.0
-speed = 40.0
-decay = 40.0
-shakeTimerWaitTime = 0.1
-
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 155.966, 98.0898 )
-
-[node name="RocketLauncher" parent="." instance=ExtResource( 9 )]
-position = Vector2( 97.0973, 130.345 )
-
-[node name="Pistol" parent="." instance=ExtResource( 10 )]
-position = Vector2( 212.592, 112.836 )
-
-[node name="Enemies" type="Node2D" parent="."]
-
-[node name="Shotgun" parent="." instance=ExtResource( 16 )]
-position = Vector2( 52.1259, 96.2998 )
 [connection signal="SIncreasePoints" from="." to="Hud/Score Root/Score" method="IncreasePoints"]
 [connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
 [connection signal="SPlayerDied" from="Player" to="Player" method="OnPlayerDied"]

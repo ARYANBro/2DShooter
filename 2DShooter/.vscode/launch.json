@@ -5,18 +5,18 @@
             "name": "Play in Editor",
             "type": "godot-mono",
             "mode": "playInEditor",
-            "request": "launch",
+            "request": "launch"
         },
         {
             "name": "Launch",
             "type": "godot-mono",
             "request": "launch",
             "mode": "executable",
-            "executable": "C:/Applications/Godot_3.22/Godot_v3.2.2-stable_mono_win64.exe",
+            "executable": "C:/Applications/Godot_3.22/Godot_v3.2.2-stable_mono_win64",
             "executableArguments": [
                 "--path",
                 "${workspaceRoot}"
-            ],
+            ]
         },
         {
             "name": "Attach",

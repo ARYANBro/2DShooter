@@ -115,10 +115,6 @@ Equip={
 2d_physics/layer_2="Enemy"
 2d_physics/layer_3="Enviornment"
 
-[mono]
-
-debugger_agent/wait_for_debugger=true
-
 [physics]
 
 2d/thread_model=2
