@@ -43,7 +43,6 @@ public class GameRules : Node2D
     private PointsSpawner pointsSpawner;
     public static bool gameIsPaused;
 
-
     public override void _Ready()
     {
         var player = GetNode<Player>("Player");
@@ -132,7 +131,7 @@ public class GameRules : Node2D
 
     private void SpawnEnemiesTimerTimeout() => spawnEnemies = true;
     private void OnPlayerDied() => GetTree().Paused = true;
-    private void SpawnPoints(Vector2 position, int _points, Vector2 size) => pointsSpawner.Spawn(position, points, size, GetTree());
+    private void SpawnPoints(Vector2 position, int _points, Vector2 size) => pointsSpawner.Spawn(position, _points, size, GetTree());
 
     public void PauseGame()
     {

@@ -17,11 +17,15 @@ public class PointsSpawner
         var pointsLabel = points.GetNode<Label>("PointsAnimPlayer/Points");
         var pointsNode2D = points.GetNode<Node2D>("PointsAnimPlayer");
 
+        // Set Position
         pointsLabel.RectPosition = position;
         pointsLabel.RectScale = size;
-        pointsLabel.Text = "+" + Convert.ToString(_points);
 
-        sceneTree.CurrentScene.AddChild(points, true);
+        pointsLabel.Text = '+' + Convert.ToString(_points);
+
+        sceneTree.CurrentScene.AddChild(points);
+        
+        // Cleanup
         sceneTree.CreateTimer(1f).Connect("timeout", points, "queue_free");
     }
 }

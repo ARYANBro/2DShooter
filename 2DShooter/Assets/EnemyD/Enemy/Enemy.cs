@@ -4,8 +4,8 @@ using Godot;
 public class Enemy : KinematicBody2D
 {
     [Signal] public delegate void SEnemyDied(float points);
-    [Signal] public delegate void SSpawnPoints(Vector2 position, int points, Vector2 size);
     [Signal] public delegate void EnemyHurt();
+    [Signal] public delegate void SSpawnPoints(Vector2 position, int points, Vector2 size);
 
     [Export] public int speed;
     [Export] public int accel;
@@ -71,8 +71,6 @@ public class Enemy : KinematicBody2D
             EmitSignal("SSpawnPoints", GlobalPosition, 15, new Vector2(1f, 1f));
             GetParent().QueueFree();
         }
-
-        EmitSignal("EnemyHurt");
     }
 
 

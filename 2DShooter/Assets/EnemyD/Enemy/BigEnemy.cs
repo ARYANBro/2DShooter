@@ -44,7 +44,5 @@ class BigEnemy : Enemy
 
             GetParent().QueueFree();
         }
-
-        EmitSignal("EnemyHurt");
     }
 }
