@@ -1,13 +1,25 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://GlobalScripts/Shop.cs" type="Script" id=1]
 [ext_resource path="res://Sprites/Guns/Shotgun/Shotgun.png" type="Texture" id=2]
 [ext_resource path="res://Sprites/Guns/RocketLauncher/RocketLauncher.png" type="Texture" id=3]
 [ext_resource path="res://Sprites/SlideArrow.png" type="Texture" id=4]
 [ext_resource path="res://Sprites/Guns/Pistol/Pistol.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/SlideArrowPressed.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/LockButton.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/UnlockButton.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Fonts/Roboto/Roboto-Black.ttf" type="DynamicFontData" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+size = 22
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 9 )
 
 [node name="Shop" type="Node2D"]
 script = ExtResource( 1 )
+slot1XP = 1000.0
+slot2XP = 50000.0
 
 [node name="Slots" type="Node2D" parent="."]
 
@@ -26,6 +38,19 @@ position = Vector2( 159.311, 101.676 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 5 )
 
+[node name="GoBackButton" type="Button" parent="."]
+margin_right = 112.0
+margin_bottom = 37.0
+rect_scale = Vector2( 0.5, 0.5 )
+focus_mode = 0
+custom_fonts/font = SubResource( 1 )
+enabled_focus_mode = 0
+text = "GO BACK "
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="LeftSlideArrow" type="TextureButton" parent="."]
 margin_left = 20.0
 margin_top = 84.0
@@ -34,10 +59,8 @@ margin_bottom = 596.0
 rect_rotation = 0.1
 rect_scale = Vector2( 0.05, 0.05 )
 texture_normal = ExtResource( 4 )
-texture_pressed = ExtResource( 4 )
+texture_pressed = ExtResource( 6 )
 texture_hover = ExtResource( 4 )
-texture_disabled = ExtResource( 4 )
-texture_focused = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -50,12 +73,23 @@ margin_bottom = 620.0
 rect_rotation = 180.0
 rect_scale = Vector2( 0.05, 0.05 )
 texture_normal = ExtResource( 4 )
-texture_pressed = ExtResource( 4 )
+texture_pressed = ExtResource( 6 )
 texture_hover = ExtResource( 4 )
-texture_disabled = ExtResource( 4 )
-texture_focused = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="LockUnlockButton" type="TextureButton" parent="."]
+margin_left = 104.0
+margin_top = 93.0
+margin_right = 616.0
+margin_bottom = 605.0
+rect_scale = Vector2( 0.2, 0.2 )
+texture_normal = ExtResource( 8 )
+texture_disabled = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="GoBackButton" to="." method="OnGoBackButtonPressed"]
 [connection signal="pressed" from="LeftSlideArrow" to="." method="OnLeftSlideArrowPressed"]
 [connection signal="pressed" from="RightSlideArrow" to="." method="OnRightSlideArrowPressed"]

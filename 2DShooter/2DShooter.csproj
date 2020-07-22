@@ -74,8 +74,12 @@
     <Compile Include="Assets\UI\Score.cs" />
     <Compile Include="Assets\UI\StaminaBar\StaminaBar.cs" />
     <Compile Include="GlobalScripts\CameraShake.cs" />
+    <Compile Include="GlobalScripts\ConsumableSpawner.cs" />
+    <Compile Include="GlobalScripts\EnemySpawner.cs" />
     <Compile Include="GlobalScripts\GameRules.cs" />
     <Compile Include="GlobalScripts\IPickable.cs" />
+    <Compile Include="GlobalScripts\PauseMenue.cs" />
+    <Compile Include="GlobalScripts\PointsSpawner.cs" />
     <Compile Include="GlobalScripts\ShotGunComponent.cs" />
     <Compile Include="GlobalScripts\Shop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
