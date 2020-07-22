@@ -1,7 +1,6 @@
 using Godot;
 using System;
 
-
 public class Shop : Node2D
 {
     [Signal] public delegate void SRequestPause();
@@ -27,6 +26,8 @@ public class Shop : Node2D
         guns = GetNode<Node2D>("Slots");
         lockUnlockButton = GetNode<TextureButton>("LockUnlockButton");
         currentXpCheck = slot0XP;
+
+        GameRules.ResumeGame();
     }
 
     public override void _Process(float delta)
@@ -41,22 +42,21 @@ public class Shop : Node2D
             lockUnlockButton.Disabled = false;
     }
 
-    /* Just change the slot name
-       For Right Arrow */
-
-    // Change the xp check also
+    /*  Just change the slot name
+        For Right Arrow
+        Change the xp check also */
     private void OnRightSlideArrowPressed()
     {
         if (currentSlot == Slots.Slot0)
         {
-            currentXpCheck = slot1XP;   
+            currentXpCheck = slot1XP;
             currentSlot = Slots.Slot1;
         }
         else if (currentSlot == Slots.Slot1)
         {
             currentXpCheck = slot2XP;
             currentSlot = Slots.Slot2;
-        }   
+        }
     }
 
     // For Left Arrow
@@ -81,5 +81,6 @@ public class Shop : Node2D
 
     private void OnGoBackButtonPressed()
     {
+        GetTree().ChangeScene("res://Scenes/Main.tscn");
     }
 }

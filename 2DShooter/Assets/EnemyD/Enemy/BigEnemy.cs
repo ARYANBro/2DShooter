@@ -8,13 +8,13 @@ class BigEnemy : Enemy
 
     protected override void Shoot(float delta)
     {
-        List<Node2D> bullets = new List<Node2D>();
+        List<Node> bullets = new List<Node>();
 
         if (timeBetweenShots <= 0)
         {
             for (int i = 0; i < maxBullets; i++)
             {
-                var bulletRoot = InstanceBullet(enemyBulletScene);
+                var bulletRoot = enemyBulletScene.Instance();
                 bullets.Add(bulletRoot);
 
                 float rotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition) + (45 * i);

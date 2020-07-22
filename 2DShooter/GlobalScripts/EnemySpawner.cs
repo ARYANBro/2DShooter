@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class EnemySpawner
 {
-    private List<Node> enemies = new List<Node>();
+    public static ulong previousSeed;
+
+    private Node parent;
     private PackedScene enemyScene;
     private PackedScene bigEnemyScene;
-    private Node parent;
+    private List<Node> enemies = new List<Node>();
 
     public EnemySpawner(PackedScene _enemyScene, PackedScene _bigEnemyScene, Node _parent)
     {
@@ -21,6 +23,8 @@ public class EnemySpawner
         // Randomly spawn enemeis
         enemies.Clear();
         Utlities.randNumGenerator.Randomize();
+        previousSeed = Utlities.randNumGenerator.Seed;
+        
         for (int i = 0; i < Utlities.randNumGenerator.RandiRange(1, enemyCount); i++)
         {
             var enemy = enemyScene.Instance();

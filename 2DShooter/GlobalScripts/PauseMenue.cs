@@ -14,7 +14,7 @@ public class PauseMenue : Control
 
     private void OnResumeButtonPressed()
     {
-        ((GameRules)GetTree().CurrentScene).ResumeGame();
-        Hide();
+        GameRules.gameIsPaused = false;
+        Hide(); 
     }
 }

@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class GameRules : Node2D
 {
     [Signal] public delegate void SPlayerWon();
-    [Signal] public delegate void SIncreasePoints(int points);
     [Signal] public delegate void SPauseGame();
+    [Signal] public delegate void SIncreasePoints(int points);
 
     [Export] public int maxEnemyCount;
     [Export] public int maxBigEnemyCount;
@@ -16,7 +16,6 @@ public class GameRules : Node2D
     [Export] public PackedScene energyDrinkScene;
     [Export] public PackedScene pointsScene;
     [Export] public PackedScene shotGunScene;
-    public List<Node> enemies;
     public Node2D enemiesNode;
     public Control pauseMenue;  
 
@@ -26,7 +25,7 @@ public class GameRules : Node2D
     static private float highScore = 0;
     public bool engineScaleCheck = false;
 
-    static public float HighScore
+    public static float HighScore
     {
         get
         {
@@ -39,23 +38,23 @@ public class GameRules : Node2D
         }
     }
 
-    public static ulong seed;
-
     private ConsumableSpawner consumableSpawner;
     private EnemySpawner enemySpawner;
     private PointsSpawner pointsSpawner;
+    public static bool gameIsPaused;
+
 
     public override void _Ready()
     {
-        enemies = new List<Node>();
+        var player = GetNode<Player>("Player");
         enemiesNode = GetNode<Node2D>("Enemies");
         pauseMenue = GetNode<Control>("Hud/PauseMenue");
-        var player = GetNode<Player>("Player");
-        var shotgun = shotGunScene.Instance() as Shotgun;
 
         consumableSpawner = new ConsumableSpawner(healthPackScene, energyDrinkScene, GetTree().CurrentScene);
         enemySpawner = new EnemySpawner(enemyScene, bigEnemyScene, enemiesNode);
         pointsSpawner = new PointsSpawner(pointsScene);
+
+        var shotgun = shotGunScene.Instance() as Shotgun;
 
         pauseMenue.Visible = false;
 
@@ -70,18 +69,7 @@ public class GameRules : Node2D
         if (player != null)
             player.Connect("SPlayerDied", this, "OnPlayerDied");
 
-        //SpawnEnemies();
         enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount, ref spawnEnemies);  
-    }
-
-    // Will remove later just for testing
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        if (@event is InputEventKey eventKey)
-        {
-            if (eventKey.Pressed && eventKey.Scancode == (int)KeyList.R)
-                GetTree().ReloadCurrentScene();
-        }
     }
 
     public override void _Process(float delta)
@@ -91,11 +79,14 @@ public class GameRules : Node2D
         if (spawnEnemies == true)
             enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount, ref spawnEnemies);
 
+        if (gameIsPaused)
+            PauseGame();
+        else ResumeGame();
+
         if (enemyCondition == true)
         {
             if (enemiesNode.GetChildCount() == 0)
             {
-                enemies.Clear();
                 EmitSignal("SPlayerWon");
                 enemyCondition = false;
             }
@@ -105,14 +96,17 @@ public class GameRules : Node2D
         if (engineScaleCheck == true)
         {
             if (Engine.TimeScale < 1.0f)
-                GetTree().CreateTimer(2f).Connect("timeout", this, "OnEnginScaleFixTimerFixTimeout");
+                GetTree().CreateTimer(2f).Connect("timeout", this, "FixEngineScale");
         }
 
         if (Input.IsActionJustPressed("Pause"))
+        {
             EmitSignal("SPauseGame");
+            gameIsPaused = true;
+        }
     }
 
-    void OnEnginScaleFixTimerFixTimeout()
+    void FixEngineScale()
     {
         Engine.TimeScale = 1.0f;
         engineScaleCheck = false;
@@ -120,8 +114,7 @@ public class GameRules : Node2D
 
     private void OnEnemyDied(int _points)
     {
-        /* Spawn more enemies
-           and Increase points */
+        // Spawn more enemies and Increase points
         enemyCondition = true;
         EmitSignal("SIncreasePoints", _points);
         points += _points;
@@ -134,24 +127,20 @@ public class GameRules : Node2D
     {
         // Spawn Consumables and Enemies
         consumableSpawner.Spawn();
-        GetTree().CreateTimer(5f).Connect("timeout", this, "OnSpawnEnemiesTimerTimeout");
+        GetTree().CreateTimer(5f).Connect("timeout", this, "SpawnEnemiesTimerTimeout");
     }
 
-    private void OnSpawnEnemiesTimerTimeout() => spawnEnemies = true;
+    private void SpawnEnemiesTimerTimeout() => spawnEnemies = true;
     private void OnPlayerDied() => GetTree().Paused = true;
+    private void SpawnPoints(Vector2 position, int _points, Vector2 size) => pointsSpawner.Spawn(position, points, size, GetTree());
 
-    private void SpawnPoints(Vector2 position, int _points, Vector2 size)
-    {
-        pointsSpawner.Spawn(position, points, size, GetTree());
-    }
-
-    private void PauseGame()
+    public void PauseGame()
     {
         Engine.TimeScale = 0.0f;
         ShowPauseMenue();   
     }
 
-    public void ResumeGame()
+    public static void ResumeGame()
     {
         Engine.TimeScale = 1.0f;
     }
