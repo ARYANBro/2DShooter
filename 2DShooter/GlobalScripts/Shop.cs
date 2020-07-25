@@ -3,78 +3,102 @@ using System;
 
 public class Shop : Node2D
 {
-    [Signal] public delegate void SRequestPause();
-
     [Export] public float slot0XP;
+    [Export] public string slot0Name;
     [Export] public float slot1XP;
+    [Export] public string slot1Name;
     [Export] public float slot2XP;
+    [Export] public string slot2Name;
 
-    private enum Slots
+    public struct Slot
     {
-        // Position
-        Slot0 = 0, Slot1 = -250, Slot2 = -500
+        public enum SlotsPosition
+        {
+            Slot0 = 0, Slot1 = -250, Slot2 = -500
+        };
+
+        public static bool isUnlocked;
+
+        public static string gunName;
+        public static SlotsPosition slotPosition;
     };
 
-    Slots currentSlot = Slots.Slot0;
     private Node2D guns;
-
+    public Slot currentSlot;
+    public float currentXpCheck;
     private TextureButton lockUnlockButton;
-    private float currentXpCheck;
-
+    
     public override void _Ready()
     {
         guns = GetNode<Node2D>("Slots");
         lockUnlockButton = GetNode<TextureButton>("LockUnlockButton");
-        currentXpCheck = slot0XP;
 
+        Slot.isUnlocked = false;
+        Slot.slotPosition = Slot.SlotsPosition.Slot0;
+        Slot.gunName = slot0Name;
         GameRules.ResumeGame();
     }
 
     public override void _Process(float delta)
     {
-        // Position changes based on slot (Slot is the "X Position")
-        MoveToSlot(currentSlot, delta, 6f);
+        // Position changes based on slot Positoin
+        MoveToSlot(Slot.slotPosition, delta, 6f);
 
-        // Lock unlcock based on HighScore
-        if (GameRules.HighScore < currentXpCheck)
-            lockUnlockButton.Disabled = true;
+        //Gun is unlocked ?
+        if (GameRules.HighScore >= currentXpCheck)
+            Slot.isUnlocked = true;
         else
+            Slot.isUnlocked = false;
+
+        // State of lockUnlock Button
+        if (Slot.isUnlocked)
             lockUnlockButton.Disabled = false;
+        else
+            lockUnlockButton.Disabled = true;
+
+        if (Slot.slotPosition == Slot.SlotsPosition.Slot0)
+            Slot.gunName = slot0Name;
+        else if (Slot.slotPosition == Slot.SlotsPosition.Slot1)
+            Slot.gunName = slot1Name;
+        else if (Slot.slotPosition == Slot.SlotsPosition.Slot2)
+            Slot.gunName = slot2Name;
+        else
+            Slot.gunName = "Error";
+
     }
 
     /*  Just change the slot name
-        For Right Arrow
-        Change the xp check also */
+        For Right Arrow, change the xp check also */
     private void OnRightSlideArrowPressed()
     {
-        if (currentSlot == Slots.Slot0)
+        if (Slot.slotPosition == Slot.SlotsPosition.Slot0)
         {
             currentXpCheck = slot1XP;
-            currentSlot = Slots.Slot1;
+            Slot.slotPosition = Slot.SlotsPosition.Slot1;
         }
-        else if (currentSlot == Slots.Slot1)
+        else if (Slot.slotPosition == Slot.SlotsPosition.Slot1)
         {
             currentXpCheck = slot2XP;
-            currentSlot = Slots.Slot2;
+            Slot.slotPosition = Slot.SlotsPosition.Slot2;
         }
     }
 
     // For Left Arrow
     private void OnLeftSlideArrowPressed()
     {
-        if (currentSlot == Slots.Slot2)
+        if (Slot.slotPosition == Slot.SlotsPosition.Slot2)
         {
             currentXpCheck = slot1XP;
-            currentSlot = Slots.Slot1;
+            Slot.slotPosition = Slot.SlotsPosition.Slot1;
         }
-        else if (currentSlot == Slots.Slot1)
+        else if (Slot.slotPosition == Slot.SlotsPosition.Slot1)
         {
             currentXpCheck = slot0XP;
-            currentSlot = Slots.Slot0;
+            Slot.slotPosition = Slot.SlotsPosition.Slot0;
         }
     }
 
-    private void MoveToSlot(Slots slots, float delta, float accel)
+    private void MoveToSlot(Slot.SlotsPosition slots, float delta, float accel)
     {
         guns.GlobalPosition = guns.GlobalPosition.LinearInterpolate(new Vector2((float)slots, 0), delta * accel);
     }

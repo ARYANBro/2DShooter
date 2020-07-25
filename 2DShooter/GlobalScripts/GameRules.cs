@@ -18,6 +18,7 @@ public class GameRules : Node2D
     [Export] public PackedScene shotGunScene;
     public Node2D enemiesNode;
     public Control pauseMenue;  
+    
 
     private int points = 0;
     private bool spawnEnemies = false;
@@ -81,6 +82,8 @@ public class GameRules : Node2D
         if (gameIsPaused)
             PauseGame();
         else ResumeGame();
+
+        GD.Print("Shotgun.IsUnlocked: " + Shotgun.isUnlocked);
 
         if (enemyCondition == true)
         {

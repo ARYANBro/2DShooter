@@ -5,7 +5,7 @@ public class Shotgun : Gun, IPickable
 {
 	[Export(PropertyHint.File, "Shotgun.tscn")] public string path { get; set; }
 	[Export] public Texture outLineSprite;
-	public static bool isUnlocked = true;
+	public static bool isUnlocked = false;
 	
 	private PackedScene ShotgunScene;
 	private Texture orignalTexture;
@@ -35,12 +35,15 @@ public class Shotgun : Gun, IPickable
 	{
 		if (Input.IsActionJustPressed("UnEquip") && isEquiped)
 			UnEquip();
-		if (!ParentCheck)
-			GetNode<GunComponent>("GunComponent").SetProcess(false);
+
 		if (wantToEquipGun && Input.IsActionJustPressed("Equip"))
 			Equip();
 
+		if (!ParentCheck)
+			GetNode<GunComponent>("GunComponent").SetProcess(false);
+
 		isEquiped = ParentCheck;
+		// Add outline when not equiped
 		if (!ParentCheck)
 		{
 			if (outLineSprite != null)
@@ -48,6 +51,10 @@ public class Shotgun : Gun, IPickable
 		}
 		else
 			GetNode<Sprite>("GunComponent/GunSprite").Texture = orignalTexture;
+
+		// Unlock shotgun
+		if (Shop.Slot.gunName == "Shotgun" && Shop.Slot.isUnlocked)
+			isUnlocked = true;
 	}
 
 	public override void UnEquip()
