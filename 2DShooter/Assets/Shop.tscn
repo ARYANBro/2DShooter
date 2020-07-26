@@ -18,11 +18,10 @@ font_data = ExtResource( 9 )
 
 [node name="Shop" type="Node2D"]
 script = ExtResource( 1 )
-slot0Name = "Pistol"
 slot1XP = 100.0
-slot1Name = "Shotgun"
 slot2XP = 50000.0
-slot2Name = "RocketLauncher"
+slot1GunName = 1
+slot2GunName = 2
 
 [node name="Slots" type="Node2D" parent="."]
 
@@ -92,6 +91,37 @@ texture_normal = ExtResource( 8 )
 texture_disabled = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
+}
+
+[node name="HighScore" type="Label" parent="."]
+margin_left = 252.0
+margin_top = 6.0
+margin_right = 378.0
+margin_bottom = 33.0
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "HIGH SCORE"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="HighScore"]
+margin_left = 48.0
+margin_top = 28.0
+margin_right = 78.0
+margin_bottom = 55.0
+mouse_filter = 0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "0 "
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
 }
 [connection signal="pressed" from="GoBackButton" to="." method="OnGoBackButtonPressed"]
 [connection signal="pressed" from="LeftSlideArrow" to="." method="OnLeftSlideArrowPressed"]

@@ -5,6 +5,7 @@ public class RocketLauncher : Gun, IPickable
 {
     [Export(PropertyHint.File, "RocketLauncher.tscn")] public string path { get; set; }
     [Export] public Texture outLineSprite;
+    public bool isUnlocked { get; set; }
 
     private PackedScene RocketLauncherScene;
     private Texture orignalTexture;
@@ -14,6 +15,7 @@ public class RocketLauncher : Gun, IPickable
         inventory = GetTree().CurrentScene.FindNode("Inventory", true, false) as Inventory;
         orignalTexture = GetNode<Sprite>("GunComponent/GunSprite").Texture;
         RocketLauncherScene = GD.Load<PackedScene>(path);
+        isUnlocked = false;
     }
 
     public void OnBodyEntered(object body)
@@ -21,6 +23,7 @@ public class RocketLauncher : Gun, IPickable
         if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 &&
             body.GetType().Name != "Pistol" && body.GetType().Name != "Shotgun")
             wantToEquipGun = true;
+
     }
 
     public void OnBodyExited(object body)

@@ -4,9 +4,8 @@ using System;
 public class Shotgun : Gun, IPickable
 {
 	[Export(PropertyHint.File, "Shotgun.tscn")] public string path { get; set; }
+	public bool isUnlocked { get; set; }
 	[Export] public Texture outLineSprite;
-	public static bool isUnlocked = false;
-	
 	private PackedScene ShotgunScene;
 	private Texture orignalTexture;
 
@@ -15,6 +14,7 @@ public class Shotgun : Gun, IPickable
 		inventory = GetTree().CurrentScene.FindNode("Inventory", true, false) as Inventory;
 		orignalTexture = GetNode<Sprite>("GunComponent/GunSprite").Texture;
 		ShotgunScene = GD.Load<PackedScene>(path);
+		isUnlocked = false;
 	}
 
 	public void OnBodyEntered(object body)
@@ -53,8 +53,7 @@ public class Shotgun : Gun, IPickable
 			GetNode<Sprite>("GunComponent/GunSprite").Texture = orignalTexture;
 
 		// Unlock shotgun
-		if (Shop.Slot.gunName == "Shotgun" && Shop.Slot.isUnlocked)
-			isUnlocked = true;
+
 	}
 
 	public override void UnEquip()

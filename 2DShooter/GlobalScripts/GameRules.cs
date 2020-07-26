@@ -11,19 +11,14 @@ public class GameRules : Node2D
     [Export] public int maxEnemyCount;
     [Export] public int maxBigEnemyCount;
     [Export] public PackedScene enemyScene;
+    [Export] public PackedScene pointsScene;
     [Export] public PackedScene bigEnemyScene;
     [Export] public PackedScene healthPackScene;
     [Export] public PackedScene energyDrinkScene;
-    [Export] public PackedScene pointsScene;
     [Export] public PackedScene shotGunScene;
     public Node2D enemiesNode;
     public Control pauseMenue;  
-    
-
-    private int points = 0;
-    private bool spawnEnemies = false;
-    private bool enemyCondition = false;
-    static private float highScore = 0;
+    public static bool gameIsPaused;
     public bool engineScaleCheck = false;
 
     public static float HighScore
@@ -38,11 +33,19 @@ public class GameRules : Node2D
            highScore = value; 
         }
     }
+    
+
+    private int points = 0;
+    private bool spawnEnemies = false;
+    private bool enemyCondition = false;
+    static private float highScore = 0;
 
     private ConsumableSpawner consumableSpawner;
     private EnemySpawner enemySpawner;
     private PointsSpawner pointsSpawner;
-    public static bool gameIsPaused;
+    private GunSpawner gunSpawner;
+    private Shotgun shotgun;
+
 
     public override void _Ready()
     {
@@ -50,21 +53,33 @@ public class GameRules : Node2D
         enemiesNode = GetNode<Node2D>("Enemies");
         pauseMenue = GetNode<Control>("Hud/PauseMenue");
 
-        consumableSpawner = new ConsumableSpawner(healthPackScene, energyDrinkScene, GetTree().CurrentScene);
-        enemySpawner = new EnemySpawner(enemyScene, bigEnemyScene, enemiesNode);
+        gunSpawner = new GunSpawner();
         pointsSpawner = new PointsSpawner(pointsScene);
+        enemySpawner = new EnemySpawner(enemyScene, bigEnemyScene, enemiesNode);
+        consumableSpawner = new ConsumableSpawner(healthPackScene, energyDrinkScene, GetTree().CurrentScene);
 
-        var shotgun = shotGunScene.Instance() as Shotgun;
+        shotgun = (Shotgun)gunSpawner.InitializeGun(shotGunScene);
+        gunSpawner.Spawn(shotgun, player.Position, player.RotationDegrees, (Node2D)GetTree().CurrentScene);
+
+        //shotgun = shotGunScene.Instance() as Shotgun;
 
         pauseMenue.Visible = false;
 
         /* Place shotgun in the level
             if it is unlocked  */
-        if (Shotgun.isUnlocked)
-        {
-            shotgun = (Shotgun)Utlities.SetNode2DParams(shotgun, player.Position, player.RotationDegrees);
-            GetTree().CurrentScene.AddChild(shotgun);
-        }
+
+        //if (shotgun.isUnlocked)
+        //{
+            //shotgun = (Shotgun)Utlities.SetNode2DParams(shotgun, player.Position, player.RotationDegrees);
+            //GetTree().CurrentScene.AddChild(shotgun);
+        //}
+
+
+        // if (Shotgun.isUnlocked)
+        // {
+        //     shotgun = (Shotgun)Utlities.SetNode2DParams(shotgun, player.Position, player.RotationDegrees);
+        //     GetTree().CurrentScene.AddChild(shotgun);
+        // }
 
         if (player != null)
             player.Connect("SPlayerDied", this, "OnPlayerDied");
@@ -83,8 +98,6 @@ public class GameRules : Node2D
             PauseGame();
         else ResumeGame();
 
-        GD.Print("Shotgun.IsUnlocked: " + Shotgun.isUnlocked);
-
         if (enemyCondition == true)
         {
             if (enemiesNode.GetChildCount() == 0)
@@ -99,6 +112,12 @@ public class GameRules : Node2D
         {
             if (Engine.TimeScale < 1.0f)
                 GetTree().CreateTimer(2f).Connect("timeout", this, "FixEngineScale");
+            
+            /*
+            if (Engine.TimeScale < 1.0f)
+                GetTree().CreateTImer(2f).Connect("timeout", time, "FixEngineScale"); 
+            
+            */
         }
 
         if (Input.IsActionJustPressed("Pause"))
@@ -106,6 +125,10 @@ public class GameRules : Node2D
             EmitSignal("SPauseGame");
             gameIsPaused = true;
         }
+
+        if (Shop.currentSlot.gunName == Shop.Slot.GunNames.Shotgun && Shop.currentSlot.isUnlocked)
+            shotgun.isUnlocked = true;
+        
     }
 
     void FixEngineScale()
@@ -129,6 +152,11 @@ public class GameRules : Node2D
     {
         // Spawn Consumables and Enemies
         consumableSpawner.Spawn();
+        if (GetTree().CurrentScene.FindNode("Shotgun") == null)
+            gunSpawner.Spawn(shotgun, GetNode<Player>("Player").Position, GetNode<Player>("Player").RotationDegrees, (Node2D)GetTree().CurrentScene);
+        else
+            GD.Print("Shotgun is already there");
+                    
         GetTree().CreateTimer(5f).Connect("timeout", this, "SpawnEnemiesTimerTimeout");
     }
 

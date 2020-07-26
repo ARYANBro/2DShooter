@@ -4,97 +4,104 @@ using System;
 public class Shop : Node2D
 {
     [Export] public float slot0XP;
-    [Export] public string slot0Name;
     [Export] public float slot1XP;
-    [Export] public string slot1Name;
     [Export] public float slot2XP;
-    [Export] public string slot2Name;
+    [Export(PropertyHint.Flags, "Slot.GunNames")] public Slot.GunNames slot0GunName;
+    [Export(PropertyHint.Flags, "Slot.GunNames")] public Slot.GunNames slot1GunName;
+    [Export(PropertyHint.Flags, "Slot.GunNames")] public Slot.GunNames slot2GunName;
+    public Label highScoreCounter;
 
     public struct Slot
     {
+        public enum GunNames
+        {
+            Pistol, Shotgun, RocketLauncher
+        };
+
         public enum SlotsPosition
         {
             Slot0 = 0, Slot1 = -250, Slot2 = -500
         };
 
-        public static bool isUnlocked;
+        public bool isUnlocked;
 
-        public static string gunName;
-        public static SlotsPosition slotPosition;
+        public GunNames gunName;
+        public SlotsPosition slotPosition;
     };
 
     private Node2D guns;
-    public Slot currentSlot;
+    public static Slot currentSlot;
     public float currentXpCheck;
     private TextureButton lockUnlockButton;
-    
+
     public override void _Ready()
     {
         guns = GetNode<Node2D>("Slots");
         lockUnlockButton = GetNode<TextureButton>("LockUnlockButton");
+        highScoreCounter = GetNode<Label>("HighScore/Label");
 
-        Slot.isUnlocked = false;
-        Slot.slotPosition = Slot.SlotsPosition.Slot0;
-        Slot.gunName = slot0Name;
+        currentSlot.isUnlocked = false;
+        currentSlot.slotPosition = Slot.SlotsPosition.Slot0;
+
         GameRules.ResumeGame();
     }
 
     public override void _Process(float delta)
     {
+        if (currentSlot.slotPosition == Slot.SlotsPosition.Slot0)
+            currentSlot.gunName = slot0GunName;
+        else if (currentSlot.slotPosition == Slot.SlotsPosition.Slot1)
+            currentSlot.gunName = slot1GunName;
+        else if (currentSlot.slotPosition == Slot.SlotsPosition.Slot2)
+            currentSlot.gunName = slot2GunName;
+
         // Position changes based on slot Positoin
-        MoveToSlot(Slot.slotPosition, delta, 6f);
+        MoveToSlot(currentSlot.slotPosition, delta, 6f);
 
         //Gun is unlocked ?
         if (GameRules.HighScore >= currentXpCheck)
-            Slot.isUnlocked = true;
+            currentSlot.isUnlocked = true;
         else
-            Slot.isUnlocked = false;
+            currentSlot.isUnlocked = false;
 
         // State of lockUnlock Button
-        if (Slot.isUnlocked)
+        if (currentSlot.isUnlocked)
             lockUnlockButton.Disabled = false;
         else
             lockUnlockButton.Disabled = true;
 
-        if (Slot.slotPosition == Slot.SlotsPosition.Slot0)
-            Slot.gunName = slot0Name;
-        else if (Slot.slotPosition == Slot.SlotsPosition.Slot1)
-            Slot.gunName = slot1Name;
-        else if (Slot.slotPosition == Slot.SlotsPosition.Slot2)
-            Slot.gunName = slot2Name;
-        else
-            Slot.gunName = "Error";
-
+        // Set the higScore
+        highScoreCounter.Text = GameRules.HighScore.ToString();
     }
 
     /*  Just change the slot name
         For Right Arrow, change the xp check also */
     private void OnRightSlideArrowPressed()
     {
-        if (Slot.slotPosition == Slot.SlotsPosition.Slot0)
+        if (currentSlot.slotPosition == Slot.SlotsPosition.Slot0)
         {
             currentXpCheck = slot1XP;
-            Slot.slotPosition = Slot.SlotsPosition.Slot1;
+            currentSlot.slotPosition = Slot.SlotsPosition.Slot1;
         }
-        else if (Slot.slotPosition == Slot.SlotsPosition.Slot1)
+        else if (currentSlot.slotPosition == Slot.SlotsPosition.Slot1)
         {
             currentXpCheck = slot2XP;
-            Slot.slotPosition = Slot.SlotsPosition.Slot2;
+            currentSlot.slotPosition = Slot.SlotsPosition.Slot2;
         }
     }
 
     // For Left Arrow
     private void OnLeftSlideArrowPressed()
     {
-        if (Slot.slotPosition == Slot.SlotsPosition.Slot2)
+        if (currentSlot.slotPosition == Slot.SlotsPosition.Slot2)
         {
             currentXpCheck = slot1XP;
-            Slot.slotPosition = Slot.SlotsPosition.Slot1;
+            currentSlot.slotPosition = Slot.SlotsPosition.Slot1;
         }
-        else if (Slot.slotPosition == Slot.SlotsPosition.Slot1)
+        else if (currentSlot.slotPosition == Slot.SlotsPosition.Slot1)
         {
             currentXpCheck = slot0XP;
-            Slot.slotPosition = Slot.SlotsPosition.Slot0;
+            currentSlot.slotPosition = Slot.SlotsPosition.Slot0;
         }
     }
 

@@ -58,10 +58,10 @@ script = ExtResource( 3 )
 maxEnemyCount = 10
 maxBigEnemyCount = 5
 enemyScene = ExtResource( 11 )
+pointsScene = ExtResource( 15 )
 bigEnemyScene = ExtResource( 13 )
 healthPackScene = ExtResource( 5 )
 energyDrinkScene = ExtResource( 2 )
-pointsScene = ExtResource( 15 )
 shotGunScene = ExtResource( 16 )
 
 [node name="Enemies" type="Node2D" parent="."]

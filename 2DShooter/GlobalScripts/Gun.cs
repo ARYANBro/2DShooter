@@ -24,8 +24,8 @@ public class Gun : Node2D
 
     public virtual void UnEquip()
     {
-        // Unequip
-        // Called from child
+        /*     Unequip
+          Called from child */
     }
 
     public bool ParentCheck => GetParent().GetType().Name == "Inventory";

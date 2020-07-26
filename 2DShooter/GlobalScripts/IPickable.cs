@@ -9,6 +9,7 @@ using System;
 	string path { get; set; }
 
     bool ParentCheck { get; }
+	bool isUnlocked { get; set; }
 
     void Equip();
 	void UnEquip();
