@@ -89,7 +89,7 @@ public class Enemy : KinematicBody2D
             var bullet = bulletRoot.GetNode<BulletComponent>("BulletComponent");
 
             float rotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition);
-            bullet = Utlities.SetNode2DParams(bullet, GlobalPosition, rotationDegrees) as BulletComponent;
+            Utlities.SetNode2DParams(ref bullet, GlobalPosition, rotationDegrees);
             GetTree().CurrentScene.AddChild(bulletRoot);
 
             timeBetweenShots = startTimeBetweenShots;

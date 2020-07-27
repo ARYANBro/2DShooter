@@ -5,11 +5,7 @@ public class PointsSpawner
 {
     private PackedScene pointsScene;
 
-    public PointsSpawner(PackedScene _pointsScene)
-    {
-        pointsScene = _pointsScene;
-    }
-
+    public PointsSpawner(PackedScene _pointsScene) => (pointsScene) = (_pointsScene);
     public void Spawn(Vector2 position, int _points, Vector2 size, SceneTree sceneTree)
     {
         // On top of enemies
@@ -21,7 +17,7 @@ public class PointsSpawner
         pointsLabel.RectPosition = position;
         pointsLabel.RectScale = size;
 
-        pointsLabel.Text = '+' + Convert.ToString(_points);
+        pointsLabel.Text = '+' + _points.ToString();
 
         sceneTree.CurrentScene.AddChild(points);
         

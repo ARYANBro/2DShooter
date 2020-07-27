@@ -33,12 +33,20 @@ public class Utlities : Node
         parent.AddChild(node);
     }
 
-    public static Node2D SetNode2DParams(Node2D node, Vector2 globalPos, float rotDegrees)
+    // public static Node2D SetNode2DParams(Node2D node, Vector2 globalPos, float rotDegrees)
+    // {
+    //     if (!node.IsInsideTree()) node.Position = globalPos; 
+    //     else node.GlobalPosition = globalPos;
+
+    //     node.RotationDegrees = rotDegrees;
+    //     return node;
+    // }
+
+    public static void SetNode2DParams<T>(ref T node, Vector2 globalPos, float rotDegrees) where T : Node2D
     {
         if (!node.IsInsideTree()) node.Position = globalPos; 
         else node.GlobalPosition = globalPos;
 
         node.RotationDegrees = rotDegrees;
-        return node;
     }
 }

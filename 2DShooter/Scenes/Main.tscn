@@ -59,10 +59,11 @@ maxEnemyCount = 10
 maxBigEnemyCount = 5
 enemyScene = ExtResource( 11 )
 pointsScene = ExtResource( 15 )
+shotGunScene = ExtResource( 16 )
 bigEnemyScene = ExtResource( 13 )
 healthPackScene = ExtResource( 5 )
 energyDrinkScene = ExtResource( 2 )
-shotGunScene = ExtResource( 16 )
+rocketLauncherScene = ExtResource( 9 )
 
 [node name="Enemies" type="Node2D" parent="."]
 
@@ -80,9 +81,6 @@ shakeTimerWaitTime = 0.1
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 155.966, 98.0898 )
-
-[node name="RocketLauncher" parent="." instance=ExtResource( 9 )]
-position = Vector2( 97.0973, 130.345 )
 
 [node name="Pistol" parent="." instance=ExtResource( 10 )]
 position = Vector2( 212.592, 112.836 )
@@ -136,7 +134,6 @@ environment = ExtResource( 8 )
 position = Vector2( 0, 1.94545 )
 polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -3.06623, 175.09, 323.998, 175.09, 323.998, 0, -3.06623, 0, -3.06623, 176.063, 0, 201.354, -32.7065, 201.354 )
 [connection signal="SIncreasePoints" from="." to="Hud/Score Root/Score" method="IncreasePoints"]
-[connection signal="SPauseGame" from="." to="." method="PauseGame"]
 [connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
 [connection signal="SPlayerDied" from="Player" to="Player" method="OnPlayerDied"]
 

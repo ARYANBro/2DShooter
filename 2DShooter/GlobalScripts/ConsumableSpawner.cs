@@ -7,18 +7,15 @@ public class ConsumableSpawner
     private PackedScene energyDrinkScene;
     private Node parent;
 
-    public ConsumableSpawner(PackedScene _heathPackScene, PackedScene _energyDrinkScene, Node _parent)
-    {
-        healthPackScene = _heathPackScene;
-        energyDrinkScene = _energyDrinkScene;
-        parent = _parent;
-    }
+    public ConsumableSpawner(PackedScene _heathPackScene, PackedScene _energyDrinkScene, Node _parent) =>
+        (healthPackScene, energyDrinkScene, parent) = (_heathPackScene, _energyDrinkScene, _parent);
 
     public void Spawn()
     {
         int randNum = Utlities.randNumGenerator.RandiRange(0, 1);
-        var healthpack = healthPackScene.Instance();
-        var energyDrink = energyDrinkScene.Instance();
+
+        Node healthpack = healthPackScene.Instance();
+        Node energyDrink = energyDrinkScene.Instance();
 
         // Randomly spawn consumables
         if (randNum == 0)

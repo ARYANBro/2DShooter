@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class Shop : Node2D
 {
@@ -10,7 +11,7 @@ public class Shop : Node2D
     [Export(PropertyHint.Flags, "Slot.GunNames")] public Slot.GunNames slot1GunName;
     [Export(PropertyHint.Flags, "Slot.GunNames")] public Slot.GunNames slot2GunName;
     public Label highScoreCounter;
-
+    
     public struct Slot
     {
         public enum GunNames

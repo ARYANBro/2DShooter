@@ -6,6 +6,7 @@ public class RocketLauncher : Gun, IPickable
     [Export(PropertyHint.File, "RocketLauncher.tscn")] public string path { get; set; }
     [Export] public Texture outLineSprite;
     public bool isUnlocked { get; set; }
+    public bool AlreadySpawned { get; set; }
 
     private PackedScene RocketLauncherScene;
     private Texture orignalTexture;
@@ -14,8 +15,11 @@ public class RocketLauncher : Gun, IPickable
     {
         inventory = GetTree().CurrentScene.FindNode("Inventory", true, false) as Inventory;
         orignalTexture = GetNode<Sprite>("GunComponent/GunSprite").Texture;
+
         RocketLauncherScene = GD.Load<PackedScene>(path);
+
         isUnlocked = false;
+        AlreadySpawned = false;
     }
 
     public void OnBodyEntered(object body)
@@ -37,12 +41,15 @@ public class RocketLauncher : Gun, IPickable
     {
         if (Input.IsActionJustPressed("UnEquip") && isEquiped)
             UnEquip();
-        if (!ParentCheck)
-            GetNode<GunComponent>("GunComponent").SetProcess(false);
+
         if (wantToEquipGun && Input.IsActionJustPressed("Equip"))
             Equip();
 
+        if (!ParentCheck)
+            GetNode<GunComponent>("GunComponent").SetProcess(false);
+        
         isEquiped = ParentCheck;
+		// Add outline when not equiped
         if (!ParentCheck)
         {
             if (outLineSprite != null)

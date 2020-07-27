@@ -18,8 +18,8 @@ font_data = ExtResource( 9 )
 
 [node name="Shop" type="Node2D"]
 script = ExtResource( 1 )
-slot1XP = 100.0
-slot2XP = 50000.0
+slot1XP = 50.0
+slot2XP = 100.0
 slot1GunName = 1
 slot2GunName = 2
 

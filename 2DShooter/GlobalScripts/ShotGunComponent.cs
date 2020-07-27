@@ -32,17 +32,16 @@ public class ShotGunComponent : GunComponent
                     float rotationDegrees = Utlities.LookAtSomething(GetGlobalMousePosition(), GlobalPosition) + (20 * i);
                     var bullet = bullets[i].GetNode<BulletComponent>("BulletComponent");
 
-                    bullet = Utlities.SetNode2DParams(bullet, firepoint.GlobalPosition, rotationDegrees) as BulletComponent;
+                    Utlities.SetNode2DParams(ref bullet, firepoint.GlobalPosition, rotationDegrees);
 
                     GetTree().CurrentScene.AddChild(bullets[i]);
-
                 }
+
                 timeBetweenShots = startTimeBetweenShots;
                 bullets.Clear();
             }
 
         }
         else timeBetweenShots -= delta;
-
     }
 }

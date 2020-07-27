@@ -20,7 +20,7 @@ class BigEnemy : Enemy
                 float rotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition) + (45 * i);
                 var bullet = bullets[i].GetNode<Node2D>("BulletComponent");
 
-                bullet = Utlities.SetNode2DParams(bullet, GlobalPosition, rotationDegrees) as BulletComponent;
+                Utlities.SetNode2DParams(ref bullet, GlobalPosition, rotationDegrees);
 
                 GetTree().CurrentScene.AddChild(bullets[i]);
             }

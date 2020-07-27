@@ -10,6 +10,7 @@ using System;
 
     bool ParentCheck { get; }
 	bool isUnlocked { get; set; }
+	bool AlreadySpawned{ get; set; }
 
     void Equip();
 	void UnEquip();

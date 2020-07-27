@@ -6,6 +6,7 @@ public class Pistol : Gun, IPickable
     [Export(PropertyHint.File, "Pistol.tscn")] public string path { get; set; }
     [Export] public Texture outLineSprite;
     public  bool isUnlocked { get; set;}
+    public bool AlreadySpawned { get; set; }
 
     private PackedScene PistolScene;
     private Texture orignalTexture;
@@ -16,6 +17,7 @@ public class Pistol : Gun, IPickable
         orignalTexture = GetNode<Sprite>("GunComponent/GunSprite").Texture;
         PistolScene = GD.Load<PackedScene>(path);
         isUnlocked = true;
+        AlreadySpawned = true;
     }
 
     public void OnBodyEntered(object body)
