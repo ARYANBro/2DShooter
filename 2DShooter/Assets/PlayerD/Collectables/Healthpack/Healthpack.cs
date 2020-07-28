@@ -2,24 +2,23 @@ using Godot;
 using System;
 using System.Resources;
 
-public class Healthpack : Area2D
+public class Healthpack : Consumable
 {
 	[Export] public int increaseHpBy;
-	public Player player;
+	public override Player Player { get; set; }
 
 	public override void _Ready()
 	{
-		GlobalPosition = Utlities.RandPosition(new Vector2(320, 180), GlobalPosition);
-		player = GetTree().CurrentScene.GetNode<Player>("Player");
+		Player = GetTree().CurrentScene.GetNode<Player>("Player");
 	}
 
 	private void OnHealthpackBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Player")
 		{
-			if (player.Hp < 100)
+			if (Player.Hp < 100)
 			{
-				player.Hp += increaseHpBy;
+				Player.Hp += increaseHpBy;
 				QueueFree();
 			}
 		}

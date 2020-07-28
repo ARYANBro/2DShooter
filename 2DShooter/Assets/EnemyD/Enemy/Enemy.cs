@@ -40,7 +40,7 @@ public class Enemy : KinematicBody2D
         player = GetTree().CurrentScene.GetNode<Player>("Player");
         sprite = GetNode<Sprite>("EnemySprite");
 
-        GlobalPosition = Utlities.RandPosition(new Vector2(320f, 180f), GlobalPosition);
+        GlobalPosition = Utlities.RandPosition(new Vector2(320f, 180f), GetTree());
         sprite.Material.SetDeferred("shader_param/Color", color);
         timeBetweenShots = startTimeBetweenShots;
 

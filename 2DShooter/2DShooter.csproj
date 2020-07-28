@@ -74,6 +74,7 @@
     <Compile Include="Assets\UI\Score.cs" />
     <Compile Include="Assets\UI\StaminaBar\StaminaBar.cs" />
     <Compile Include="GlobalScripts\CameraShake.cs" />
+    <Compile Include="GlobalScripts\Consumable.cs" />
     <Compile Include="GlobalScripts\ConsumableSpawner.cs" />
     <Compile Include="GlobalScripts\EnemySpawner.cs" />
     <Compile Include="GlobalScripts\GameRules.cs" />

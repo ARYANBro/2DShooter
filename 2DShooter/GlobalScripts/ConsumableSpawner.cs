@@ -7,20 +7,20 @@ public class ConsumableSpawner
     private PackedScene energyDrinkScene;
     private Node parent;
 
+    public Consumable InitConsumables(PackedScene consumableScene)
+    {
+        return consumableScene.Instance() as Consumable;
+    }
+
+    public void Spawn<T>(ref T consumable, Vector2 globalPosition, float rotationDegrees, Node parent) where T : Consumable
+    {
+        consumable.GlobalPosition = globalPosition;
+        consumable.RotationDegrees = rotationDegrees;
+
+        parent.AddChild(consumable);
+    }
+
     public ConsumableSpawner(PackedScene _heathPackScene, PackedScene _energyDrinkScene, Node _parent) =>
         (healthPackScene, energyDrinkScene, parent) = (_heathPackScene, _energyDrinkScene, _parent);
 
-    public void Spawn()
-    {
-        int randNum = Utlities.randNumGenerator.RandiRange(0, 1);
-
-        Node healthpack = healthPackScene.Instance();
-        Node energyDrink = energyDrinkScene.Instance();
-
-        // Randomly spawn consumables
-        if (randNum == 0)
-            parent.AddChild(energyDrink);
-        else if (randNum == 1)
-            parent.AddChild(healthpack);
-    }
 }

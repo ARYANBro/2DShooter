@@ -1,24 +1,23 @@
 using Godot;
 using System;
 
-public class EnergyDrink : Area2D
+public class EnergyDrink : Consumable
 {
 	[Export] public int increaseStaminaBy;
-	public Player player;
+	public override Player Player { get; set; }
 
 	public override void _Ready()
 	{
-		player = GetTree().CurrentScene.GetNode<Player>("Player");
-		GlobalPosition = Utlities.RandPosition(new Vector2(320, 180), GlobalPosition);
-	}
+		Player = GetTree().CurrentScene.GetNode<Player>("Player");
+ 	}
 
 	private void OnStaminapackBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Player")
 		{
-			if (player.Stamina < 400)
+			if (Player.Stamina < 400)
 			{	
-				player.Stamina += increaseStaminaBy;
+				Player.Stamina += increaseStaminaBy;
 				QueueFree();
 			}
 		}

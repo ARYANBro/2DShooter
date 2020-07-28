@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Utlities : Node
+public class Utlities
 {
     public static RandomNumberGenerator randNumGenerator = new RandomNumberGenerator();
     public static float LookAtMouse(Vector2 mousePosition, Vector2 nodePosition)
@@ -18,12 +18,23 @@ public class Utlities : Node
         return Mathf.Rad2Deg(angle) + 90;
     }
 
-    public static Vector2 RandPosition(Vector2 resolution, Vector2 globalPosition)
+    public static Vector2 RandPosition(Vector2 globalPosition, SceneTree sceneTree)
     {
-        randNumGenerator.Randomize();
+        Vector2 resolution = sceneTree.Root.GetVisibleRect().Size;
 
+        randNumGenerator.Randomize();
         return globalPosition = new Vector2(randNumGenerator.RandfRange(0f, resolution.x),
-                randNumGenerator.RandfRange(0f, resolution.y));
+                           randNumGenerator.RandfRange(0f, resolution.y));
+    }
+
+
+    public static Vector2 RandPosition(ref Node2D node, SceneTree sceneTree)
+    {
+        Vector2 resolution = sceneTree.Root.GetVisibleRect().Size;
+
+        randNumGenerator.Randomize();
+        return node.GlobalPosition = new Vector2(randNumGenerator.RandfRange(0f, resolution.x),
+                                    randNumGenerator.RandfRange(0f, resolution.y));
     }
 
     public static void AddChildWithParams(Node parent, Node2D node, Vector2 globalPos, float rotDegrees)
@@ -32,19 +43,9 @@ public class Utlities : Node
         node.RotationDegrees = rotDegrees;
         parent.AddChild(node);
     }
-
-    // public static Node2D SetNode2DParams(Node2D node, Vector2 globalPos, float rotDegrees)
-    // {
-    //     if (!node.IsInsideTree()) node.Position = globalPos; 
-    //     else node.GlobalPosition = globalPos;
-
-    //     node.RotationDegrees = rotDegrees;
-    //     return node;
-    // }
-
     public static void SetNode2DParams<T>(ref T node, Vector2 globalPos, float rotDegrees) where T : Node2D
     {
-        if (!node.IsInsideTree()) node.Position = globalPos; 
+        if (!node.IsInsideTree()) node.Position = globalPos;
         else node.GlobalPosition = globalPos;
 
         node.RotationDegrees = rotDegrees;
