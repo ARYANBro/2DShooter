@@ -3,6 +3,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <RemoteDebugEnabled>false</RemoteDebugEnabled>
     <StartAction>Program</StartAction>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <StartProgram>C:\Dev\Godot\Projects\2DShooter\2DShooter\.mono\assemblies\Debug</StartProgram>
     <StartWorkingDirectory>C:\Dev\Godot\Projects\2DShooter\2DShooter\.mono\temp\bin\Debug\</StartWorkingDirectory>
   </PropertyGroup>
