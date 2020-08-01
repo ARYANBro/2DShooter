@@ -55,43 +55,37 @@ public class GameRules : Node2D
         enemiesNode = GetNode<Node2D>("Enemies");
         pauseMenue = GetNode<Control>("Hud/PauseMenue");
 
-        player.Connect("SPlayerDied", this, "OnPlayerDied");
-
-        pauseMenue.Visible = false;
-
         gunSpawner = new GunSpawner();
         pointsSpawner = new PointsSpawner(pointsScene);
         enemySpawner = new EnemySpawner(enemyScene, bigEnemyScene, enemiesNode);
         consumableSpawner = new ConsumableSpawner(healthPackScene, energyDrinkScene, GetTree().CurrentScene);
 
+
         // Spawn Guns
-        pistol = gunSpawner.InitGun(pistolScene) as Pistol;
-        shotgun = gunSpawner.InitGun(shotGunScene) as Shotgun;
-        rocketLauncher = gunSpawner.InitGun(rocketLauncherScene) as RocketLauncher;
+        gunSpawner.InitGun<Pistol>(ref pistol, pistolScene);
+        gunSpawner.InitGun<Shotgun>(ref shotgun, shotGunScene);
+        gunSpawner.InitGun<RocketLauncher>(ref rocketLauncher, rocketLauncherScene);
         
         gunSpawner.Spawn<Shotgun>(ref shotgun, player.Position, player.RotationDegrees, GetTree().CurrentScene);
         gunSpawner.Spawn<RocketLauncher>(ref rocketLauncher, player.Position, player.RotationDegrees, GetTree().CurrentScene);
         gunSpawner.Spawn<Pistol>(ref pistol,  player.Position, player.RotationDegrees, GetTree().CurrentScene);
 
         // Spawn Enemies
-        enemySpawner.SpawnEnemies = true;
-        enemySpawner.SetSpawnParams(maxEnemyCount, maxBigEnemyCount);
+        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount);
     }
 
     public override void _Process(float delta)
     {
-        enemySpawner.SetSpawnParams(maxEnemyCount, maxBigEnemyCount);
         GamePauseStateCheck();
         EngineScaleCheck();
         PlayerWonCheck();
 
-
         if (Input.IsActionJustPressed("Pause"))
             gameIsPaused = true;
 
-        gunSpawner.GunUnlockCheck<Pistol>(ref pistol, Shop.Slot.GunNames.Pistol);
-        gunSpawner.GunUnlockCheck<Shotgun>(ref shotgun, Shop.Slot.GunNames.Shotgun);
-        gunSpawner.GunUnlockCheck<RocketLauncher>(ref rocketLauncher, Shop.Slot.GunNames.RocketLauncher);
+        gunSpawner.GunUnlockCheck<Pistol>(ref pistol, 0);
+        gunSpawner.GunUnlockCheck<Shotgun>(ref shotgun, 1);
+        gunSpawner.GunUnlockCheck<RocketLauncher>(ref rocketLauncher, 2);
     }
 
     private void OnEnemyDied(int _points)
@@ -119,7 +113,7 @@ public class GameRules : Node2D
 
     private void SpawnEnemiesTimerTimeout()
     {
-        enemySpawner.SpawnEnemies = true;
+        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount);
     }
 
     private void OnPlayerDied() => GetTree().Quit();
@@ -186,8 +180,7 @@ public class GameRules : Node2D
             consumableSpawner.Spawn<Healthpack>(ref healthpack, position, 0f, GetTree().CurrentScene);
             energyDrink.QueueFree();
         }
-        else
-        {
+        else {
             Vector2 resolution = GetTree().Root.GetVisibleRect().Size;
             Vector2 position = new Vector2(Utlities.randNumGenerator.RandfRange(0, resolution.x), Utlities.randNumGenerator.RandfRange(0, resolution.y));
 

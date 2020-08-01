@@ -3,14 +3,18 @@ using System;
 
 public class GunSpawner
 {
-    public IPickable InitGun(PackedScene gunScene)
+    public void InitGun<T>(ref T weapon, PackedScene gunScene) where T : Gun, new()
     {
-        return gunScene.Instance() as IPickable;
+        weapon = new T();
+        Shop.slots.Add(new Slot(weapon));
+        Shop.guns.Add(weapon);
+
+        weapon = gunScene.Instance() as T;
     }
 
-    public void Spawn<T>(ref T gun, Vector2 position, float rotationDegrees, Node parent) where T : Node2D, IPickable
+    public void Spawn<T>(ref T gun, Vector2 position, float rotationDegrees, Node parent) where T : Gun
     {
-        if (gun.isUnlocked && !gun.AlreadySpawned)
+        if (gun.IsUnlocked && !gun.AlreadySpawned)
         {
             gun.RotationDegrees = rotationDegrees;
             gun.Position = position;
@@ -21,11 +25,12 @@ public class GunSpawner
         }
     }
 
-    public void GunUnlockCheck<T>(ref T _gun, Shop.Slot.GunNames checkName) where T : IPickable
+    public void GunUnlockCheck<T>(ref T gun, int index) where T : Gun
     {
-        var gun = _gun as IPickable;
-
-        if (Shop.currentSlot.gunName == checkName && Shop.currentSlot.isUnlocked)
-            gun.isUnlocked = true;
+        if (Shop.slots[index].Gun.ShopName == gun.ShopName && Shop.guns[index].IsUnlocked && Shop.guns[index].SetForSpawn)
+        {
+            gun.IsUnlocked = true;
+            gun.SetForSpawn = true;
+        }
     }
 }

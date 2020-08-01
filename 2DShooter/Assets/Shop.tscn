@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/Shop.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Weapons/Shotgun/Shotgun.png" type="Texture" id=2]
@@ -16,12 +16,14 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 9 )
 
+[sub_resource type="DynamicFont" id=2]
+size = 26
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 9 )
+
 [node name="Shop" type="Node2D"]
 script = ExtResource( 1 )
-slot1XP = 50.0
-slot2XP = 100.0
-slot1GunName = 1
-slot2GunName = 2
 
 [node name="Slots" type="Node2D" parent="."]
 
@@ -123,6 +125,21 @@ __meta__ = {
 "_edit_use_anchors_": false,
 "_editor_description_": ""
 }
+
+[node name="SpawnButton" type="Button" parent="."]
+margin_left = 125.359
+margin_top = 154.331
+margin_right = 241.359
+margin_bottom = 198.331
+rect_scale = Vector2( 0.5, 0.55 )
+focus_mode = 0
+custom_fonts/font = SubResource( 2 )
+text = "SPAWN"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="GoBackButton" to="." method="OnGoBackButtonPressed"]
 [connection signal="pressed" from="LeftSlideArrow" to="." method="OnLeftSlideArrowPressed"]
 [connection signal="pressed" from="RightSlideArrow" to="." method="OnRightSlideArrowPressed"]
+[connection signal="pressed" from="SpawnButton" to="." method="OnSpawnButtonPressed"]

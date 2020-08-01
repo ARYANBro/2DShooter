@@ -55,6 +55,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\IIsShopable.cs" />
     <Compile Include="Scripts\PistolBulletParticles.cs" />
     <Compile Include="Scripts\EnemyBullet.cs" />
     <Compile Include="Scripts\BigEnemy.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Scripts\Player.cs" />
     <Compile Include="Scripts\Healthbar.cs" />
     <Compile Include="Scripts\Score.cs" />
+    <Compile Include="Scripts\Slot.cs" />
     <Compile Include="Scripts\StaminaBar.cs" />
     <Compile Include="Scripts\CameraShake.cs" />
     <Compile Include="Scripts\Consumable.cs" />

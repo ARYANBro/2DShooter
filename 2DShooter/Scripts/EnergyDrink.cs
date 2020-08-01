@@ -4,12 +4,6 @@ using System;
 public class EnergyDrink : Consumable
 {
 	[Export] public int increaseStaminaBy;
-	public override Player Player { get; set; }
-
-	public override void _Ready()
-	{
-		Player = GetTree().CurrentScene.GetNode<Player>("Player");
- 	}
 
 	private void OnStaminapackBodyEntered(object body)
 	{

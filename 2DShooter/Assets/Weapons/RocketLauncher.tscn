@@ -15,7 +15,6 @@ script = ExtResource( 4 )
 __meta__ = {
 "_editor_description_": ""
 }
-weaponScene = null
 outLineSprite = ExtResource( 5 )
 
 [node name="GunComponent" parent="." instance=ExtResource( 1 )]

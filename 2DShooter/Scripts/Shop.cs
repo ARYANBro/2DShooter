@@ -1,118 +1,120 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-
 public class Shop : Node2D
 {
-    [Export] public float slot0XP;
-    [Export] public float slot1XP;
-    [Export] public float slot2XP;
-    [Export(PropertyHint.Flags, "Slot.GunNames")] public Slot.GunNames slot0GunName;
-    [Export(PropertyHint.Flags, "Slot.GunNames")] public Slot.GunNames slot1GunName;
-    [Export(PropertyHint.Flags, "Slot.GunNames")] public Slot.GunNames slot2GunName;
-    public Label highScoreCounter;
-    
-    public struct Slot
-    {
-        public enum GunNames
-        {
-            Pistol, Shotgun, RocketLauncher
-        };
-
-        public enum SlotsPosition
-        {
-            Slot0 = 0, Slot1 = -250, Slot2 = -500
-        };
-
-        public bool isUnlocked;
-
-        public GunNames gunName;
-        public SlotsPosition slotPosition;
-    };
-
-    private Node2D guns;
-    public static Slot currentSlot;
+    public Button spawnButton;
     public float currentXpCheck;
-    private TextureButton lockUnlockButton;
+    public static Slot currentSlot = new Slot();
+    public static List<Gun> guns = new List<Gun>();
+    public static List<Slot> slots = new List<Slot>();
+
+    Node2D SlotsNode;
+    Label highScoreCounter;
+    TextureButton lockUnlockButton;
 
     public override void _Ready()
     {
-        guns = GetNode<Node2D>("Slots");
-        lockUnlockButton = GetNode<TextureButton>("LockUnlockButton");
+        SlotsNode = GetNode<Node2D>("Slots");
+        spawnButton = GetNode<Button>("SpawnButton");
         highScoreCounter = GetNode<Label>("HighScore/Label");
+        lockUnlockButton = GetNode<TextureButton>("LockUnlockButton");
 
-        currentSlot.isUnlocked = false;
-        currentSlot.slotPosition = Slot.SlotsPosition.Slot0;
+        currentSlot = slots[0];
 
         GameRules.ResumeGame();
     }
 
     public override void _Process(float delta)
     {
-        if (currentSlot.slotPosition == Slot.SlotsPosition.Slot0)
-            currentSlot.gunName = slot0GunName;
-        else if (currentSlot.slotPosition == Slot.SlotsPosition.Slot1)
-            currentSlot.gunName = slot1GunName;
-        else if (currentSlot.slotPosition == Slot.SlotsPosition.Slot2)
-            currentSlot.gunName = slot2GunName;
-
-        // Position changes based on slot Positoin
-        MoveToSlot(currentSlot.slotPosition, delta, 6f);
-
-        //Gun is unlocked ?
-        if (GameRules.HighScore >= currentXpCheck)
-            currentSlot.isUnlocked = true;
-        else
-            currentSlot.isUnlocked = false;
-
-        // State of lockUnlock Button
-        if (currentSlot.isUnlocked)
-            lockUnlockButton.Disabled = false;
-        else
-            lockUnlockButton.Disabled = true;
-
-        // Set the higScore
+        SlotProcess(delta);
         highScoreCounter.Text = GameRules.HighScore.ToString();
+
+        if (currentSlot.Gun.IsUnlocked)
+        {
+            spawnButton.Show();
+            spawnButton.SetProcess(true);
+        }
+        else {
+            spawnButton.Hide();
+            spawnButton.SetProcess(false);
+        }
     }
 
-    /*  Just change the slot name
-        For Right Arrow, change the xp check also */
     private void OnRightSlideArrowPressed()
     {
-        if (currentSlot.slotPosition == Slot.SlotsPosition.Slot0)
+        for (int i = 0; i < slots.Count; i++)
         {
-            currentXpCheck = slot1XP;
-            currentSlot.slotPosition = Slot.SlotsPosition.Slot1;
-        }
-        else if (currentSlot.slotPosition == Slot.SlotsPosition.Slot1)
-        {
-            currentXpCheck = slot2XP;
-            currentSlot.slotPosition = Slot.SlotsPosition.Slot2;
+            if (currentSlot == slots[i])
+            {
+                if (currentSlot != slots[slots.Count - 1])
+                {
+                    currentSlot = slots[i + 1];
+                    return;
+                }
+                else return;
+            }
         }
     }
 
     // For Left Arrow
     private void OnLeftSlideArrowPressed()
     {
-        if (currentSlot.slotPosition == Slot.SlotsPosition.Slot2)
+        for (int i = 0; i < slots.Count; i++)
         {
-            currentXpCheck = slot1XP;
-            currentSlot.slotPosition = Slot.SlotsPosition.Slot1;
-        }
-        else if (currentSlot.slotPosition == Slot.SlotsPosition.Slot1)
-        {
-            currentXpCheck = slot0XP;
-            currentSlot.slotPosition = Slot.SlotsPosition.Slot0;
+            if (currentSlot == slots[i])
+            {
+                if (currentSlot != slots[0])
+                {
+                    currentSlot = slots[i - 1];
+                    return;
+                }
+                else return;
+            }
         }
     }
 
-    private void MoveToSlot(Slot.SlotsPosition slots, float delta, float accel)
+    private void SlotProcess(float delta)
     {
-        guns.GlobalPosition = guns.GlobalPosition.LinearInterpolate(new Vector2((float)slots, 0), delta * accel);
+        MoveToSlot(currentSlot.Gun.SlotPosition, delta * 6f);
+
+        foreach (var slot in slots)
+        {
+            if (GameRules.HighScore >= slot.Gun.XPCheck)
+                slot.Gun.IsUnlocked = true;
+
+            else
+                slot.Gun.IsUnlocked = false;
+        }
+
+        // State of lockUnlock Button
+        if (currentSlot.Gun.IsUnlocked)
+            lockUnlockButton.Disabled = false;
+        else
+            lockUnlockButton.Disabled = true;
+    }
+
+    private void MoveToSlot(Vector2 slotPosition, float delta)
+    {
+        SlotsNode.GlobalPosition = SlotsNode.GlobalPosition.LinearInterpolate(slotPosition, delta);
     }
 
     private void OnGoBackButtonPressed()
     {
+        slots.Clear();
         GetTree().ChangeScene("res://Levels/Main.tscn");
+    }
+
+    void OnSpawnButtonPressed()
+    {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (currentSlot == slots[i])
+            {
+                guns[i].SetForSpawn = true;
+                spawnButton.Hide();
+                return;
+            }
+        }
     }
 }

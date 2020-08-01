@@ -4,11 +4,16 @@ using System;
 public class Shotgun : Gun
 {
     [Export] public Texture outLineSprite;
+    public override float XPCheck { get; set; } = 50f;
+    public override bool IsUnlocked { get; set; } = false;
+    public override Vector2 SlotPosition { get; set; } = new Vector2(-250f, 0f);
+    public override string ShopName { get; set; } = "Shotgun";
+    public override bool SetForSpawn { get; set; } = false;
+
     private Texture orignalTexture;
 
     public override void _EnterTree()
     {
-        isUnlocked = false;
 		AlreadySpawned = false;
     }
 
@@ -54,6 +59,8 @@ public class Shotgun : Gun
         }
         else
             GetNode<Sprite>("GunComponent/GunSprite").Texture = orignalTexture;
+
+        SetForSpawn = Shop.slots[1].Gun.SetForSpawn;
     }
 
     public override void UnEquip()

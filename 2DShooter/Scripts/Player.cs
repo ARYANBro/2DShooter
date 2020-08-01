@@ -4,35 +4,30 @@ public class Player : KinematicBody2D
 {
     [Signal] public delegate void PlayerDamaged();
     [Signal] public delegate void SPlayerDied();
-
+    
+    [Export] public float speed;
+    [Export] public float friction;
     [Export] public float sprintSpeed;
     [Export] public float acceleration;
     [Export] public float sprintAccelerations;
-    [Export] public float friction;
-    [Export] public float speed;
     [Export]
     public int Hp
     {
-        get
-        {
+        get {
             return hp;
         }
-        set
-        {
+        set {
             if (value <= 0) hp = 0;
             else if (value >= 100) hp = 100;
             else hp = value;
         }
     }
-    [Export]
-    public float Stamina
+    [Export] public float Stamina
     {
-        get
-        {
+        get {
             return stamina;
         }
-        set
-        {
+        set {
             if (value <= 0) stamina = 0;
             else if (value >= 400) stamina = 400;
             else stamina = value;
@@ -50,10 +45,13 @@ public class Player : KinematicBody2D
 
     public override void _Ready()
     {
-        orignalSpeed = speed;
-        orignalSprintSpeed = sprintSpeed;
         playerSprintParticles = GetNode<Particles2D>("PlayerSpriteParitcles");
         inventory = GetNode<Inventory>("Inventory");
+
+        orignalSprintSpeed = sprintSpeed;
+        orignalSpeed = speed;
+
+        Connect("SPlayerDied", GetTree().CurrentScene, "OnPlayerDied");
     }
 
     public override void _Process(float delta)
@@ -74,10 +72,9 @@ public class Player : KinematicBody2D
                 speed = speed * 0.7f;
                 sprintSpeed = sprintSpeed * 0.4f;
             }
-            else 
-            {
+            else {
                 speed = orignalSpeed;
-                sprintSpeed = orignalSprintSpeed;   
+                sprintSpeed = orignalSprintSpeed;
             }
         }
 
@@ -125,8 +122,7 @@ public class Player : KinematicBody2D
 
             playerSprintParticles.Emitting = true;
         }
-        else
-        {
+        else {
             playerSprintParticles.Emitting = false;
             if (inputVector != Vector2.Zero)
                 velocity = velocity.MoveToward(inputVector * speed, acceleration * delta);

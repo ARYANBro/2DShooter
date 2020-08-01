@@ -4,11 +4,16 @@ using System;
 public class RocketLauncher : Gun
 {
     [Export] public Texture outLineSprite;
-    private Texture orignalTexture;
+    public override float XPCheck { get; set; } = 100f;
+    public override Vector2 SlotPosition { get; set; } = new Vector2(-500f, 0f);
+    public override string ShopName { get; set; } = "RocketLauncher";
+    public override bool IsUnlocked { get; set; }
+    public override bool SetForSpawn { get; set; } = false;
 
+    Texture orignalTexture;
+    
     public override void _EnterTree()
     {
-        isUnlocked = false;
         AlreadySpawned = false;
     }
 
@@ -47,6 +52,7 @@ public class RocketLauncher : Gun
             GetNode<GunComponent>("GunComponent").SetProcess(false);
         
         isEquiped = ParentCheck;
+
 		// Add outline when not equiped
         if (!ParentCheck)
         {
@@ -55,6 +61,8 @@ public class RocketLauncher : Gun
         }
         else
             GetNode<Sprite>("GunComponent/GunSprite").Texture = orignalTexture;
+
+        SetForSpawn = Shop.slots[2].Gun.SetForSpawn;
     }
 
     public override void UnEquip()

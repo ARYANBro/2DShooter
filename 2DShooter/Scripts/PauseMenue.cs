@@ -5,6 +5,7 @@ public class PauseMenue : Control
 {
     public override void _Ready()
     {
+        Visible = false;
     }
 
     private void OnShopButtonPressed()

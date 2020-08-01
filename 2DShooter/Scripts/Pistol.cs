@@ -4,8 +4,12 @@ using System;
 public class Pistol : Gun
 {
     [Export] public Texture outLineSprite;
+    public override Vector2 SlotPosition { get; set; } = new Vector2(0f, 0f);
+    public override float XPCheck { get; set; } = 0f;
     private Texture orignalTexture;
-    public override bool isUnlocked { get; set; } = true;
+    public override bool IsUnlocked { get; set; } = true;
+    public override string ShopName { get; set; } = "Pistol";
+    public override bool SetForSpawn { get; set; } = true;
 
     public override void _Ready()
     {
@@ -43,10 +47,13 @@ public class Pistol : Gun
         isEquiped = ParentCheck;
         if (!ParentCheck)
         {
-            if (outLineSprite != null) GetNode<Sprite>("GunComponent/GunSprite").Texture = outLineSprite;
+            if (outLineSprite != null)
+                GetNode<Sprite>("GunComponent/GunSprite").Texture = outLineSprite;
         }
         else
             GetNode<Sprite>("GunComponent/GunSprite").Texture = orignalTexture;
+
+        SetForSpawn = Shop.slots[0].Gun.SetForSpawn;
     }
     public override void UnEquip()
     {

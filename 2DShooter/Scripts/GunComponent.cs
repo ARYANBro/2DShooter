@@ -49,7 +49,8 @@ public class GunComponent : Node2D
                 timeBetweenShots = startTimeBetweenShots;
             }
         }
-        else timeBetweenShots -= delta;
+        else
+            timeBetweenShots -= delta;
     }
     public BulletComponent InstanceBullet(PackedScene scene)
     {
