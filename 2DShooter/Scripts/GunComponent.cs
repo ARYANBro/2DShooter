@@ -9,7 +9,7 @@ public class GunComponent : Node2D
     [Export] public NodePath firepointPath;
     public Position2D firepoint;
 
-	private Vector2 lookDir;
+	Vector2 lookDir;
 
     protected float timeBetweenShots;
 

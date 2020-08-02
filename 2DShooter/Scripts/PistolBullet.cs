@@ -6,7 +6,7 @@ public class PistolBullet : Node2D
 	[Export] public int damage = 20;
 	[Export] public PackedScene hitParticlesScene;
 
-	private Particles2D hitParticle;
+	Particles2D hitParticle;
 
 	public override void _Ready()
 	{

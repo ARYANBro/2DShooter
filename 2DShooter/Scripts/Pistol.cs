@@ -4,12 +4,13 @@ using System;
 public class Pistol : Gun
 {
     [Export] public Texture outLineSprite;
-    public override Vector2 SlotPosition { get; set; } = new Vector2(0f, 0f);
     public override float XPCheck { get; set; } = 0f;
-    private Texture orignalTexture;
     public override bool IsUnlocked { get; set; } = true;
-    public override string ShopName { get; set; } = "Pistol";
     public override bool SetForSpawn { get; set; } = true;
+    public override string ShopName { get; set; } = "Pistol";
+    public override Vector2 SlotPosition { get; set; } = new Vector2(0f, 0f);
+
+    Texture orignalTexture;
 
     public override void _Ready()
     {

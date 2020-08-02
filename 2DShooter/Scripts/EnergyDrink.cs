@@ -5,7 +5,7 @@ public class EnergyDrink : Consumable
 {
 	[Export] public int increaseStaminaBy;
 
-	private void OnStaminapackBodyEntered(object body)
+	void OnStaminapackBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Player")
 		{

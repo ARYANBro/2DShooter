@@ -5,7 +5,7 @@ public class EnemyBullet : Node2D
 {
 	[Export] public int damage = 10;
 
-	private void OnBulletBodyEntered(object body)
+	void OnBulletBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Player")
 		{

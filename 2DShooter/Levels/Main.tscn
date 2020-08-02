@@ -1,7 +1,7 @@
 [gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Assets/New_Enviornment.tres" type="Environment" id=1]
-[ext_resource path="res://Scripts/GameRules.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/MainRoot.cs" type="Script" id=2]
 [ext_resource path="res://Scripts/Score.cs" type="Script" id=3]
 [ext_resource path="res://Assets/UI/Healtbar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/UI/PauseMenue.tscn" type="PackedScene" id=5]
@@ -55,8 +55,10 @@ tracks/1/keys = {
 }
 
 [node name="Main" type="Node2D"]
-scale = Vector2( 0.9784, 1.02804 )
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ]
+}
 maxEnemyCount = 10
 maxBigEnemyCount = 5
 enemyScene = ExtResource( 12 )
@@ -117,19 +119,20 @@ __meta__ = {
 [node name="Score Animplayer" type="AnimationPlayer" parent="Hud/Score Root/Score"]
 "anims/Points bounce" = SubResource( 2 )
 
-[node name="PauseMenue" parent="Hud" instance=ExtResource( 5 )]
-visible = false
+[node name="PauseMenue" type="Node2D" parent="Hud"]
+
+[node name="PauseMenue" parent="Hud/PauseMenue" instance=ExtResource( 5 )]
 margin_left = -252.453
 margin_top = -12.6454
 margin_right = -252.453
 margin_bottom = -12.6454
 
-[node name="PauseButton" type="TextureButton" parent="Hud"]
+[node name="PauseButton" type="TextureButton" parent="Hud/PauseMenue"]
 pause_mode = 2
-margin_left = -246.912
-margin_top = 141.166
-margin_right = 265.088
-margin_bottom = 653.166
+margin_left = -248.973
+margin_top = 142.945
+margin_right = 263.027
+margin_bottom = 654.945
 rect_scale = Vector2( 0.045, 0.04 )
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 19 )
@@ -149,8 +152,6 @@ polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 3
 [connection signal="SIncreasePoints" from="." to="Hud/Score Root/Score" method="IncreasePoints"]
 [connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
 [connection signal="SPlayerDied" from="Player" to="Player" method="OnPlayerDied"]
-[connection signal="pressed" from="Hud/PauseButton" to="." method="OnSpawnButtonPressed"]
+[connection signal="pressed" from="Hud/PauseMenue/PauseButton" to="." method="OnPauseButtonPressed"]
 
 [editable path="Player"]
-
-[editable path="Hud/PauseMenue"]

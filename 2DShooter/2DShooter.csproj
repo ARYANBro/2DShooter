@@ -55,6 +55,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\GameRules.cs" />
     <Compile Include="Scripts\IIsShopable.cs" />
     <Compile Include="Scripts\PistolBulletParticles.cs" />
     <Compile Include="Scripts\EnemyBullet.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Scripts\Consumable.cs" />
     <Compile Include="Scripts\ConsumableSpawner.cs" />
     <Compile Include="Scripts\EnemySpawner.cs" />
-    <Compile Include="Scripts\GameRules.cs" />
+    <Compile Include="Scripts\MainRoot.cs" />
     <Compile Include="Scripts\GunSpawner.cs" />
     <Compile Include="Scripts\IPickable.cs" />
     <Compile Include="Scripts\PauseMenue.cs" />

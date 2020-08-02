@@ -10,7 +10,7 @@ public class Shotgun : Gun
     public override string ShopName { get; set; } = "Shotgun";
     public override bool SetForSpawn { get; set; } = false;
 
-    private Texture orignalTexture;
+    Texture orignalTexture;
 
     public override void _EnterTree()
     {

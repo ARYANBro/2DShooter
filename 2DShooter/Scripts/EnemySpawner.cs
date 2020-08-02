@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class EnemySpawner
 {
 
-    private Node parent;
-    private PackedScene enemyScene;
-    private PackedScene bigEnemyScene;
-    private List<Node> enemies = new List<Node>();
+    Node parent;
+    PackedScene enemyScene;
+    PackedScene bigEnemyScene;
+    List<Node> enemies = new List<Node>();
 
     public EnemySpawner(PackedScene _enemyScene, PackedScene _bigEnemyScene, Node _parent) =>
     (enemyScene, bigEnemyScene, parent) = (_enemyScene, _bigEnemyScene, _parent);

@@ -74,7 +74,7 @@ public class Enemy : KinematicBody2D
     }
 
 
-    private void OnHitTimerTimeout()
+    void OnHitTimerTimeout()
     {
         if ((Color)sprite.Material.Get("shader_param/Color") != color)
             sprite.Material.SetDeferred("shader_param/Color", color);
@@ -97,12 +97,12 @@ public class Enemy : KinematicBody2D
         else timeBetweenShots -= delta;
     }
 
-    private void Move(float delta)
+    void Move(float delta)
     {
         velocity = MoveAndSlide(velocity);
     }
 
-    private void GetMovementInput(float delta)
+    void GetMovementInput(float delta)
     {
         var inputVector = Vector2.Zero;
         inputVector = player.GlobalPosition - GlobalPosition;

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-public class Shop : Node2D
+public class Shop : GameRules
 {
     public Button spawnButton;
     public float currentXpCheck;
@@ -24,12 +24,13 @@ public class Shop : Node2D
 
         if (GetTree().Paused)
             GetTree().Paused = false;
+       
     }
 
     public override void _Process(float delta)
     {
         SlotProcess(delta);
-        highScoreCounter.Text = GameRules.HighScore.ToString();
+        highScoreCounter.Text = MainRoot.HighScore.ToString();
 
         if (currentSlot.Gun.IsUnlocked)
         {
@@ -42,7 +43,7 @@ public class Shop : Node2D
         }
     }
 
-    private void OnRightSlideArrowPressed()
+    void OnRightSlideArrowPressed()
     {
         for (int i = 0; i < slots.Count; i++)
         {
@@ -59,7 +60,7 @@ public class Shop : Node2D
     }
 
     // For Left Arrow
-    private void OnLeftSlideArrowPressed()
+    void OnLeftSlideArrowPressed()
     {
         for (int i = 0; i < slots.Count; i++)
         {
@@ -75,7 +76,7 @@ public class Shop : Node2D
         }
     }
 
-    private void SlotProcess(float delta)
+    void SlotProcess(float delta)
     {
         MoveToSlot(currentSlot.Gun.SlotPosition, delta * 6f);
         if (currentSlot.Gun.SetForSpawn)
@@ -85,7 +86,7 @@ public class Shop : Node2D
 
         foreach (var gun in guns)
         {
-            if (GameRules.HighScore >= gun.XPCheck)
+            if (MainRoot.HighScore >= gun.XPCheck)
             {
                 gun.IsUnlocked = true;
             }
@@ -96,7 +97,7 @@ public class Shop : Node2D
 
         foreach (var slot in slots)
         {
-            if (GameRules.HighScore >= slot.Gun.XPCheck)
+            if (MainRoot.HighScore >= slot.Gun.XPCheck)
             {
                 slot.Gun.IsUnlocked = true;
             }
@@ -112,7 +113,7 @@ public class Shop : Node2D
             lockUnlockButton.Disabled = true;
     }
 
-    private void MoveToSlot(Vector2 slotPosition, float delta)
+    void MoveToSlot(Vector2 slotPosition, float delta)
     {
         SlotsNode.GlobalPosition = SlotsNode.GlobalPosition.LinearInterpolate(slotPosition, delta);
     }
@@ -129,7 +130,7 @@ public class Shop : Node2D
         {
             if (currentSlot == slots[i])
             {
-                guns[i].SetForSpawn = true; 
+                guns[i].SetForSpawn = true;
                 return;
             }
         }

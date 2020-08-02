@@ -10,14 +10,14 @@ public class Score : Label
         animPlayer = GetNode<AnimationPlayer>("Score Animplayer");
     }
 
-    private int points = 0;
+    int points = 0;
 
     public override void _Process(float delta)
     {
         Text = Convert.ToString(points) + "P";
     }
 
-    private void IncreasePoints(int _points)
+    void IncreasePoints(int _points)
     {
         points += _points; 
         animPlayer.Play("Points bounce");

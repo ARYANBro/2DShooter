@@ -8,14 +8,16 @@ public class PauseMenue : Control
         Visible = false;
     }
 
-    private void OnShopButtonPressed()
-    {
-        GetTree().ChangeScene("res://Assets/Shop.tscn");
-    }
-
-    private void OnResumeButtonPressed()
+    void OnResumeButtonPressed()
     {
         GetTree().Paused = false;
+        GetTree().CurrentScene.GetNode<TextureButton>("Hud/PauseMenue/PauseButton").Visible = true;
         Hide(); 
+    }
+
+
+    void OnShopButtonPressed()
+    {
+        GetTree().ChangeScene("res://Assets/Shop.tscn");
     }
 }

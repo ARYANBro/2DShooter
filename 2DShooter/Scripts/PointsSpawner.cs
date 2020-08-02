@@ -3,7 +3,7 @@ using System;
 
 public class PointsSpawner
 {
-    private PackedScene pointsScene;
+    PackedScene pointsScene;
 
     public PointsSpawner(PackedScene _pointsScene) => (pointsScene) = (_pointsScene);
     public void Spawn(Vector2 position, int _points, Vector2 size, SceneTree sceneTree)

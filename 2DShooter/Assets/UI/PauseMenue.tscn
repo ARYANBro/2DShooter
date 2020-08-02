@@ -1,19 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Assets/Fonts/Roboto/Roboto-Black.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scripts/PauseMenue.cs" type="Script" id=2]
-
-[sub_resource type="DynamicFont" id=1]
-size = 32
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=2]
-size = 33
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 1 )
+[ext_resource path="res://Assets/Sprites/ResumeButton/ResumeButton.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/ResumeButton/ResumeButtonPressed.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Sprites/ShopButton/ShopButtonPressed.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Sprites/ShopButton/ShopButton.png" type="Texture" id=6]
 
 [node name="PauseMenue" type="Control"]
 pause_mode = 2
@@ -22,37 +13,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ShopButton" type="Button" parent="."]
-margin_left = 129.0
-margin_top = 81.0
-margin_right = 246.0
-margin_bottom = 131.0
-rect_scale = Vector2( 0.5, 0.5 )
-focus_mode = 0
-custom_fonts/font = SubResource( 1 )
-toggle_mode = true
-enabled_focus_mode = 0
-text = "Shop"
-flat = true
-clip_text = true
-expand_icon = true
+[node name="ResumeButton" type="TextureButton" parent="."]
+margin_left = 23.6638
+margin_top = 155.823
+margin_right = 535.664
+margin_bottom = 667.823
+rect_scale = Vector2( -0.04, 0.04 )
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ResumeButton" type="Button" parent="."]
-margin_left = 122.0
-margin_top = 60.0
-margin_right = 268.0
-margin_bottom = 112.0
-rect_scale = Vector2( 0.5, 0.5 )
-focus_mode = 0
-custom_fonts/font = SubResource( 2 )
-enabled_focus_mode = 0
-text = "Resume"
-flat = true
+[node name="ShopButton" type="TextureButton" parent="."]
+margin_left = 23.7039
+margin_top = 151.825
+margin_right = 535.704
+margin_bottom = 663.825
+rect_scale = Vector2( 0.05, 0.05 )
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="ShopButton" to="." method="OnShopButtonPressed"]
 [connection signal="pressed" from="ResumeButton" to="." method="OnResumeButtonPressed"]
+[connection signal="pressed" from="ShopButton" to="." method="OnShopButtonPressed"]

@@ -1,141 +1,29 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 
-public class GameRules : Node2D
+public  class GameRules : Node
 {
-    [Signal] public delegate void SPlayerWon();
-    [Signal] public delegate void SIncreasePoints(int points);
-
-    [Export] public int maxEnemyCount;
-    [Export] public int maxBigEnemyCount;
-    [Export] public PackedScene enemyScene;
-    [Export] public PackedScene pointsScene;
-    [Export] public PackedScene pistolScene;
-    [Export] public PackedScene shotGunScene;
-    [Export] public PackedScene bigEnemyScene;
-    [Export] public PackedScene healthPackScene;
-    [Export] public PackedScene energyDrinkScene;
-    [Export] public PackedScene rocketLauncherScene;
-    public Player player;
-    public Node2D enemiesNode;
-    public Control pauseMenue;
     public bool engineScaleCheck = false;
 
-    public static float HighScore
+    public virtual void PauseGame()
     {
-        get {
-            return highScore;
-        }
-
-        private set
-        {
-            highScore = value;
-        }
+        GetTree().Paused = true;
+        GetNode<TextureButton>("Hud/PauseMenue/PauseButton").Visible = false;
+        GetTree().CurrentScene.GetNode<Control>("Hud/PauseMenue/PauseMenue").Visible = true;
     }
 
-    int points = 0;
-    bool enemyCondition = false;
-    static float highScore = 0;
-    Pistol pistol;
-    Shotgun shotgun;
-    Healthpack healthpack;
-    GunSpawner gunSpawner;
-    EnergyDrink energyDrink;
-    EnemySpawner enemySpawner;
-    PointsSpawner pointsSpawner;
-    RocketLauncher rocketLauncher;
-    ConsumableSpawner consumableSpawner;
-
-    public override void _Ready()
+    public virtual void ResumeGame()
     {
-        player = GetNode<Player>("Player");
-        enemiesNode = GetNode<Node2D>("Enemies");
-        pauseMenue = GetNode<Control>("Hud/PauseMenue");
-
-        gunSpawner = new GunSpawner();
-        pointsSpawner = new PointsSpawner(pointsScene);
-        enemySpawner = new EnemySpawner(enemyScene, bigEnemyScene, enemiesNode);
-        consumableSpawner = new ConsumableSpawner(healthPackScene, energyDrinkScene, GetTree().CurrentScene);
-
-        // Spawn Guns
-        gunSpawner.InitGun<Pistol>(ref pistol, pistolScene);
-        gunSpawner.InitGun<Shotgun>(ref shotgun, shotGunScene);
-        gunSpawner.InitGun<RocketLauncher>(ref rocketLauncher, rocketLauncherScene);
-        
-        gunSpawner.Spawn<Shotgun>(ref shotgun, player.Position, player.RotationDegrees, GetTree().CurrentScene);
-        gunSpawner.Spawn<RocketLauncher>(ref rocketLauncher, player.Position, player.RotationDegrees, GetTree().CurrentScene);
-        gunSpawner.Spawn<Pistol>(ref pistol,  player.Position, player.RotationDegrees, GetTree().CurrentScene);
-
-        // Spawn Enemies
-        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount);
+        GetTree().Paused = false;
     }
 
-    public override void _Process(float delta)
-    {
-        EngineScaleCheck();
-        PlayerWonCheck();
-
-        if (Input.IsActionJustPressed("Pause"))
-            PauseGame();
-
-        gunSpawner.GunUnlockCheck<Pistol>(ref pistol, 0);
-        gunSpawner.GunUnlockCheck<Shotgun>(ref shotgun, 1);
-        gunSpawner.GunUnlockCheck<RocketLauncher>(ref rocketLauncher, 2);
-    }
-
-    void OnEnemyDied(int _points)
-    {
-        // Spawn more enemies
-        enemyCondition = true;
-
-        EmitSignal("SIncreasePoints", _points);
-        points += _points;
-
-        // Increase points
-        if (highScore < points)
-            highScore = points;
-    }
-
-    void OnPlayerWon()
-    {
-        // Spawn Consumables and Enemies
-        SpawnConsumables();
-        gunSpawner.Spawn<Shotgun>(ref shotgun, player.Position, player.RotationDegrees, GetTree().CurrentScene);
-        gunSpawner.Spawn<RocketLauncher>(ref rocketLauncher, player.Position, player.RotationDegrees, GetTree().CurrentScene);
-
-        GetTree().CreateTimer(5f).Connect("timeout", this, "SpawnEnemiesTimerTimeout");
-    }
-
-    void SpawnEnemiesTimerTimeout()
-    {
-        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount);
-    }
-
-    void OnPlayerDied() => GetTree().Quit();
-    void SpawnPoints(Vector2 position, int _points, Vector2 size)
-    {
-        pointsSpawner.Spawn(position, _points, size, GetTree());
-    }
-
-    void FixEngineScale()
+    public void FixEngineScale()
     {
         Engine.TimeScale = 1.0f;
         engineScaleCheck = false;
     }
 
-    public void PauseGame()
-    {
-        GetTree().Paused = true;
-        GetTree().CurrentScene.GetNode<Control>("Hud/PauseMenue").Visible = true;
-    }
-
-    public void ResumeGame()
-    {
-        GetTree().Paused = false;
-    }
-
-    void EngineScaleCheck()
+    public void EngineScaleCheck()
     {
         // Check if Engine scale is ok
         if (engineScaleCheck == true)
@@ -144,45 +32,4 @@ public class GameRules : Node2D
                 GetTree().CreateTimer(2f).Connect("timeout", this, "FixEngineScale");
         }
     }
-
-    void PlayerWonCheck()
-    {
-        if (enemyCondition == true)
-        {
-            if (enemiesNode.GetChildCount() == 0)
-            {
-                EmitSignal("SPlayerWon");
-                enemyCondition = false;
-            }
-        }
-    }
-
-    void SpawnConsumables()
-    {
-        healthpack = consumableSpawner.InitConsumables(healthPackScene) as Healthpack;
-        energyDrink = consumableSpawner.InitConsumables(energyDrinkScene) as EnergyDrink;
-
-        int randNumber = Utlities.randNumGenerator.RandiRange(0, 1);
-
-        if (randNumber == 1)
-        {
-            Vector2 resolution = GetTree().Root.GetVisibleRect().Size;
-            Vector2 position = new Vector2(Utlities.randNumGenerator.RandfRange(0, resolution.x), Utlities.randNumGenerator.RandfRange(0, resolution.y));
-
-            consumableSpawner.Spawn<Healthpack>(ref healthpack, position, 0f, GetTree().CurrentScene);
-            energyDrink.QueueFree();
-        }
-        else {
-            Vector2 resolution = GetTree().Root.GetVisibleRect().Size;
-            Vector2 position = new Vector2(Utlities.randNumGenerator.RandfRange(0, resolution.x), Utlities.randNumGenerator.RandfRange(0, resolution.y));
-
-            consumableSpawner.Spawn<EnergyDrink>(ref energyDrink, position, 0f, GetTree().CurrentScene);
-            healthpack.QueueFree();
-        }
-    }
-
-    void OnSpawnButtonPressed()
-    {
-        PauseGame();
-    }
-}   
+}

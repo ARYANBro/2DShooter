@@ -38,10 +38,10 @@ public class Player : KinematicBody2D
     public bool canSprint = true;
     public Vector2 velocity = Vector2.Zero;
 
-    private int hp = 100;
-    private float stamina = 400f;
-    private float orignalSpeed;
-    private float orignalSprintSpeed;
+    int hp = 100;
+    float stamina = 400f;
+    float orignalSpeed;
+    float orignalSprintSpeed;
 
     public override void _Ready()
     {
@@ -88,12 +88,12 @@ public class Player : KinematicBody2D
         EmitSignal("PlayerDamaged");
     }
 
-    private void OnPlayerDied()
+    void OnPlayerDied()
     {
         Hide();
     }
 
-    private void Move(float delta)
+    void Move(float delta)
     {
         if (Input.IsActionPressed("Sprint") && canSprint && velocity != Vector2.Zero)
             Stamina -= 3;

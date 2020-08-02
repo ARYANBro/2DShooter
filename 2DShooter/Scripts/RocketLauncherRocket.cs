@@ -7,9 +7,9 @@ public class RocketLauncherRocket : Node2D
 	[Export] public NodePath DamageAreaCollisionPath;
 	[Export] public PackedScene hitParticlesScene;
 
-	private Enemy rocketCollidedEnemy;
+	Enemy rocketCollidedEnemy;
 	public Node2D hitParticleRoot;
-	private bool enalbeSlowMo = false;
+	bool enalbeSlowMo = false;
 
     public override void _Ready()
     {
@@ -24,7 +24,7 @@ public class RocketLauncherRocket : Node2D
 		else Engine.TimeScale = 1.0f;
 	}
 
-    private void OnBulletBodyEntered(object body)
+    void OnBulletBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Enemy")
 		{
@@ -57,27 +57,27 @@ public class RocketLauncherRocket : Node2D
 		GetTree().CreateTimer(0.1f).Connect("timeout", this, "DeleteRocket");
 	}
 
-	private void DeleteRocket()
+	void DeleteRocket()
 	{
 		GetTree().CreateTimer(1f).Connect("timeout", hitParticleRoot, "queue_free");
 		QueueFree();
 	}
 
-	private void SlowMo(float time, float scale)
+	void SlowMo(float time, float scale)
 	{
 		enalbeSlowMo = true;
 		GetTree().CreateTimer(time).CallDeferred("connect", "timeout", this, "SetSlowMoToFalse");
 		
-		var gameRules = GetTree().CurrentScene as GameRules;
+		var gameRules = GetTree().CurrentScene as MainRoot;
 		gameRules.engineScaleCheck = true;
 	}
 
-	private void SetSlowMoToFalse()
+	void SetSlowMoToFalse()
 	{
 		enalbeSlowMo = false;
 	}
 
-	private void OnDamageAreaBodyEntered(object body)
+	void OnDamageAreaBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Enemy" && body != rocketCollidedEnemy)
 		{

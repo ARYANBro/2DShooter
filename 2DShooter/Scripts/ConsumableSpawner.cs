@@ -3,9 +3,9 @@ using System;
 
 public class ConsumableSpawner
 {
-    private PackedScene healthPackScene;
-    private PackedScene energyDrinkScene;
-    private Node parent;
+    PackedScene healthPackScene;
+    PackedScene energyDrinkScene;
+    Node parent;
 
     public Consumable InitConsumables(PackedScene consumableScene)
     {
