@@ -17,16 +17,14 @@ public class GameRules : Node2D
     [Export] public PackedScene healthPackScene;
     [Export] public PackedScene energyDrinkScene;
     [Export] public PackedScene rocketLauncherScene;
-    public Node2D enemiesNode;
     public Player player;
+    public Node2D enemiesNode;
     public Control pauseMenue;
-    public static bool gameIsPaused;
     public bool engineScaleCheck = false;
 
     public static float HighScore
     {
-        get
-        {
+        get {
             return highScore;
         }
 
@@ -36,18 +34,18 @@ public class GameRules : Node2D
         }
     }
 
-    private int points = 0;
-    private bool enemyCondition = false;
-    static private float highScore = 0;
-    private Pistol pistol;
-    private Shotgun shotgun;
-    private Healthpack healthpack;
-    private GunSpawner gunSpawner;
-    private EnergyDrink energyDrink;
-    private EnemySpawner enemySpawner;
-    private PointsSpawner pointsSpawner;
-    private RocketLauncher rocketLauncher;
-    private ConsumableSpawner consumableSpawner;
+    int points = 0;
+    bool enemyCondition = false;
+    static float highScore = 0;
+    Pistol pistol;
+    Shotgun shotgun;
+    Healthpack healthpack;
+    GunSpawner gunSpawner;
+    EnergyDrink energyDrink;
+    EnemySpawner enemySpawner;
+    PointsSpawner pointsSpawner;
+    RocketLauncher rocketLauncher;
+    ConsumableSpawner consumableSpawner;
 
     public override void _Ready()
     {
@@ -59,7 +57,6 @@ public class GameRules : Node2D
         pointsSpawner = new PointsSpawner(pointsScene);
         enemySpawner = new EnemySpawner(enemyScene, bigEnemyScene, enemiesNode);
         consumableSpawner = new ConsumableSpawner(healthPackScene, energyDrinkScene, GetTree().CurrentScene);
-
 
         // Spawn Guns
         gunSpawner.InitGun<Pistol>(ref pistol, pistolScene);
@@ -76,19 +73,18 @@ public class GameRules : Node2D
 
     public override void _Process(float delta)
     {
-        GamePauseStateCheck();
         EngineScaleCheck();
         PlayerWonCheck();
 
         if (Input.IsActionJustPressed("Pause"))
-            gameIsPaused = true;
+            PauseGame();
 
         gunSpawner.GunUnlockCheck<Pistol>(ref pistol, 0);
         gunSpawner.GunUnlockCheck<Shotgun>(ref shotgun, 1);
         gunSpawner.GunUnlockCheck<RocketLauncher>(ref rocketLauncher, 2);
     }
 
-    private void OnEnemyDied(int _points)
+    void OnEnemyDied(int _points)
     {
         // Spawn more enemies
         enemyCondition = true;
@@ -101,7 +97,7 @@ public class GameRules : Node2D
             highScore = points;
     }
 
-    private void OnPlayerWon()
+    void OnPlayerWon()
     {
         // Spawn Consumables and Enemies
         SpawnConsumables();
@@ -111,15 +107,18 @@ public class GameRules : Node2D
         GetTree().CreateTimer(5f).Connect("timeout", this, "SpawnEnemiesTimerTimeout");
     }
 
-    private void SpawnEnemiesTimerTimeout()
+    void SpawnEnemiesTimerTimeout()
     {
         enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount);
     }
 
-    private void OnPlayerDied() => GetTree().Quit();
-    private void SpawnPoints(Vector2 position, int _points, Vector2 size) => pointsSpawner.Spawn(position, _points, size, GetTree());
+    void OnPlayerDied() => GetTree().Quit();
+    void SpawnPoints(Vector2 position, int _points, Vector2 size)
+    {
+        pointsSpawner.Spawn(position, _points, size, GetTree());
+    }
 
-    private void FixEngineScale()
+    void FixEngineScale()
     {
         Engine.TimeScale = 1.0f;
         engineScaleCheck = false;
@@ -127,16 +126,16 @@ public class GameRules : Node2D
 
     public void PauseGame()
     {
-        Engine.TimeScale = 0.0f;
+        GetTree().Paused = true;
         GetTree().CurrentScene.GetNode<Control>("Hud/PauseMenue").Visible = true;
     }
 
-    public static void ResumeGame()
+    public void ResumeGame()
     {
-        Engine.TimeScale = 1.0f;
+        GetTree().Paused = false;
     }
 
-    private void EngineScaleCheck()
+    void EngineScaleCheck()
     {
         // Check if Engine scale is ok
         if (engineScaleCheck == true)
@@ -146,14 +145,7 @@ public class GameRules : Node2D
         }
     }
 
-    private void GamePauseStateCheck()
-    {
-        if (gameIsPaused)
-            PauseGame();
-        else ResumeGame();
-    }
-
-    private void PlayerWonCheck()
+    void PlayerWonCheck()
     {
         if (enemyCondition == true)
         {
@@ -165,7 +157,7 @@ public class GameRules : Node2D
         }
     }
 
-    private void SpawnConsumables()
+    void SpawnConsumables()
     {
         healthpack = consumableSpawner.InitConsumables(healthPackScene) as Healthpack;
         energyDrink = consumableSpawner.InitConsumables(energyDrinkScene) as EnergyDrink;
@@ -188,4 +180,9 @@ public class GameRules : Node2D
             healthpack.QueueFree();
         }
     }
-}
+
+    void OnSpawnButtonPressed()
+    {
+        PauseGame();
+    }
+}   

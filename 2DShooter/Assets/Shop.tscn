@@ -127,13 +127,15 @@ __meta__ = {
 }
 
 [node name="SpawnButton" type="Button" parent="."]
-margin_left = 125.359
-margin_top = 154.331
-margin_right = 241.359
-margin_bottom = 198.331
+margin_left = 124.098
+margin_top = 155.592
+margin_right = 240.098
+margin_bottom = 199.592
 rect_scale = Vector2( 0.5, 0.55 )
 focus_mode = 0
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color_disabled = Color( 0.65, 0.65, 0.65, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "SPAWN"
 flat = true
 __meta__ = {

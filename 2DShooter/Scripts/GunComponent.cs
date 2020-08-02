@@ -20,12 +20,6 @@ public class GunComponent : Node2D
 
     public override void _Process(float delta)
     {
-        if (GameRules.gameIsPaused)
-        {
-            SetProcess(false);
-        }
-        else SetProcess(true);
-
         lookDir = GetGlobalMousePosition() - GlobalPosition;
         RotationDegrees = Utlities.LookAtMouse(GetGlobalMousePosition(), GlobalPosition);
         Shoot(lookDir, delta);
@@ -51,10 +45,5 @@ public class GunComponent : Node2D
         }
         else
             timeBetweenShots -= delta;
-    }
-    public BulletComponent InstanceBullet(PackedScene scene)
-    {
-        var bulletRoot = scene.Instance() as BulletComponent;
-        return bulletRoot;
     }
 }

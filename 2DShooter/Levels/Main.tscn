@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Assets/New_Enviornment.tres" type="Environment" id=1]
 [ext_resource path="res://Scripts/GameRules.cs" type="Script" id=2]
@@ -17,6 +17,8 @@
 [ext_resource path="res://Assets/Enemy/PointsAnimPlayer.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Assets/Weapons/Pistol.tscn" type="PackedScene" id=16]
 [ext_resource path="res://Assets/Fonts/Roboto/Roboto-Black.ttf" type="DynamicFontData" id=17]
+[ext_resource path="res://Assets/Sprites/PauseButton/PauseButton.png" type="Texture" id=18]
+[ext_resource path="res://Assets/Sprites/PauseButton/PauseButtonPressed.png" type="Texture" id=19]
 
 [sub_resource type="DynamicFont" id=1]
 size = 15
@@ -116,10 +118,24 @@ __meta__ = {
 "anims/Points bounce" = SubResource( 2 )
 
 [node name="PauseMenue" parent="Hud" instance=ExtResource( 5 )]
+visible = false
 margin_left = -252.453
 margin_top = -12.6454
 margin_right = -252.453
 margin_bottom = -12.6454
+
+[node name="PauseButton" type="TextureButton" parent="Hud"]
+pause_mode = 2
+margin_left = -246.912
+margin_top = 141.166
+margin_right = 265.088
+margin_bottom = 653.166
+rect_scale = Vector2( 0.045, 0.04 )
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Enviornment" type="Node2D" parent="."]
 
@@ -129,11 +145,11 @@ environment = ExtResource( 1 )
 [node name="Walls" type="StaticBody2D" parent="Enviornment"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Enviornment/Walls"]
-position = Vector2( 0, 1.94545 )
 polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -3.06623, 175.09, 323.998, 175.09, 323.998, 0, -3.06623, 0, -3.06623, 176.063, 0, 201.354, -32.7065, 201.354 )
 [connection signal="SIncreasePoints" from="." to="Hud/Score Root/Score" method="IncreasePoints"]
 [connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
 [connection signal="SPlayerDied" from="Player" to="Player" method="OnPlayerDied"]
+[connection signal="pressed" from="Hud/PauseButton" to="." method="OnSpawnButtonPressed"]
 
 [editable path="Player"]
 

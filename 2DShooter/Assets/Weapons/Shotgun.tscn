@@ -18,7 +18,7 @@ outLineSprite = ExtResource( 5 )
 [node name="GunComponent" parent="." instance=ExtResource( 3 )]
 script = ExtResource( 6 )
 fireSpeed = 400.0
-startTimeBetweenShots = 4.0
+startTimeBetweenShots = 3.0
 bulletScene = ExtResource( 2 )
 maxBullets = 3
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Over.png-71a435168896b51b53767f026e72bc6e.stex"
+path="res://.import/PauseButton.png-4c0ad43072234fea3409041b6092e7c2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Stamina Bar/Over.png"
-dest_files=[ "res://.import/Over.png-71a435168896b51b53767f026e72bc6e.stex" ]
+source_file="res://Assets/Sprites/PauseButton/PauseButton.png"
+dest_files=[ "res://.import/PauseButton.png-4c0ad43072234fea3409041b6092e7c2.stex" ]
 
 [params]
 

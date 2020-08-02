@@ -11,6 +11,7 @@ radius = 13.0
 height = 10.0
 
 [node name="Pistol" type="Node2D"]
+show_behind_parent = true
 script = ExtResource( 1 )
 outLineSprite = ExtResource( 4 )
 

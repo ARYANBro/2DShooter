@@ -22,7 +22,8 @@ public class Shop : Node2D
 
         currentSlot = slots[0];
 
-        GameRules.ResumeGame();
+        if (GetTree().Paused)
+            GetTree().Paused = false;
     }
 
     public override void _Process(float delta)
@@ -77,14 +78,31 @@ public class Shop : Node2D
     private void SlotProcess(float delta)
     {
         MoveToSlot(currentSlot.Gun.SlotPosition, delta * 6f);
+        if (currentSlot.Gun.SetForSpawn)
+            spawnButton.Disabled = true;
+        else
+            spawnButton.Disabled = false;
+
+        foreach (var gun in guns)
+        {
+            if (GameRules.HighScore >= gun.XPCheck)
+            {
+                gun.IsUnlocked = true;
+            }
+            else {
+                gun.IsUnlocked = false;
+            }
+        }
 
         foreach (var slot in slots)
         {
             if (GameRules.HighScore >= slot.Gun.XPCheck)
+            {
                 slot.Gun.IsUnlocked = true;
-
-            else
+            }
+            else {
                 slot.Gun.IsUnlocked = false;
+            }
         }
 
         // State of lockUnlock Button
@@ -99,20 +117,19 @@ public class Shop : Node2D
         SlotsNode.GlobalPosition = SlotsNode.GlobalPosition.LinearInterpolate(slotPosition, delta);
     }
 
-    private void OnGoBackButtonPressed()
+    void OnGoBackButtonPressed()
     {
-        slots.Clear();
         GetTree().ChangeScene("res://Levels/Main.tscn");
     }
 
     void OnSpawnButtonPressed()
     {
+
         for (int i = 0; i < slots.Count; i++)
         {
             if (currentSlot == slots[i])
             {
-                guns[i].SetForSpawn = true;
-                spawnButton.Hide();
+                guns[i].SetForSpawn = true; 
                 return;
             }
         }

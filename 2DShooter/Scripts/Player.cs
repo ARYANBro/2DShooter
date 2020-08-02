@@ -58,12 +58,6 @@ public class Player : KinematicBody2D
     {
         speed = orignalSpeed;
         sprintSpeed = orignalSprintSpeed;
-        if (GameRules.gameIsPaused)
-        {
-            SetProcessInput(false);
-        }
-        else
-            SetProcessInput(true);
 
         if (inventory.GetChildCount() != 0)
         {
