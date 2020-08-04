@@ -3,13 +3,11 @@
 [ext_resource path="res://Scripts/Healthpack.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Healthpack/HealthpackOutline.png" type="Texture" id=2]
 
-
-
-
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 11, 8 )
 
 [node name="Healthpack" type="Area2D"]
+show_behind_parent = true
 position = Vector2( -1, 1 )
 collision_layer = 0
 script = ExtResource( 1 )

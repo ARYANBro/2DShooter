@@ -24,21 +24,10 @@ public class RocketLauncherRocket : Node2D
 		else Engine.TimeScale = 1.0f;
 	}
 
-    void OnBulletBodyEntered(object body)
+    async void OnBulletBodyEntered(object body)
 	{
-		if (body.GetType().Name == "Enemy")
-		{
-			rocketCollidedEnemy = body as Enemy;
-			rocketCollidedEnemy.TakeDamage(damage);
-		}
-		else if (body.GetType().Name == "BigEnemy")
-        {
-			rocketCollidedEnemy = body as BigEnemy;
-			rocketCollidedEnemy.TakeDamage(damage);
-        }
-
-		enalbeSlowMo = true;
-		GetTree().CreateTimer(0.05f).Connect("timeout", this, "SetSlowMoToFalse");
+		if (body is Enemy enemy)
+			enemy.TakeDamage(damage);
 
 		var damageAreaCollision = GetNode<CollisionShape2D>(DamageAreaCollisionPath);
 
@@ -49,45 +38,25 @@ public class RocketLauncherRocket : Node2D
 			hitParticleRoot.GlobalPosition = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
 			if (hitParticleRoot.GetParent() != GetTree().CurrentScene)
 				GetTree().CurrentScene.AddChild(hitParticleRoot);
-
-			SlowMo(1f, 0.1f);
 		}
 
 		GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(180, 90, 80);
-		GetTree().CreateTimer(0.1f).Connect("timeout", this, "DeleteRocket");
-	}
 
-	void DeleteRocket()
-	{
-		GetTree().CreateTimer(1f).Connect("timeout", hitParticleRoot, "queue_free");
-		QueueFree();
-	}
-
-	void SlowMo(float time, float scale)
-	{
 		enalbeSlowMo = true;
-		GetTree().CreateTimer(time).CallDeferred("connect", "timeout", this, "SetSlowMoToFalse");
-		
-		var gameRules = GetTree().CurrentScene as MainRoot;
-		gameRules.engineScaleCheck = true;
-	}
-
-	void SetSlowMoToFalse()
-	{
+		await ToSignal(GetTree().CreateTimer(0.05f), "timeout");
 		enalbeSlowMo = false;
+
+		await ToSignal(GetTree().CreateTimer(0.05f), "timeout");
+		
+		await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
+		QueueFree();
+		await ToSignal(GetTree().CreateTimer(1f), "timeout");
+		hitParticleRoot.QueueFree();
 	}
 
 	void OnDamageAreaBodyEntered(object body)
 	{
-		if (body.GetType().Name == "Enemy" && body != rocketCollidedEnemy)
-		{
-			var enemy = body as Enemy;
+		if (body is Enemy enemy)
 			enemy.TakeDamage(damage * 0.5f);
-		}
-		else if (body.GetType().Name == "BigEnemy" && body != rocketCollidedEnemy)
-        {
-			var enemy = body as BigEnemy;
-			enemy.TakeDamage(damage * 0.8f);
-        }
 	}
 }

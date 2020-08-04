@@ -1,6 +1,5 @@
 using System;
 using Godot;
-
 public class EnemyBullet : Node2D
 {
 	[Export] public int damage = 10;

@@ -30,20 +30,20 @@ public class CameraShake : Camera2D
             Offset = Offset.MoveToward(orignalPos, decay * delta);
     }
 
-    public void StartShake()
+    async public void StartShake()
     {
         shake = true;
-        GetTree().CreateTimer(shakeTimerWaitTime).Connect("timeout", this, "OnShakeTimerTimeout");
+        await ToSignal(GetTree().CreateTimer(shakeTimerWaitTime), "timeout");
+        shake = false;
     }
 
-    public void Shake(float _randomness, float _speed, float _decay)
+    async public void Shake(float _randomness, float _speed, float _decay)
     {
         randomness = _randomness;
         speed = _speed;
         decay = _decay;
         shake = true;
-        GetTree().CreateTimer(shakeTimerWaitTime).Connect("timeout", this, "OnShakeTimerTimeout");
+        await ToSignal(GetTree().CreateTimer(shakeTimerWaitTime), "timeout");
+        shake = false;
     }
-
-    void OnShakeTimerTimeout() => shake = false;
 }

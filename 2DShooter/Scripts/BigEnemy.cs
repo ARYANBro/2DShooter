@@ -6,7 +6,7 @@ class BigEnemy : Enemy
 {
     [Export] public int maxBullets = 1;
 
-    protected override void Shoot(float delta)
+    public override void Shoot(float delta)
     {
         List<Node> bullets = new List<Node>();
 
@@ -31,7 +31,7 @@ class BigEnemy : Enemy
         else timeBetweenShots -= delta;
     }
 
-    public override void TakeDamage(float damage)
+    async public override void TakeDamage(float damage)
     {
         Hp -= damage;
         if (Hp <= 0)
@@ -44,5 +44,9 @@ class BigEnemy : Enemy
 
             GetParent().QueueFree();
         }
+
+        GetNode<Sprite>("EnemySprite").Material.Set("shader_param/hit", true);
+        await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
+        GetNode<Sprite>("EnemySprite").Material.Set("shader_param/hit", false);
     }
 }

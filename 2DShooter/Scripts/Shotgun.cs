@@ -3,14 +3,13 @@ using System;
 
 public class Shotgun : Gun
 {
-    [Export] public Texture outLineSprite;
     public override float XPCheck { get; set; } = 50f;
     public override bool IsUnlocked { get; set; } = false;
-    public override Vector2 SlotPosition { get; set; } = new Vector2(-250f, 0f);
     public override string ShopName { get; set; } = "Shotgun";
     public override bool SetForSpawn { get; set; } = false;
+    public override Vector2 SlotPosition { get; set; } = new Vector2(-250f, 0f);
 
-    Texture orignalTexture;
+    public Particles2D outLineParticles;
 
     public override void _EnterTree()
     {
@@ -20,7 +19,7 @@ public class Shotgun : Gun
     public override void _Ready()
     {
         inventory = GetTree().CurrentScene.FindNode("Inventory", true, false) as Inventory;
-        orignalTexture = GetNode<Sprite>("GunComponent/GunSprite").Texture;
+        outLineParticles = GetNode<Particles2D>("UnEquipedParticles");
 
 		weaponScene = ResourceLoader.Load<PackedScene>("Assets/Weapons/Shotgun.tscn");
     }
@@ -51,16 +50,17 @@ public class Shotgun : Gun
             GetNode<GunComponent>("GunComponent").SetProcess(false);
 
         isEquiped = ParentCheck;
+        
         // Add outline when not equiped
         if (!ParentCheck)
         {
-            if (outLineSprite != null)
-                GetNode<Sprite>("GunComponent/GunSprite").Texture = outLineSprite;
+            GetNode<Sprite>("GunComponent/GunSprite").Material.Set("shader_param/outline", true);
+            outLineParticles.Emitting = true;
         }
-        else
-            GetNode<Sprite>("GunComponent/GunSprite").Texture = orignalTexture;
-
-        SetForSpawn = Shop.slots[1].Gun.SetForSpawn;
+        else {
+            GetNode<Sprite>("GunComponent/GunSprite").Material.Set("shader_param/outline", false);
+            outLineParticles.Emitting = false;
+        }
     }
 
     public override void UnEquip()

@@ -2,50 +2,15 @@
 
 [ext_resource path="res://Assets/Enemy/Enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/BigEnemy.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Shaders/BigEnemy.shader" type="Shader" id=3]
+[ext_resource path="res://Assets/Enemy/EnemyBullet.tscn" type="PackedScene" id=4]
 
-
-
-
-[sub_resource type="VisualShaderNodeColorUniform" id=1]
-uniform_name = "Color"
-
-[sub_resource type="VisualShader" id=2]
-code = "shader_type canvas_item;
-uniform vec4 Color : hint_color;
-
-
-
-void vertex() {
-// Output:0
-
-}
-
-void fragment() {
-// ColorUniform:2
-	vec3 n_out2p0 = Color.rgb;
-	float n_out2p1 = Color.a;
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-
-}
-
-void light() {
-// Output:0
-
-}
-"
-custom_defines = ""
-mode = 1
-flags/light_only = false
-nodes/fragment/2/node = SubResource( 1 )
-nodes/fragment/2/position = Vector2( 177, 186 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
-
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="ShaderMaterial" id=1]
 resource_local_to_scene = true
-shader = SubResource( 2 )
-shader_param/Color = Color( 0.658824, 0.105882, 0.254902, 1 )
+shader = ExtResource( 3 )
+shader_param/color = Color( 0.658824, 0.105882, 0.254902, 1 )
+shader_param/hitColor = Color( 1, 1, 1, 1 )
+shader_param/hit = false
 
 [node name="Enemy" instance=ExtResource( 1 )]
 scale = Vector2( 2, 2 )
@@ -54,12 +19,12 @@ scale = Vector2( 2, 2 )
 script = ExtResource( 2 )
 Hp = 120.0
 accel = 225
+enemyBulletScene = ExtResource( 4 )
 startTimeBetweenShots = 6.0
-color = Color( 0.658824, 0.105882, 0.254902, 1 )
 maxBullets = 10
 
 [node name="EnemySprite" parent="Enemy" index="0"]
-material = SubResource( 3 )
+material = SubResource( 1 )
 
 [node name="EnemyHealthbar" parent="Enemy" index="2"]
 max_value = 120.0

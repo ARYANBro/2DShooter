@@ -3,7 +3,7 @@ using System;
 
 public class Utlities
 {
-    public static RandomNumberGenerator randNumGenerator = new RandomNumberGenerator();
+    public static RandomNumberGenerator random = new RandomNumberGenerator();
     public static float LookAtMouse(Vector2 mousePosition, Vector2 nodePosition)
     {
         Vector2 lookDir = mousePosition - nodePosition;
@@ -22,9 +22,9 @@ public class Utlities
     {
         Vector2 resolution = sceneTree.Root.GetVisibleRect().Size;
 
-        randNumGenerator.Randomize();
-        return globalPosition = new Vector2(randNumGenerator.RandfRange(0f, resolution.x),
-                           randNumGenerator.RandfRange(0f, resolution.y));
+        random.Randomize();
+        return globalPosition = new Vector2(random.RandfRange(0f, resolution.x),
+                           random.RandfRange(0f, resolution.y));
     }
 
 
@@ -32,9 +32,9 @@ public class Utlities
     {
         Vector2 resolution = sceneTree.Root.GetVisibleRect().Size;
 
-        randNumGenerator.Randomize();
-        return node.GlobalPosition = new Vector2(randNumGenerator.RandfRange(0f, resolution.x),
-                                    randNumGenerator.RandfRange(0f, resolution.y));
+        random.Randomize();
+        return node.GlobalPosition = new Vector2(random.RandfRange(0f, resolution.x),
+                                    random.RandfRange(0f, resolution.y));
     }
 
     public static void AddChildWithParams(Node parent, Node2D node, Vector2 globalPos, float rotDegrees)

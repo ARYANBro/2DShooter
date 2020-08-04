@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 
 public class MainRoot : GameRules
 {
@@ -9,14 +8,21 @@ public class MainRoot : GameRules
 
     [Export] public int maxEnemyCount;
     [Export] public int maxBigEnemyCount;
-    [Export] public PackedScene enemyScene;
-    [Export] public PackedScene pointsScene;
+    [Export] public int maxAcidEnemyCount;
+
+    [Export] public PackedScene pointsScene
+    ;
     [Export] public PackedScene pistolScene;
     [Export] public PackedScene shotGunScene;
+    [Export] public PackedScene rocketLauncherScene;
+
+    [Export] public PackedScene enemyScene;
     [Export] public PackedScene bigEnemyScene;
+    [Export] public PackedScene acidEnemyScene;
+
     [Export] public PackedScene healthPackScene;
     [Export] public PackedScene energyDrinkScene;
-    [Export] public PackedScene rocketLauncherScene;
+
     public Player player;
     public Node2D enemiesNode;
     public Control pauseMenue;
@@ -33,17 +39,21 @@ public class MainRoot : GameRules
         }
     }
 
+
     int points = 0;
     bool enemyCondition = false;
     static float highScore = 0;
+
     Pistol pistol;
     Shotgun shotgun;
+    RocketLauncher rocketLauncher;
+
     Healthpack healthpack;
-    GunSpawner gunSpawner;
     EnergyDrink energyDrink;
+
+    GunSpawner gunSpawner;
     EnemySpawner enemySpawner;
     PointsSpawner pointsSpawner;
-    RocketLauncher rocketLauncher;
     ConsumableSpawner consumableSpawner;
 
     public override void _Ready()
@@ -54,7 +64,7 @@ public class MainRoot : GameRules
 
         gunSpawner = new GunSpawner();
         pointsSpawner = new PointsSpawner(pointsScene);
-        enemySpawner = new EnemySpawner(enemyScene, bigEnemyScene, enemiesNode);
+        enemySpawner = new EnemySpawner(enemyScene, bigEnemyScene, acidEnemyScene, enemiesNode);
         consumableSpawner = new ConsumableSpawner(healthPackScene, energyDrinkScene, GetTree().CurrentScene);
 
         // Spawn Guns
@@ -67,7 +77,7 @@ public class MainRoot : GameRules
         gunSpawner.Spawn<Pistol>(ref pistol,  player.Position, player.RotationDegrees, GetTree().CurrentScene);
 
         // Spawn Enemies
-        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount);
+        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount, maxAcidEnemyCount);
     }
 
     public override void _Process(float delta)
@@ -101,19 +111,15 @@ public class MainRoot : GameRules
             highScore = points;
     }
 
-    void OnPlayerWon()
+    async void OnPlayerWon()
     {
         // Spawn Consumables and Enemies
         SpawnConsumables();
         gunSpawner.Spawn<Shotgun>(ref shotgun, player.Position, player.RotationDegrees, GetTree().CurrentScene);
         gunSpawner.Spawn<RocketLauncher>(ref rocketLauncher, player.Position, player.RotationDegrees, GetTree().CurrentScene);
 
-        GetTree().CreateTimer(5f).Connect("timeout", this, "SpawnEnemiesTimerTimeout");
-    }
-
-    void SpawnEnemiesTimerTimeout()
-    {
-        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount);
+        await ToSignal(GetTree().CreateTimer(5f), "timeout");
+        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount, maxAcidEnemyCount);
     }
 
     void OnPlayerDied() => GetTree().Quit();
@@ -122,6 +128,7 @@ public class MainRoot : GameRules
         pointsSpawner.Spawn(position, _points, size, GetTree());
     }
  
+    // if (Player has won)
     void PlayerWonCheck()
     {
         if (enemyCondition == true)
@@ -134,24 +141,25 @@ public class MainRoot : GameRules
         }
     }
 
+    // For spawning consumables
     void SpawnConsumables()
     {
         healthpack = consumableSpawner.InitConsumables(healthPackScene) as Healthpack;
         energyDrink = consumableSpawner.InitConsumables(energyDrinkScene) as EnergyDrink;
 
-        int randNumber = Utlities.randNumGenerator.RandiRange(0, 1);
+        int randNumber = Utlities.random.RandiRange(0, 1);
 
         if (randNumber == 1)
         {
             Vector2 resolution = GetTree().Root.GetVisibleRect().Size;
-            Vector2 position = new Vector2(Utlities.randNumGenerator.RandfRange(0, resolution.x), Utlities.randNumGenerator.RandfRange(0, resolution.y));
+            Vector2 position = new Vector2(Utlities.random.RandfRange(0, resolution.x), Utlities.random.RandfRange(0, resolution.y));
 
             consumableSpawner.Spawn<Healthpack>(ref healthpack, position, 0f, GetTree().CurrentScene);
             energyDrink.QueueFree();
         }
         else {
             Vector2 resolution = GetTree().Root.GetVisibleRect().Size;
-            Vector2 position = new Vector2(Utlities.randNumGenerator.RandfRange(0, resolution.x), Utlities.randNumGenerator.RandfRange(0, resolution.y));
+            Vector2 position = new Vector2(Utlities.random.RandfRange(0, resolution.x), Utlities.random.RandfRange(0, resolution.y));
 
             consumableSpawner.Spawn<EnergyDrink>(ref energyDrink, position, 0f, GetTree().CurrentScene);
             healthpack.QueueFree();

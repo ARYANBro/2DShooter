@@ -55,6 +55,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\AcidEnemy.cs" />
     <Compile Include="Scripts\GameRules.cs" />
     <Compile Include="Scripts\IIsShopable.cs" />
     <Compile Include="Scripts\PistolBulletParticles.cs" />

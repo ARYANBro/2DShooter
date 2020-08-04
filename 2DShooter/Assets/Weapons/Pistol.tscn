@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Pistol.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Weapons/PistolBullet.tscn" type="PackedScene" id=2]
@@ -6,14 +6,67 @@
 [ext_resource path="res://Assets/Sprites/Weapons/Pistol/PistolWhiteOutline.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sprites/Weapons/Pistol/Pistol.png" type="Texture" id=5]
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="ParticlesMaterial" id=6]
+emission_shape = 1
+emission_sphere_radius = 20.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 9.82, 0 )
+initial_velocity = 5.0
+orbit_velocity = 1.0
+orbit_velocity_random = 0.8
+radial_accel = 50.0
+angle = 720.0
+angle_random = 1.0
+scale = 2.0
+
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+
+uniform float minScale;
+uniform float maxScale;
+uniform float speed;
+
+uniform sampler2D outlineTexture;
+uniform sampler2D normalTexture;
+
+uniform bool outline;
+
+void vertex()
+{
+	if (outline)
+		VERTEX *= (sin(TIME * speed) + minScale) * maxScale;
+}
+
+void fragment()
+{
+	if (outline)
+		COLOR = texture(outlineTexture, UV);
+	else
+		COLOR = texture(normalTexture, UV);
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/minScale = 6.766
+shader_param/maxScale = 0.15
+shader_param/speed = 1.5
+shader_param/outline = true
+shader_param/outlineTexture = ExtResource( 4 )
+shader_param/normalTexture = ExtResource( 5 )
+
+[sub_resource type="CapsuleShape2D" id=3]
 radius = 13.0
 height = 10.0
 
 [node name="Pistol" type="Node2D"]
 show_behind_parent = true
 script = ExtResource( 1 )
-outLineSprite = ExtResource( 4 )
+
+[node name="UnEquipedParticles" type="Particles2D" parent="."]
+position = Vector2( 1.58512, -18.938 )
+process_material = SubResource( 6 )
 
 [node name="GunComponent" parent="." instance=ExtResource( 3 )]
 fireSpeed = 500.0
@@ -21,14 +74,21 @@ startTimeBetweenShots = 0.2
 bulletScene = ExtResource( 2 )
 
 [node name="GunSprite" parent="GunComponent" index="0"]
+material = SubResource( 5 )
+position = Vector2( 0, -1 )
+rotation = 4.71239
 texture = ExtResource( 5 )
+offset = Vector2( 18.413, 6.004 )
 
 [node name="Firepoint" parent="GunComponent" index="1"]
 position = Vector2( -0.166077, -48.8584 )
 
+[node name="GunComponentCollision" parent="GunComponent" index="2"]
+visible = false
+
 [node name="CollisionShape2D" parent="GunComponent/GunComponentCollision" index="0"]
 position = Vector2( 4, -22 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 [connection signal="body_entered" from="GunComponent/GunComponentCollision" to="." method="OnBodyEntered"]
 [connection signal="body_exited" from="GunComponent/GunComponentCollision" to="." method="OnBodyExited"]
 

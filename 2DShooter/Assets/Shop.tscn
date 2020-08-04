@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scripts/Shop.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Weapons/Shotgun/Shotgun.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/RocketLauncher.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/NewRocketLauncher.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Sprites/SlideArrow.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sprites/Weapons/Pistol/Pistol.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Sprites/SlideArrowPressed.png" type="Texture" id=6]
@@ -34,7 +34,7 @@ texture = ExtResource( 2 )
 
 [node name="RocketLauncherSprite" type="Sprite" parent="Slots"]
 position = Vector2( 660.429, 96.0607 )
-scale = Vector2( 2, 2 )
+scale = Vector2( 2.5, 2.5 )
 texture = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="Slots"]

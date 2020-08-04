@@ -3,9 +3,6 @@
 [ext_resource path="res://Scripts/EnemyBullet.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Weapons/BulletComponent.tscn" type="PackedScene" id=2]
 
-
-
-
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
 uniform_name = "Color"
 

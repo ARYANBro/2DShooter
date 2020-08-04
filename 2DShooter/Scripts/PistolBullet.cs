@@ -3,33 +3,25 @@ using System;
 
 public class PistolBullet : Node2D
 {
-	[Export] public int damage = 20;
-	[Export] public PackedScene hitParticlesScene;
+    [Export] public int damage = 20;
+    [Export] public PackedScene hitParticlesScene;
 
-	Particles2D hitParticle;
+    Particles2D hitParticle;
 
-	public override void _Ready()
-	{
-		hitParticle = hitParticlesScene.Instance() as Particles2D;
-	}
-	
-	public void OnBulletBodyEntered(object body)
-	{
-		if (body.GetType().Name == "Enemy")
-		{
-			Enemy enemy = body as Enemy;
-			enemy.TakeDamage(damage);
-		}
-		else if (body.GetType().Name == "BigEnemy")
-		{
-			BigEnemy enemy = body as BigEnemy;
-			enemy.TakeDamage(damage);
-		}
+    public override void _Ready()
+    {
+        hitParticle = hitParticlesScene.Instance() as Particles2D;
+    }
 
-		hitParticle.Position = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
-		hitParticle.Emitting = true;
+    public void OnBulletBodyEntered(object body)
+    {
+        if (body is Enemy enemy)
+            enemy.TakeDamage(damage);
 
-		GetParent().AddChild(hitParticle);
-		QueueFree();
-	}
+        hitParticle.Position = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
+        hitParticle.Emitting = true;
+
+        GetParent().AddChild(hitParticle);
+        QueueFree();
+    }
 }

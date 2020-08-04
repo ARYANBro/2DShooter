@@ -1,12 +1,63 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Weapons/GunComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Weapons/RocketLauncherRocket.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/RocketLauncher.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/RocketLauncher.cs" type="Script" id=4]
-[ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/RocketLauncherOutline.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/NewRocketLauncherOutline.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/NewRocketLauncher.png" type="Texture" id=6]
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="ParticlesMaterial" id=1]
+emission_shape = 1
+emission_sphere_radius = 20.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 9.82, 0 )
+initial_velocity = 5.0
+orbit_velocity = 1.0
+orbit_velocity_random = 0.8
+radial_accel = 50.0
+angle = 720.0
+angle_random = 1.0
+scale = 2.0
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform float minScale;
+uniform float maxScale;
+uniform float speed;
+
+uniform sampler2D outlineTexture;
+uniform sampler2D normalTexture;
+
+uniform bool outline;
+
+void vertex()
+{
+	if (outline)
+		VERTEX *= (sin(TIME * speed) + minScale) * maxScale;
+}
+
+void fragment()
+{
+	if (outline)
+		COLOR = texture(outlineTexture, UV);
+	else
+		COLOR = texture(normalTexture, UV);
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/minScale = 6.766
+shader_param/maxScale = 0.15
+shader_param/speed = 1.5
+shader_param/outline = false
+shader_param/outlineTexture = ExtResource( 5 )
+shader_param/normalTexture = ExtResource( 6 )
+
+[sub_resource type="CapsuleShape2D" id=4]
 radius = 12.0
 height = 35.0
 
@@ -15,7 +66,13 @@ script = ExtResource( 4 )
 __meta__ = {
 "_editor_description_": ""
 }
-outLineSprite = ExtResource( 5 )
+
+[node name="UnEquipedParticles" type="Particles2D" parent="."]
+position = Vector2( 0.585125, -40.688 )
+process_material = SubResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="GunComponent" parent="." instance=ExtResource( 1 )]
 fireSpeed = 200.0
@@ -23,8 +80,11 @@ startTimeBetweenShots = 2.5
 bulletScene = ExtResource( 2 )
 
 [node name="GunSprite" parent="GunComponent" index="0"]
-position = Vector2( -5.00381, -15 )
+material = SubResource( 3 )
+position = Vector2( -3.39093, -17.8499 )
+scale = Vector2( 1.2, 1.2 )
 texture = ExtResource( 3 )
+offset = Vector2( 18.821, -0.023 )
 
 [node name="Firepoint" parent="GunComponent" index="1"]
 position = Vector2( -0.00380802, -80 )
@@ -34,7 +94,7 @@ collision_layer = 0
 
 [node name="CollisionShape2D" parent="GunComponent/GunComponentCollision" index="0"]
 position = Vector2( -1, -38 )
-shape = SubResource( 1 )
+shape = SubResource( 4 )
 [connection signal="body_entered" from="GunComponent/GunComponentCollision" to="." method="OnBodyEntered"]
 [connection signal="body_exited" from="GunComponent/GunComponentCollision" to="." method="OnBodyExited"]
 

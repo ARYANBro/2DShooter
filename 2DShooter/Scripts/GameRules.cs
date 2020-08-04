@@ -17,19 +17,17 @@ public  class GameRules : Node
         GetTree().Paused = false;
     }
 
-    public void FixEngineScale()
-    {
-        Engine.TimeScale = 1.0f;
-        engineScaleCheck = false;
-    }
-
-    public void EngineScaleCheck()
+    async public void EngineScaleCheck()
     {
         // Check if Engine scale is ok
         if (engineScaleCheck == true)
         {
             if (Engine.TimeScale < 1.0f)
-                GetTree().CreateTimer(2f).Connect("timeout", this, "FixEngineScale");
+            {
+                await ToSignal(GetTree().CreateTimer(2f), "timeout");
+                Engine.TimeScale = 1.0f;
+                engineScaleCheck = false;
+            }
         }
     }
 }

@@ -27,7 +27,6 @@ public class Enemy : KinematicBody2D
     [Export] public int retreatDistance;
     [Export] public PackedScene enemyBulletScene;
     [Export] public float startTimeBetweenShots;
-    [Export] public Color color;
     public Player player;
 
     protected float timeBetweenShots;
@@ -41,7 +40,6 @@ public class Enemy : KinematicBody2D
         sprite = GetNode<Sprite>("EnemySprite");
 
         GlobalPosition = Utlities.RandPosition(new Vector2(320f, 180f), GetTree());
-        sprite.Material.SetDeferred("shader_param/Color", color);
         timeBetweenShots = startTimeBetweenShots;
 
         Connect("SEnemyDied", GetTree().CurrentScene, "OnEnemyDied");
@@ -59,7 +57,7 @@ public class Enemy : KinematicBody2D
         Move(delta);
     }
 
-    public virtual void TakeDamage(float damage)
+    async public virtual void TakeDamage(float damage)
     {
         Hp -= damage;
         if (Hp <= 0)
@@ -67,32 +65,33 @@ public class Enemy : KinematicBody2D
             var cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
 
             cameraShake.StartShake();
+
             EmitSignal("SEnemyDied", 15);
             EmitSignal("SSpawnPoints", GlobalPosition, 15, new Vector2(1f, 1f));
+
             GetParent().QueueFree();
         }
+
+        GetNode<Sprite>("EnemySprite").Material.Set("shader_param/hit", true);
+        await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
+        GetNode<Sprite>("EnemySprite").Material.Set("shader_param/hit", false);
     }
-
-
-    void OnHitTimerTimeout()
-    {
-        if ((Color)sprite.Material.Get("shader_param/Color") != color)
-            sprite.Material.SetDeferred("shader_param/Color", color);
-        else return;
-    }
-
-    virtual protected void Shoot(float delta)
+    public virtual void Shoot(float delta)
     {
         if (timeBetweenShots <= 0)
         {
-            var bulletRoot = enemyBulletScene.Instance();
-            var bullet = bulletRoot.GetNode<BulletComponent>("BulletComponent");
+            if (enemyBulletScene != null)
+            {
+                var bulletRoot = enemyBulletScene.Instance();
+                var bullet = bulletRoot.GetNode<BulletComponent>("BulletComponent");
 
-            float rotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition);
-            Utlities.SetNode2DParams(ref bullet, GlobalPosition, rotationDegrees);
-            GetTree().CurrentScene.AddChild(bulletRoot);
+                float rotationDegrees = Utlities.LookAtSomething(player.Position, GlobalPosition);
+                Utlities.SetNode2DParams(ref bullet, GlobalPosition, rotationDegrees);
 
-            timeBetweenShots = startTimeBetweenShots;
+                GetTree().CurrentScene.AddChild(bulletRoot);
+                timeBetweenShots = startTimeBetweenShots;
+            }
+            else return;
         }
         else timeBetweenShots -= delta;
     }
@@ -102,12 +101,11 @@ public class Enemy : KinematicBody2D
         velocity = MoveAndSlide(velocity);
     }
 
-    void GetMovementInput(float delta)
+    protected void GetMovementInput(float delta)
     {
         var inputVector = Vector2.Zero;
         inputVector = player.GlobalPosition - GlobalPosition;
         inputVector = inputVector.Normalized();
-
         if (GlobalPosition.DistanceTo(player.GlobalPosition) > stoppingDistance)
             velocity = velocity.MoveToward(inputVector * speed, accel * delta);
         else if (GlobalPosition.DistanceTo(player.GlobalPosition) < retreatDistance)

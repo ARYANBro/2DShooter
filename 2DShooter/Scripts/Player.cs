@@ -1,10 +1,12 @@
 using Godot;
+using System;
+using System.Collections.Generic;
 
 public class Player : KinematicBody2D
 {
     [Signal] public delegate void PlayerDamaged();
     [Signal] public delegate void SPlayerDied();
-    
+
     [Export] public float speed;
     [Export] public float friction;
     [Export] public float sprintSpeed;
@@ -22,7 +24,7 @@ public class Player : KinematicBody2D
             else hp = value;
         }
     }
-    [Export] public float Stamina
+        [Export] public float Stamina
     {
         get {
             return stamina;
@@ -37,6 +39,9 @@ public class Player : KinematicBody2D
     public Inventory inventory;
     public bool canSprint = true;
     public Vector2 velocity = Vector2.Zero;
+    public float startTime = 3;
+    public bool takeDamageOverTime;
+    float time;
 
     int hp = 100;
     float stamina = 400f;
@@ -50,6 +55,7 @@ public class Player : KinematicBody2D
 
         orignalSprintSpeed = sprintSpeed;
         orignalSpeed = speed;
+        time = startTime;
 
         Connect("SPlayerDied", GetTree().CurrentScene, "OnPlayerDied");
     }
