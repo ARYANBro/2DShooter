@@ -2,7 +2,8 @@
 
 [ext_resource path="res://Assets/Weapons/BulletComponent.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Sprites/Weapons/Shotgun/ShotgunShell.png" type="Texture" id=2]
-[ext_resource path="res://Scripts/ShotgunShell.cs" type="Script" id=3]
+[ext_resource path="res://Scripts/Gun/ShotgunShell.cs" type="Script" id=3]
+
 
 
 

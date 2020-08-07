@@ -1,9 +1,10 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Scripts/RocketLauncherRocket.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Gun/RocketLauncherRocket.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Effects/RocketLauncherRocketHitParticle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Weapons/BulletComponent.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/Rocket.png" type="Texture" id=4]
+
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.98554

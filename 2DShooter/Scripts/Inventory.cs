@@ -14,7 +14,6 @@ public class Inventory : Node2D
         }
     }
 
-
     public override void _Process(float delta)
     {
         if (GetChildCount() == 2)
@@ -37,5 +36,13 @@ public class Inventory : Node2D
     {
         node2D.Hide();
         sceneTree.CreateTimer(sec).Connect("timeout", node2D, "show");
+    }
+
+    public bool Has<T>() where T : IPickable
+    {   
+        if (GetChildCount() == 1 && GetChild(0) is T)
+            return true;
+        else
+            return false;
     }
 }

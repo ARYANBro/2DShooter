@@ -31,7 +31,7 @@ class BigEnemy : Enemy
         else timeBetweenShots -= delta;
     }
 
-    async public override void TakeDamage(float damage)
+    public override void TakeDamage(float damage)
     {
         Hp -= damage;
         if (Hp <= 0)
@@ -46,7 +46,6 @@ class BigEnemy : Enemy
         }
 
         GetNode<Sprite>("EnemySprite").Material.Set("shader_param/hit", true);
-        await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
-        GetNode<Sprite>("EnemySprite").Material.Set("shader_param/hit", false);
+        GetTree().CreateTimer(0.1f).Connect("timeout", this, "OnHitTimerTimeout");
     }
 }

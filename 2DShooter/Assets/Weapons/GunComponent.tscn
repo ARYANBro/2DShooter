@@ -1,8 +1,9 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Scripts/GunComponent.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Gun/GunComponent.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Weapons/Shotgun/ShotgunOutline.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Sprites/Weapons/Shotgun/Shotgun.png" type="Texture" id=3]
+
 
 [sub_resource type="Shader" id=2]
 code = "shader_type canvas_item;

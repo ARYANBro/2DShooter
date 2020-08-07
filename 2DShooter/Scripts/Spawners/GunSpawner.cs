@@ -3,7 +3,7 @@ using System;
 
 public class GunSpawner
 {
-    static int iteration = -1;
+    private static int iteration = -1;
 
     public GunSpawner()
     {
@@ -13,7 +13,6 @@ public class GunSpawner
     public void InitGun<T>(ref T weapon, PackedScene gunScene) where T : Gun, new()
     {
         weapon = new T();
-
         weapon = gunScene.Instance() as T;
         if (iteration == 0)
         {
@@ -24,14 +23,17 @@ public class GunSpawner
 
     public void Spawn<T>(ref T gun, Vector2 position, float rotationDegrees, Node parent) where T : Gun
     {
-        if (gun.IsUnlocked && gun.SetForSpawn && !gun.AlreadySpawned)
+        if (gun != null)
         {
-            gun.RotationDegrees = rotationDegrees;
-            gun.Position = position;
+            if (gun.IsUnlocked && gun.SetForSpawn && !gun.AlreadySpawned)
+            {
+                gun.RotationDegrees = rotationDegrees;
+                gun.Position = position;
 
-            parent.AddChild(gun);
+                gun.AlreadySpawned = true;
 
-            gun.AlreadySpawned = true;
+                parent.AddChild(gun);
+            }
         }
     }
 

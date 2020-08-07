@@ -1,10 +1,11 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Scripts/PauseMenue.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/UI/PauseMenue.cs" type="Script" id=2]
 [ext_resource path="res://Assets/Sprites/ResumeButton/ResumeButton.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Sprites/ResumeButton/ResumeButtonPressed.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sprites/ShopButton/ShopButtonPressed.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Sprites/ShopButton/ShopButton.png" type="Texture" id=6]
+
 
 [node name="PauseMenue" type="Control"]
 pause_mode = 2

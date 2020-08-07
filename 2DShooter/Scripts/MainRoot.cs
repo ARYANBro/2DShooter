@@ -6,12 +6,11 @@ public class MainRoot : GameRules
     [Signal] public delegate void SPlayerWon();
     [Signal] public delegate void SIncreasePoints(int points);
 
-    [Export] public int maxEnemyCount;
-    [Export] public int maxBigEnemyCount;
-    [Export] public int maxAcidEnemyCount;
+    [Export] public int enemyCount;
+    [Export] public int bigEnemyCount;
+    [Export] public int acidEnemyCount;
 
-    [Export] public PackedScene pointsScene
-    ;
+    [Export] public PackedScene pointsScene;
     [Export] public PackedScene pistolScene;
     [Export] public PackedScene shotGunScene;
     [Export] public PackedScene rocketLauncherScene;
@@ -27,9 +26,28 @@ public class MainRoot : GameRules
     public Node2D enemiesNode;
     public Control pauseMenue;
 
+    private int points = 0;
+    private bool hasPlayerWonCheck = false;
+    private static float highScore = 0;
+
+    private Pistol pistol;
+    private Shotgun shotgun;
+    private RocketLauncher rocketLauncher;
+
+    private Healthpack healthpack;
+    private EnergyDrink energyDrink;
+
+    private GunSpawner gunSpawner;
+    private EnemySpawner enemySpawner;
+    private PointsSpawner pointsSpawner;
+    private ConsumableSpawner consumableSpawner;
+    
+    private InputHandler inputHandler;
+
     public static float HighScore
     {
-        get {
+        get
+        {
             return highScore;
         }
 
@@ -39,23 +57,6 @@ public class MainRoot : GameRules
         }
     }
 
-
-    int points = 0;
-    bool enemyCondition = false;
-    static float highScore = 0;
-
-    Pistol pistol;
-    Shotgun shotgun;
-    RocketLauncher rocketLauncher;
-
-    Healthpack healthpack;
-    EnergyDrink energyDrink;
-
-    GunSpawner gunSpawner;
-    EnemySpawner enemySpawner;
-    PointsSpawner pointsSpawner;
-    ConsumableSpawner consumableSpawner;
-
     public override void _Ready()
     {
         player = GetNode<Player>("Player");
@@ -63,21 +64,18 @@ public class MainRoot : GameRules
         pauseMenue = GetNode<Control>("Hud/PauseMenue/PauseMenue");
 
         gunSpawner = new GunSpawner();
+        inputHandler = new InputHandler();
+        enemySpawner = new EnemySpawner(enemiesNode);
         pointsSpawner = new PointsSpawner(pointsScene);
-        enemySpawner = new EnemySpawner(enemyScene, bigEnemyScene, acidEnemyScene, enemiesNode);
         consumableSpawner = new ConsumableSpawner(healthPackScene, energyDrinkScene, GetTree().CurrentScene);
 
         // Spawn Guns
         gunSpawner.InitGun<Pistol>(ref pistol, pistolScene);
         gunSpawner.InitGun<Shotgun>(ref shotgun, shotGunScene);
         gunSpawner.InitGun<RocketLauncher>(ref rocketLauncher, rocketLauncherScene);
-        
-        gunSpawner.Spawn<Shotgun>(ref shotgun, player.Position, player.RotationDegrees, GetTree().CurrentScene);
-        gunSpawner.Spawn<RocketLauncher>(ref rocketLauncher, player.Position, player.RotationDegrees, GetTree().CurrentScene);
-        gunSpawner.Spawn<Pistol>(ref pistol,  player.Position, player.RotationDegrees, GetTree().CurrentScene);
 
-        // Spawn Enemies
-        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount, maxAcidEnemyCount);
+        SpawnGuns();
+        SpawnEnemies();
     }
 
     public override void _Process(float delta)
@@ -85,64 +83,87 @@ public class MainRoot : GameRules
         EngineScaleCheck();
         PlayerWonCheck();
 
-        if (Input.IsActionJustPressed("Pause") && !GetTree().Paused)
+        if (enableSlowMo)
+            SlowMo(delta);
+
+        if (inputHandler.PausedPressed() && !GetTree().Paused)
             PauseGame();
 
         gunSpawner.GunUnlockCheck<Pistol>(ref pistol, 0);
         gunSpawner.GunUnlockCheck<Shotgun>(ref shotgun, 1);
         gunSpawner.GunUnlockCheck<RocketLauncher>(ref rocketLauncher, 2);
 
-        if (Input.IsActionJustPressed("FullScreen") && !OS.WindowFullscreen)
+        if (inputHandler.FullScreenPressed() && !OS.WindowFullscreen)
             OS.WindowFullscreen = true;
-        else if (Input.IsActionJustPressed("FullScreen") && OS.WindowFullscreen)
+        else if (inputHandler.FullScreenPressed() && OS.WindowFullscreen)
             OS.WindowFullscreen = false;
     }
 
-    void OnEnemyDied(int _points)
+    private void OnEnemyDied(int _points)
     {
-        // Spawn more enemies
-        enemyCondition = true;
+        // Increase points
+        hasPlayerWonCheck = true;
 
         EmitSignal("SIncreasePoints", _points);
         points += _points;
 
-        // Increase points
         if (highScore < points)
             highScore = points;
     }
 
-    async void OnPlayerWon()
+    private void OnPlayerWon()
     {
         // Spawn Consumables and Enemies
         SpawnConsumables();
-        gunSpawner.Spawn<Shotgun>(ref shotgun, player.Position, player.RotationDegrees, GetTree().CurrentScene);
-        gunSpawner.Spawn<RocketLauncher>(ref rocketLauncher, player.Position, player.RotationDegrees, GetTree().CurrentScene);
+        SpawnGuns();
 
-        await ToSignal(GetTree().CreateTimer(5f), "timeout");
-        enemySpawner.Spawn(maxEnemyCount, maxBigEnemyCount, maxAcidEnemyCount);
+        GetTree().CreateTimer(5f).Connect("timeout", this, "SpawnEnemies");
     }
 
-    void OnPlayerDied() => GetTree().Quit();
-    void SpawnPoints(Vector2 position, int _points, Vector2 size)
+    private void OnPlayerDied()
+    {
+        GetTree().Quit();
+    }
+
+    private void SpawnPoints(Vector2 position, int _points, Vector2 size)
     {
         pointsSpawner.Spawn(position, _points, size, GetTree());
     }
- 
-    // if (Player has won)
-    void PlayerWonCheck()
+
+    private void PlayerWonCheck()
     {
-        if (enemyCondition == true)
+        if (hasPlayerWonCheck == true)
         {
             if (enemiesNode.GetChildCount() == 0)
             {
                 EmitSignal("SPlayerWon");
-                enemyCondition = false;
+                hasPlayerWonCheck = false;
             }
         }
     }
 
+    private void SpawnEnemies()
+    {
+        Utlities.random.Randomize();
+
+        int randomEnemyNum = Utlities.random.RandiRange(0, enemyCount);
+        int randomBigEnemyNum = Utlities.random.RandiRange(0, bigEnemyCount);
+        int randomAcidEnemyNum = Utlities.random.RandiRange(0, acidEnemyCount);
+
+        enemySpawner.Spawn(enemyScene, randomEnemyNum);
+        enemySpawner.Spawn(bigEnemyScene, randomBigEnemyNum);
+        enemySpawner.Spawn(acidEnemyScene, randomAcidEnemyNum);
+    }
+
+    private void SpawnGuns()
+    {
+        gunSpawner.Spawn<Pistol>(ref pistol, player.Position, player.RotationDegrees, GetTree().CurrentScene);
+        gunSpawner.Spawn<Shotgun>(ref shotgun, player.Position, player.RotationDegrees, GetTree().CurrentScene);
+        gunSpawner.Spawn<RocketLauncher>(ref rocketLauncher, player.Position, player.RotationDegrees, GetTree().CurrentScene);
+    }
+
     // For spawning consumables
-    void SpawnConsumables()
+    private void SpawnConsumables()
     {
         healthpack = consumableSpawner.InitConsumables(healthPackScene) as Healthpack;
         energyDrink = consumableSpawner.InitConsumables(energyDrinkScene) as EnergyDrink;
@@ -157,7 +178,8 @@ public class MainRoot : GameRules
             consumableSpawner.Spawn<Healthpack>(ref healthpack, position, 0f, GetTree().CurrentScene);
             energyDrink.QueueFree();
         }
-        else {
+        else
+        {
             Vector2 resolution = GetTree().Root.GetVisibleRect().Size;
             Vector2 position = new Vector2(Utlities.random.RandfRange(0, resolution.x), Utlities.random.RandfRange(0, resolution.y));
 
@@ -166,8 +188,8 @@ public class MainRoot : GameRules
         }
     }
 
-    void OnPauseButtonPressed()
+    private void OnPauseButtonPressed()
     {
         PauseGame();
     }
-}   
+}

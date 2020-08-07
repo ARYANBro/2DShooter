@@ -3,13 +3,25 @@ using Godot;
 
 public class Enemy : KinematicBody2D
 {
-    [Signal] public delegate void SEnemyDied(float points);
     [Signal] public delegate void EnemyHurt();
+    [Signal] public delegate void SEnemyDied(float points);
     [Signal] public delegate void SSpawnPoints(Vector2 position, int points, Vector2 size);
 
     [Export] public int speed;
     [Export] public int accel;
     [Export] public int stoppingDistance;
+
+    [Export] public PackedScene enemyBulletScene;
+    [Export] public float startTimeBetweenShots;
+    [Export] public float hitTimerWaitTime;
+    [Export] public int retreatDistance;
+    public Player player;
+
+    protected float timeBetweenShots;
+    protected Vector2 velocity;
+    protected Sprite sprite;
+    protected float hp;
+
     [Export]
     public float Hp
     {
@@ -23,16 +35,6 @@ public class Enemy : KinematicBody2D
             Mathf.Clamp(hp, 0, 50);
         }
     }
-    [Export] public float hitTimerWaitTime;
-    [Export] public int retreatDistance;
-    [Export] public PackedScene enemyBulletScene;
-    [Export] public float startTimeBetweenShots;
-    public Player player;
-
-    protected float timeBetweenShots;
-    protected Vector2 velocity;
-    protected Sprite sprite;
-    protected float hp;
 
     public override void _Ready()
     {
@@ -57,7 +59,7 @@ public class Enemy : KinematicBody2D
         Move(delta);
     }
 
-    async public virtual void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         Hp -= damage;
         if (Hp <= 0)
@@ -69,13 +71,18 @@ public class Enemy : KinematicBody2D
             EmitSignal("SEnemyDied", 15);
             EmitSignal("SSpawnPoints", GlobalPosition, 15, new Vector2(1f, 1f));
 
-            GetParent().QueueFree();
+            GetTree().CreateTimer(0.1f).Connect("timeout", GetParent(), "queue_free");
         }
 
         GetNode<Sprite>("EnemySprite").Material.Set("shader_param/hit", true);
-        await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
+        GetTree().CreateTimer(0.1f).Connect("timeout", this, "OnHitTimerTimeout");
+    }
+
+    private void OnHitTimerTimeout()
+    {
         GetNode<Sprite>("EnemySprite").Material.Set("shader_param/hit", false);
     }
+    
     public virtual void Shoot(float delta)
     {
         if (timeBetweenShots <= 0)
@@ -91,9 +98,11 @@ public class Enemy : KinematicBody2D
                 GetTree().CurrentScene.AddChild(bulletRoot);
                 timeBetweenShots = startTimeBetweenShots;
             }
-            else return;
+            else
+                return;
         }
-        else timeBetweenShots -= delta;
+        else
+            timeBetweenShots -= delta;
     }
 
     void Move(float delta)

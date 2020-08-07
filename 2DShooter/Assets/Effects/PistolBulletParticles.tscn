@@ -1,6 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scripts/PistolBulletParticles.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Gun/PistolBulletParticles.cs" type="Script" id=1]
+
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0.344828, 0.913462 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -4.02426, 0.0, 0, 0 ]

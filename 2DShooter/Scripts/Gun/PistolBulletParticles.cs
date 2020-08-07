@@ -9,5 +9,5 @@ public class PistolBulletParticles : Particles2D
 		QueueFree();
 	}
 
-	void DeleteParticle() => QueueFree();
+	private void DeleteParticle() => QueueFree();
 }

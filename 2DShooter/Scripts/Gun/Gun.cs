@@ -30,5 +30,5 @@ public abstract class Gun : Node2D, IPickable, IIsShopable
 
     public abstract void UnEquip();
 
-    public bool ParentCheck => GetParent().GetType().Name == "Inventory";
+    public bool ParentCheck => GetParent() is Inventory;
 }

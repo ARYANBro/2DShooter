@@ -6,7 +6,7 @@ public class Healthpack : Consumable
 {
 	[Export] public int increaseHpBy;
 
-	void OnHealthpackBodyEntered(object body)
+	private void OnHealthpackBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Player")
 		{

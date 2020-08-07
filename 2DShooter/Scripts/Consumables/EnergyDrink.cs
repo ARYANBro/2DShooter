@@ -5,13 +5,13 @@ public class EnergyDrink : Consumable
 {
 	[Export] public int increaseStaminaBy;
 
-	void OnStaminapackBodyEntered(object body)
+	private void OnStaminapackBodyEntered(object body)
 	{
 		if (body.GetType().Name == "Player")
 		{
-			if (Player.Stamina < 400)
+			if (Player.movementHandler.Stamina < 400)
 			{	
-				Player.Stamina += increaseStaminaBy;
+				Player.movementHandler.Stamina += increaseStaminaBy;
 				QueueFree();
 			}
 		}

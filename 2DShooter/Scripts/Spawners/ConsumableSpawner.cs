@@ -11,7 +11,7 @@ public class ConsumableSpawner
     {
         return consumableScene.Instance() as Consumable;
     }
-
+    
     public void Spawn<T>(ref T consumable, Vector2 globalPosition, float rotationDegrees, Node parent) where T : Consumable
     {
         consumable.GlobalPosition = globalPosition;
@@ -22,5 +22,4 @@ public class ConsumableSpawner
 
     public ConsumableSpawner(PackedScene _heathPackScene, PackedScene _energyDrinkScene, Node _parent) =>
         (healthPackScene, energyDrinkScene, parent) = (_heathPackScene, _energyDrinkScene, _parent);
-
 }

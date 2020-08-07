@@ -8,13 +8,9 @@ public class RocketLauncher : Gun
     public override float XPCheck { get; set; } = 100f;
     public override Vector2 SlotPosition { get; set; } = new Vector2(-500f, 0f);
     public override string ShopName { get; set; } = "RocketLauncher";
-    public override bool IsUnlocked { get; set; } = true;
-    public override bool SetForSpawn { get; set; } = true;
-
-    public override void _EnterTree()
-    {
-        AlreadySpawned = false;
-    }
+    public override bool IsUnlocked { get; set; } = false;
+    public override bool SetForSpawn { get; set; } = false;
+    public override bool AlreadySpawned { get; set; } = false;
 
     public override void _Ready()
     {
@@ -27,16 +23,14 @@ public class RocketLauncher : Gun
 
     public void OnBodyEntered(object body)
     {
-        if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 &&
-            body.GetType().Name != "Pistol" && body.GetType().Name != "Shotgun")
+        if (body is Player && !isEquiped && inventory.GetChildCount() == 0 && !(body is Gun))
             wantToEquipGun = true;
 
     }
 
     public void OnBodyExited(object body)
     {
-        if (body.GetType().Name == "Player" && !isEquiped && inventory.GetChildCount() == 0 &&
-            body.GetType().Name != "Pistol" && body.GetType().Name != "Shotgun")
+        if (body is Player && !isEquiped && inventory.GetChildCount() == 0 && !(body is Gun))
             wantToEquipGun = false;
     }
 
@@ -52,10 +46,9 @@ public class RocketLauncher : Gun
             GetNode<GunComponent>("GunComponent").SetProcess(false);
 
         isEquiped = ParentCheck;
-
-        // Add outline when not equiped
         if (!ParentCheck)
         {
+            // Add outline when not equiped
             outLineParticles.Emitting = true;
             GetNode<Sprite>("GunComponent/GunSprite").Material.Set("shader_param/outline", true);
         }

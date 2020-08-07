@@ -1,41 +1,40 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
+[ext_resource path="res://Assets/Sprites/Healthbar/Healthbar/Health bar progress.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Sprites/Healthbar/Healthbar/Health bar over.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Sprites/Healthbar/Healthbar/Health bar progress.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/Healthbar/Healthbar/Health bar progress acidic.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Sprites/Healthbar/Healthbar/Helath bar under.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sprites/Healthbar/Healthbar heart new.png" type="Texture" id=5]
-[ext_resource path="res://Scripts/Healthbar.cs" type="Script" id=6]
+[ext_resource path="res://Scripts/UI/Healthbar.cs" type="Script" id=6]
+[ext_resource path="res://Assets/Sprites/Healthbar/Healthbar heart Acidic.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Materials/HeartShadow.tres" type="Material" id=10]
 
-[node name="Healthbar" type="Node2D"]
-position = Vector2( 0.669403, 0 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Healthbar" type="TextureProgress" parent="."]
+[node name="Healthbar" type="TextureProgress"]
 margin_right = 139.0
 margin_bottom = 28.0
 rect_scale = Vector2( 0.5, 0.4 )
 value = 100.0
 texture_under = ExtResource( 4 )
 texture_over = ExtResource( 2 )
-texture_progress = ExtResource( 3 )
-tint_progress = Color( 1, 0.298039, 0.298039, 1 )
+texture_progress = ExtResource( 1 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+acidicTextureProgress = ExtResource( 3 )
+orignalTextureProgress = ExtResource( 1 )
+heartAcidicTexture = ExtResource( 7 )
+heartOrignalTexture = ExtResource( 5 )
 
-[node name="Heart" type="Node2D" parent="Healthbar"]
+[node name="HeartRoot" type="Node2D" parent="."]
 position = Vector2( -473.202, -32.6371 )
 scale = Vector2( 2, 2.5 )
 
-[node name="HeartShadow" type="Sprite" parent="Healthbar/Heart"]
+[node name="HeartShadow" type="Sprite" parent="HeartRoot"]
 material = ExtResource( 10 )
 position = Vector2( 303.169, 15.1989 )
 texture = ExtResource( 5 )
 
-[node name="Heart" type="Sprite" parent="Healthbar/Heart"]
+[node name="Heart" type="Sprite" parent="HeartRoot"]
 position = Vector2( 302.461, 13.5172 )
 texture = ExtResource( 5 )

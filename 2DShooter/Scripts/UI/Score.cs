@@ -4,20 +4,20 @@ using System;
 public class Score : Label
 {
     public AnimationPlayer animPlayer;
+    private int points = 0;
 
     public override void _Ready()
     {
         animPlayer = GetNode<AnimationPlayer>("Score Animplayer");
     }
 
-    int points = 0;
 
     public override void _Process(float delta)
     {
         Text = Convert.ToString(points) + "P";
     }
 
-    void IncreasePoints(int _points)
+    private void IncreasePoints(int _points)
     {
         points += _points; 
         animPlayer.Play("Points bounce");

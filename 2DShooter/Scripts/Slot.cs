@@ -5,7 +5,8 @@ public class Slot
 {
     public Gun Gun
     { 
-        get {
+        get
+        {
             return gun;
         }
 

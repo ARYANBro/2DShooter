@@ -1,131 +1,128 @@
 using Godot;
-using System;
-using System.Collections.Generic;
 
 public class Player : KinematicBody2D
 {
     [Signal] public delegate void PlayerDamaged();
     [Signal] public delegate void SPlayerDied();
 
-    [Export] public float speed;
-    [Export] public float friction;
-    [Export] public float sprintSpeed;
-    [Export] public float acceleration;
-    [Export] public float sprintAccelerations;
+    public Inventory inventory;
+    public MovementHandler movementHandler;
+    public Particles2D playerSprintParticles;
+    public Healthbar healthbar;
+
+
+    private bool isAcidic = false;
+    private int hp = 100;
+
+    private int takeDamageAmount;
+    private float overAllDamageTime;
+    private float overAllDamageStartTime;
+    private bool takeDamageOverTime = false;
+
+    private float damageTime;
+    private float damageStartTime;
+    private bool damageVaraiblesInitiliaze = false;
+
     [Export]
     public int Hp
     {
-        get {
+        get
+        {
             return hp;
         }
-        set {
+        set
+        {
             if (value <= 0) hp = 0;
             else if (value >= 100) hp = 100;
             else hp = value;
         }
     }
-        [Export] public float Stamina
-    {
-        get {
-            return stamina;
-        }
-        set {
-            if (value <= 0) stamina = 0;
-            else if (value >= 400) stamina = 400;
-            else stamina = value;
-        }
-    }
-    public Particles2D playerSprintParticles;
-    public Inventory inventory;
-    public bool canSprint = true;
-    public Vector2 velocity = Vector2.Zero;
-    public float startTime = 3;
-    public bool takeDamageOverTime;
-    float time;
-
-    int hp = 100;
-    float stamina = 400f;
-    float orignalSpeed;
-    float orignalSprintSpeed;
+    
+    public bool IsAcidic => isAcidic;
 
     public override void _Ready()
     {
         playerSprintParticles = GetNode<Particles2D>("PlayerSpriteParitcles");
         inventory = GetNode<Inventory>("Inventory");
+        healthbar = GetTree().CurrentScene.GetNode<Healthbar>("Hud/HealtbarRoot");
 
-        orignalSprintSpeed = sprintSpeed;
-        orignalSpeed = speed;
-        time = startTime;
+        movementHandler = new MovementHandler(400f, 70f, 200f, 250f, 500f, 350f);
 
         Connect("SPlayerDied", GetTree().CurrentScene, "OnPlayerDied");
     }
 
     public override void _Process(float delta)
     {
-        speed = orignalSpeed;
-        sprintSpeed = orignalSprintSpeed;
+        movementHandler.ProcessMovement(this, delta);
 
-        if (inventory.GetChildCount() != 0)
-        {
-            if (inventory.GetChild(0).GetType().Name == "RocketLauncher")
-            {
-                speed = speed * 0.7f;
-                sprintSpeed = sprintSpeed * 0.4f;
-            }
-            else {
-                speed = orignalSpeed;
-                sprintSpeed = orignalSprintSpeed;
-            }
-        }
+        if (takeDamageOverTime)
+            TakeDamageOverTime(delta);
 
-        Move(delta);
+        if (isAcidic)
+            healthbar.isAcidic = true;
+        else
+            healthbar.isAcidic = false;
     }
 
     public override void _PhysicsProcess(float delta)
     {
-        velocity = MoveAndSlide(velocity);
+        movementHandler.ProcessPhysics(this);
     }
 
     public void TakeDamage(int damage)
     {
         Hp -= damage;
-        if (Hp <= 0) EmitSignal("SPlayerDied");
+        if (Hp <= 0)
+            EmitSignal("SPlayerDied");
 
         EmitSignal("PlayerDamaged");
     }
 
-    void OnPlayerDied()
+    public void StartTakingDamageOverTime(int damage, float overAllDamageStartTime, float damageStartTime)
     {
-        Hide();
+        this.overAllDamageStartTime = overAllDamageStartTime;
+        this.damageStartTime = damageStartTime;
+        this.takeDamageAmount = damage;
+
+        overAllDamageTime = overAllDamageStartTime;
+
+        takeDamageOverTime = true;
     }
 
-    void Move(float delta)
+    private void TakeDamageOverTime(float delta)
     {
-        if (Input.IsActionPressed("Sprint") && canSprint && velocity != Vector2.Zero)
-            Stamina -= 3;
-        else Stamina += 1;
-
-        if (Stamina <= 0) canSprint = false;
-        else if (Stamina >= 400) canSprint = true;
-
-        Vector2 inputVector = Vector2.Zero;
-        inputVector.x = Input.GetActionStrength("MoveRight") - Input.GetActionStrength("MoveLeft");
-        inputVector.y = Input.GetActionStrength("MoveDown") - Input.GetActionStrength("MoveUp");
-        inputVector = inputVector.Normalized();
-
-        if (Input.IsActionPressed("Sprint") && canSprint)
+        if (damageTime <= 0)
         {
-            if (inputVector != Vector2.Zero)
-                velocity = velocity.MoveToward(inputVector * sprintSpeed, sprintAccelerations * delta);
-            else velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
+            TakeDamage(takeDamageAmount);
+            damageTime = damageStartTime;
+        }
+        else
+            damageTime -= delta;
 
-            playerSprintParticles.Emitting = true;
+        if (overAllDamageTime <= 0)
+        {
+            takeDamageOverTime = false;
+            overAllDamageTime = overAllDamageStartTime;
         }
-        else {
-            playerSprintParticles.Emitting = false;
-            if (inputVector != Vector2.Zero)
-                velocity = velocity.MoveToward(inputVector * speed, acceleration * delta);
-            else velocity = velocity.MoveToward(Vector2.Zero, friction * delta);
-        }
+        else
+            overAllDamageTime -= delta;
+    }
+
+    public void MakePlayerAcidic(float time, int damage)
+    {
+        isAcidic = true;
+        StartTakingDamageOverTime(damage, time, 2f);
+
+        GetTree().CreateTimer(time).Connect("timeout", this, "OnAcidicTimerTimeout");
+    }
+
+    private void OnAcidicTimerTimeout()
+    {
+        isAcidic = false;
+    }
+    
+    private void OnPlayerDied()
+    {
+        Hide();
     }
 }
