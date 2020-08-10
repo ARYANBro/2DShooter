@@ -20,10 +20,10 @@ public class AcidEnemy : Enemy
         GetMovementInput(delta);
     }
 
-
     public override void _PhysicsProcess(float delta)
     {
         velocity = MoveAndSlide(velocity);
+        
     }
 
     public override void TakeDamage(float damage)
@@ -35,8 +35,8 @@ public class AcidEnemy : Enemy
 
             cameraShake.StartShake();
 
-            EmitSignal("SEnemyDied", 10);
-            EmitSignal("SSpawnPoints", GlobalPosition, 10, new Vector2(1f, 1f));
+            EmitSignal("SEnemyDied", 20);
+            EmitSignal("SSpawnPoints", GlobalPosition, 20, new Vector2(1f, 1f));
 
             GetParent().QueueFree();
         }

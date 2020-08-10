@@ -31,6 +31,7 @@ color = Color( 0.49, 1.5, 0, 1 )
 extents = Vector2( 7.53004, 7.40912 )
 
 [node name="Enemy" type="Node2D"]
+show_behind_parent = true
 
 [node name="Enemy" type="KinematicBody2D" parent="."]
 show_behind_parent = true
@@ -44,6 +45,7 @@ stoppingDistance = 15
 retreatDistance = 17
 
 [node name="EnemySprite" type="Sprite" parent="Enemy"]
+show_behind_parent = true
 material = SubResource( 1 )
 position = Vector2( 0.0589905, 0.0589924 )
 scale = Vector2( 15, 15 )
@@ -54,6 +56,7 @@ visible = false
 shape = SubResource( 3 )
 
 [node name="EnemyHealthbar" parent="Enemy" instance=ExtResource( 1 )]
+show_behind_parent = true
 margin_left = -15.611
 margin_top = -25.2265
 margin_right = 16.389

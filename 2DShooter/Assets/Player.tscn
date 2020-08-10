@@ -4,9 +4,6 @@
 [ext_resource path="res://Scripts/Inventory.cs" type="Script" id=2]
 [ext_resource path="res://Assets/Sprites/Hat.png" type="Texture" id=3]
 
-
-
-
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
 uniform_name = "Color"
 
@@ -77,13 +74,9 @@ scale_curve = SubResource( 9 )
 color_ramp = SubResource( 7 )
 
 [node name="Player" type="KinematicBody2D"]
+show_behind_parent = true
 collision_mask = 6
 script = ExtResource( 1 )
-sprintSpeed = 250.0
-acceleration = 500.0
-sprintAccelerations = 350.0
-friction = 200.0
-speed = 70.0
 
 [node name="PlayerSprite" type="Sprite" parent="."]
 material = SubResource( 3 )

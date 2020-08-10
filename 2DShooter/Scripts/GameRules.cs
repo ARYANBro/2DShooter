@@ -9,12 +9,18 @@ public class GameRules : Node
     public float slowMoWeight;
     public float slowMoScale;
 
+
+    private InputHandler inputHandler = new InputHandler();
+
+    public override void _EnterTree()
+    {
+        if (!OS.WindowFullscreen)
+            OS.WindowFullscreen = true;
+    }
+
     public virtual void PauseGame()
     {
         GetTree().Paused = true;
-
-        GetNode<TextureButton>("Hud/PauseMenue/PauseButton").Visible = false;
-        GetTree().CurrentScene.GetNode<Control>("Hud/PauseMenue/PauseMenue").Visible = true;
     }
 
     public virtual void ResumeGame()
@@ -62,4 +68,14 @@ public class GameRules : Node
     {
         enableSlowMo = false;
     }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (inputHandler.FullScreenPressed() && !OS.WindowFullscreen)
+            OS.WindowFullscreen = true;
+        else if (inputHandler.FullScreenPressed() && OS.WindowFullscreen)
+            OS.WindowFullscreen = false;
+    }
+
+    public  bool IsPaused => GetTree().Paused;
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Assets/New_Enviornment.tres" type="Environment" id=1]
 [ext_resource path="res://Scripts/MainRoot.cs" type="Script" id=2]
@@ -17,8 +17,7 @@
 [ext_resource path="res://Assets/Enemy/PointsAnimPlayer.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Assets/Weapons/Pistol.tscn" type="PackedScene" id=16]
 [ext_resource path="res://Assets/Fonts/Roboto/Roboto-Black.ttf" type="DynamicFontData" id=17]
-[ext_resource path="res://Assets/Sprites/PauseButton/PauseButton.png" type="Texture" id=18]
-[ext_resource path="res://Assets/Sprites/PauseButton/PauseButtonPressed.png" type="Texture" id=19]
+[ext_resource path="res://Assets/UI/DeathScreen.tscn" type="PackedScene" id=18]
 [ext_resource path="res://Assets/Enemy/AcidEnemy.tscn" type="PackedScene" id=20]
 
 [sub_resource type="DynamicFont" id=1]
@@ -72,23 +71,6 @@ acidEnemyScene = ExtResource( 20 )
 healthPackScene = ExtResource( 9 )
 energyDrinkScene = ExtResource( 10 )
 
-[node name="Enemies" type="Node2D" parent="."]
-
-[node name="MainCam" type="Camera2D" parent="."]
-position = Vector2( 160, 90 )
-current = true
-script = ExtResource( 8 )
-__meta__ = {
-"_edit_lock_": true
-}
-randomness = 50.0
-speed = 40.0
-decay = 40.0
-shakeTimerWaitTime = 0.1
-
-[node name="Player" parent="." instance=ExtResource( 6 )]
-position = Vector2( 155.966, 98.0898 )
-
 [node name="Hud" type="Control" parent="."]
 margin_left = 246.321
 margin_top = 12.6454
@@ -99,10 +81,10 @@ __meta__ = {
 }
 
 [node name="HealtbarRoot" parent="Hud" instance=ExtResource( 4 )]
-acidicTextureProgressFilePath = "res://Assets/Sprites/Healthbar/Healthbar/Health bar progress acidic.png"
 heartOrignalTextureFilePath = "res://Assets/Sprites/Healthbar/Healthbar heart new.png"
-orignalTextureProgressFilePath = "res://Assets/Sprites/Healthbar/Healthbar/Health bar progress.png"
 heartAcidicTextureFilePath = "res://Assets/Sprites/Healthbar/Healthbar heart Acidic.png"
+acidicTextureProgressFilePath = "res://Assets/Sprites/Healthbar/Healthbar/Health bar progress acidic.png"
+orignalTextureProgressFilePath = "res://Assets/Sprites/Healthbar/Healthbar/Health bar progress.png"
 
 [node name="StaminaBar" parent="Hud" instance=ExtResource( 7 )]
 position = Vector2( 1.02208, 14.5909 )
@@ -125,28 +107,41 @@ __meta__ = {
 [node name="Score Animplayer" type="AnimationPlayer" parent="Hud/Score Root/Score"]
 "anims/Points bounce" = SubResource( 2 )
 
-[node name="PauseMenue" type="Node2D" parent="Hud"]
+[node name="PauseMenue" parent="Hud" instance=ExtResource( 5 )]
+margin_left = -250.378
+margin_top = -9.45443
+margin_right = -250.378
+margin_bottom = -9.45443
 
-[node name="PauseMenue" parent="Hud/PauseMenue" instance=ExtResource( 5 )]
-margin_left = -252.453
-margin_top = -12.6454
-margin_right = -252.453
-margin_bottom = -12.6454
-
-[node name="PauseButton" type="TextureButton" parent="Hud/PauseMenue"]
+[node name="DeathScreen" parent="Hud" instance=ExtResource( 18 )]
 pause_mode = 2
-margin_left = -248.973
-margin_top = 142.945
-margin_right = 263.027
-margin_bottom = 654.945
-rect_scale = Vector2( 0.045, 0.04 )
-texture_normal = ExtResource( 18 )
-texture_pressed = ExtResource( 19 )
+visible = false
+margin_left = -250.378
+margin_top = -12.0521
+margin_right = -250.378
+margin_bottom = -12.0521
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="MainCam" type="Camera2D" parent="."]
+position = Vector2( 160, 90 )
+current = true
+script = ExtResource( 8 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_lock_": true
 }
+randomness = 50.0
+speed = 40.0
+decay = 40.0
+shakeTimerWaitTime = 0.1
+
+[node name="Player" parent="." instance=ExtResource( 6 )]
+position = Vector2( 155.966, 98.0898 )
 
 [node name="Enviornment" type="Node2D" parent="."]
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
 environment = ExtResource( 1 )
@@ -158,9 +153,13 @@ position = Vector2( 0.025, 8.211 )
 polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -0.542479, 174.688, 322.263, 173.272, 322.027, -9.83969, -1.72233, -9.36774, -0.542479, 174.452, 0, 201.354, -32.7065, 201.354 )
 [connection signal="SIncreasePoints" from="." to="Hud/Score Root/Score" method="IncreasePoints"]
 [connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
+[connection signal="pressed" from="Hud/PauseMenue/PauseButton" to="Hud/PauseMenue" method="OnPauseButtonPressed"]
 [connection signal="SPlayerDied" from="Player" to="Player" method="OnPlayerDied"]
-[connection signal="pressed" from="Hud/PauseMenue/PauseButton" to="." method="OnPauseButtonPressed"]
-
-[editable path="Player"]
 
 [editable path="Hud/HealtbarRoot"]
+
+[editable path="Hud/PauseMenue"]
+
+[editable path="Hud/DeathScreen"]
+
+[editable path="Player"]

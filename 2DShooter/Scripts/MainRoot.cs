@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public class MainRoot : GameRules
 {
@@ -42,8 +41,6 @@ public class MainRoot : GameRules
     private PointsSpawner pointsSpawner;
     private ConsumableSpawner consumableSpawner;
     
-    private InputHandler inputHandler;
-
     public static float HighScore
     {
         get
@@ -61,21 +58,22 @@ public class MainRoot : GameRules
     {
         player = GetNode<Player>("Player");
         enemiesNode = GetNode<Node2D>("Enemies");
-        pauseMenue = GetNode<Control>("Hud/PauseMenue/PauseMenue");
+        pauseMenue = GetNode<Control>("Hud/PauseMenue");
 
         gunSpawner = new GunSpawner();
-        inputHandler = new InputHandler();
         enemySpawner = new EnemySpawner(enemiesNode);
         pointsSpawner = new PointsSpawner(pointsScene);
         consumableSpawner = new ConsumableSpawner(healthPackScene, energyDrinkScene, GetTree().CurrentScene);
 
-        // Spawn Guns
         gunSpawner.InitGun<Pistol>(ref pistol, pistolScene);
         gunSpawner.InitGun<Shotgun>(ref shotgun, shotGunScene);
         gunSpawner.InitGun<RocketLauncher>(ref rocketLauncher, rocketLauncherScene);
 
         SpawnGuns();
         SpawnEnemies();
+
+        if (IsPaused)
+            ResumeGame();
     }
 
     public override void _Process(float delta)
@@ -85,18 +83,10 @@ public class MainRoot : GameRules
 
         if (enableSlowMo)
             SlowMo(delta);
-
-        if (inputHandler.PausedPressed() && !GetTree().Paused)
-            PauseGame();
-
+            
         gunSpawner.GunUnlockCheck<Pistol>(ref pistol, 0);
         gunSpawner.GunUnlockCheck<Shotgun>(ref shotgun, 1);
         gunSpawner.GunUnlockCheck<RocketLauncher>(ref rocketLauncher, 2);
-
-        if (inputHandler.FullScreenPressed() && !OS.WindowFullscreen)
-            OS.WindowFullscreen = true;
-        else if (inputHandler.FullScreenPressed() && OS.WindowFullscreen)
-            OS.WindowFullscreen = false;
     }
 
     private void OnEnemyDied(int _points)
@@ -121,8 +111,11 @@ public class MainRoot : GameRules
     }
 
     private void OnPlayerDied()
-    {
-        GetTree().Quit();
+    {   
+        PauseGame();
+
+        GetNode<Control>("Hud/DeathScreen").Show();
+        GetNode<PauseMenue>("Hud/PauseMenue").Hide();
     }
 
     private void SpawnPoints(Vector2 position, int _points, Vector2 size)
@@ -188,8 +181,5 @@ public class MainRoot : GameRules
         }
     }
 
-    private void OnPauseButtonPressed()
-    {
-        PauseGame();
-    }
+
 }

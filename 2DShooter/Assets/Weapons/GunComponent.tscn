@@ -4,8 +4,7 @@
 [ext_resource path="res://Assets/Sprites/Weapons/Shotgun/ShotgunOutline.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Sprites/Weapons/Shotgun/Shotgun.png" type="Texture" id=3]
 
-
-[sub_resource type="Shader" id=2]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform float minScale;
@@ -32,8 +31,8 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = SubResource( 2 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/minScale = 6.766
 shader_param/maxScale = 0.15
 shader_param/speed = 1.5
@@ -46,7 +45,7 @@ script = ExtResource( 1 )
 firepointPath = NodePath("Firepoint")
 
 [node name="GunSprite" type="Sprite" parent="."]
-material = SubResource( 1 )
+material = SubResource( 2 )
 rotation = -1.5708
 offset = Vector2( 21, 6.004 )
 

@@ -31,9 +31,11 @@ hue_variation = 0.1
 hue_variation_random = 0.5
 
 [node name="RocketLauncherRocketHitParticle" type="Node2D"]
+show_behind_parent = true
 scale = Vector2( 0.3, 0.3 )
 
 [node name="HitParticle" type="Particles2D" parent="."]
+show_behind_parent = true
 emitting = false
 amount = 30
 lifetime = 0.4

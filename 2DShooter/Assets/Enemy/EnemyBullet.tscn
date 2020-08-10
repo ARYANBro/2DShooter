@@ -3,7 +3,6 @@
 [ext_resource path="res://Scripts/Gun/EnemyBullet.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Weapons/BulletComponent.tscn" type="PackedScene" id=2]
 
-
 [sub_resource type="VisualShaderNodeColorUniform" id=1]
 uniform_name = "Color"
 
@@ -60,6 +59,7 @@ collision_mask = 1
 speed = 200.0
 
 [node name="BulletSprite" parent="BulletComponent" index="0"]
+show_behind_parent = true
 material = SubResource( 3 )
 texture = SubResource( 4 )
 

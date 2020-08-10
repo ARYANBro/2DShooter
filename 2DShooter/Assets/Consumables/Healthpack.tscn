@@ -3,7 +3,6 @@
 [ext_resource path="res://Scripts/Consumables/Healthpack.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/Healthpack/HealthpackOutline.png" type="Texture" id=2]
 
-
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 11, 8 )
 
@@ -15,6 +14,7 @@ script = ExtResource( 1 )
 increaseHpBy = 25
 
 [node name="HealthpackSprite" type="Sprite" parent="."]
+show_behind_parent = true
 position = Vector2( 4, 2 )
 scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 2 )

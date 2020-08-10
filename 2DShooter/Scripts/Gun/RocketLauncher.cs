@@ -5,19 +5,16 @@ public class RocketLauncher : Gun
 {
     public Particles2D outLineParticles;
 
-    public override float XPCheck { get; set; } = 100f;
+    public override float XPCheck { get; set; } = 1000f;
     public override Vector2 SlotPosition { get; set; } = new Vector2(-500f, 0f);
     public override string ShopName { get; set; } = "RocketLauncher";
-    public override bool IsUnlocked { get; set; } = false;
-    public override bool SetForSpawn { get; set; } = false;
-    public override bool AlreadySpawned { get; set; } = false;
+    public override bool IsUnlocked { get; set; } = true;
+    public override bool SetForSpawn { get; set; } = true;
 
     public override void _Ready()
     {
         inventory = GetTree().CurrentScene.FindNode("Inventory", true, false) as Inventory;
-
         outLineParticles = GetNode<Particles2D>("UnEquipedParticles");
-
         weaponScene = ResourceLoader.Load<PackedScene>("res://Assets/Weapons/RocketLauncher.tscn");
     }
 
@@ -36,10 +33,10 @@ public class RocketLauncher : Gun
 
     public override void _Process(float delta)
     {
-        if (Input.IsActionJustPressed("UnEquip") && isEquiped)
+        if (Input.IsActionJustPressed("UnEquip") && isEquiped && !wantToEquipGun)
             UnEquip();
 
-        if (wantToEquipGun && Input.IsActionJustPressed("Equip"))
+        if (Input.IsActionJustPressed("Equip") && !isEquiped && wantToEquipGun)
             Equip();
 
         if (!ParentCheck)

@@ -65,6 +65,7 @@
     <Compile Include="Scripts\Input\EnemyMovementHandler.cs" />
     <Compile Include="Scripts\Input\InputHandler.cs" />
     <Compile Include="Scripts\Input\MovementHandler.cs" />
+    <Compile Include="Scripts\UI\DeathScreen.cs" />
     <Compile Include="Scripts\UI\EnemyHealthbar.cs" />
     <Compile Include="Scripts\Consumables\EnergyDrink.cs" />
     <Compile Include="Scripts\Consumables\Healthpack.cs" />
@@ -78,7 +79,8 @@
     <Compile Include="Scripts\Player.cs" />
     <Compile Include="Scripts\UI\Healthbar.cs" />
     <Compile Include="Scripts\UI\Score.cs" />
-    <Compile Include="Scripts\Slot.cs" />
+    <Compile Include="Scripts\UI\SettingMenue.cs" />
+    <Compile Include="Scripts\UI\Slot.cs" />
     <Compile Include="Scripts\UI\StaminaBar.cs" />
     <Compile Include="Scripts\CameraShake.cs" />
     <Compile Include="Scripts\Consumables\Consumable.cs" />

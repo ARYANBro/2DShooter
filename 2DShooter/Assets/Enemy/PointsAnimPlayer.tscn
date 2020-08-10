@@ -42,6 +42,7 @@ position = Vector2( -11, -18 )
 position = Vector2( 0, -4.32531 )
 
 [node name="Points" type="Label" parent="PointsAnimPlayer"]
+show_behind_parent = true
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_right = 40.0

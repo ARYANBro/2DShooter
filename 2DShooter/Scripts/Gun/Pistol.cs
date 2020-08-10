@@ -37,7 +37,7 @@ public class Pistol : Gun
 
         isEquiped = ParentCheck;
         
-        Sprite GunSprite = GetNode<Sprite>("GunComponent/GunSprite");
+        var GunSprite = GetNode<Sprite>("GunComponent/GunSprite");
         if (!ParentCheck)
         {
             GunSprite.Material.Set("shader_param/outline", true);

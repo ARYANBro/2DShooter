@@ -5,21 +5,12 @@
 [ext_resource path="res://Assets/Effects/PistolBulletParticles.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/Gun/PistolBullet.cs" type="Script" id=4]
 
-
-
-
-
-
-
-
-
-
-
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 3.5
 height = 4.0
 
 [node name="PlayerBullet" type="Node2D"]
+show_behind_parent = true
 script = ExtResource( 4 )
 damage = 10
 hitParticlesScene = ExtResource( 3 )
@@ -28,6 +19,7 @@ hitParticlesScene = ExtResource( 3 )
 collision_layer = 0
 
 [node name="BulletSprite" parent="BulletComponent" index="0"]
+show_behind_parent = true
 rotation = 4.71239
 scale = Vector2( 1, 1 )
 texture = ExtResource( 1 )

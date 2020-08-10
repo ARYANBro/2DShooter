@@ -7,7 +7,6 @@
 [ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/NewRocketLauncherOutline.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/NewRocketLauncher.png" type="Texture" id=6]
 
-
 [sub_resource type="ParticlesMaterial" id=1]
 emission_shape = 1
 emission_sphere_radius = 20.0
@@ -69,6 +68,7 @@ __meta__ = {
 }
 
 [node name="UnEquipedParticles" type="Particles2D" parent="."]
+show_behind_parent = true
 position = Vector2( 0.585125, -40.688 )
 process_material = SubResource( 1 )
 __meta__ = {
@@ -81,6 +81,7 @@ startTimeBetweenShots = 2.5
 bulletScene = ExtResource( 2 )
 
 [node name="GunSprite" parent="GunComponent" index="0"]
+show_behind_parent = true
 material = SubResource( 3 )
 position = Vector2( -3.39093, -17.8499 )
 scale = Vector2( 1.2, 1.2 )

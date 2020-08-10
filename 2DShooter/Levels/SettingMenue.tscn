@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Fonts/Roboto/Roboto_Black_24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Assets/Sprites/CheckBox/CheckBoxUnChecked.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/CheckBox/CheckBoxChecked.png" type="Texture" id=3]
+[ext_resource path="res://Scripts/UI/SettingMenue.cs" type="Script" id=4]
+
+[node name="SettingMenue" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 125.0
+margin_top = 80.0
+margin_right = 36.0
+margin_bottom = -22.0
+rect_scale = Vector2( 0.3, 0.3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+margin_right = 231.0
+margin_bottom = 78.0
+focus_mode = 0
+custom_icons/checked = ExtResource( 3 )
+custom_icons/unchecked = ExtResource( 2 )
+custom_fonts/font = ExtResource( 1 )
+text = "FULLSCREEN"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="toggled" from="HBoxContainer/CheckBox" to="." method="OnCheckBoxToggled"]

@@ -6,13 +6,11 @@
 [ext_resource path="res://Scripts/Gun/Shotgun.cs" type="Script" id=4]
 [ext_resource path="res://Scripts/Gun/ShotGunComponent.cs" type="Script" id=6]
 
-
-
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 11.0
 height = 36.0
 
-[sub_resource type="ParticlesMaterial" id=6]
+[sub_resource type="ParticlesMaterial" id=2]
 emission_shape = 1
 emission_sphere_radius = 20.0
 flag_disable_z = true
@@ -37,6 +35,7 @@ bulletScene = ExtResource( 2 )
 maxBullets = 3
 
 [node name="GunSprite" parent="GunComponent" index="0"]
+show_behind_parent = true
 position = Vector2( -6, 20 )
 texture = ExtResource( 1 )
 offset = Vector2( 50.52, 6.004 )
@@ -52,8 +51,9 @@ position = Vector2( 0, -30 )
 shape = SubResource( 1 )
 
 [node name="UnEquipedParticles" type="Particles2D" parent="."]
+show_behind_parent = true
 position = Vector2( 0.0260582, -33.6379 )
-process_material = SubResource( 6 )
+process_material = SubResource( 2 )
 __meta__ = {
 "_editor_description_": ""
 }

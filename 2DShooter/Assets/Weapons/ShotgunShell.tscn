@@ -4,25 +4,18 @@
 [ext_resource path="res://Assets/Sprites/Weapons/Shotgun/ShotgunShell.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Gun/ShotgunShell.cs" type="Script" id=3]
 
-
-
-
-
-
-
-
-
-
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 3, 5 )
 
 [node name="ShotgunShell" type="Node2D"]
+show_behind_parent = true
 position = Vector2( 0, 1 )
 script = ExtResource( 3 )
 
 [node name="BulletComponent" parent="." instance=ExtResource( 1 )]
 
 [node name="BulletSprite" parent="BulletComponent" index="0"]
+show_behind_parent = true
 position = Vector2( 0.265, -0.308 )
 scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 2 )

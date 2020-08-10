@@ -7,19 +7,8 @@ public class ShotgunShell : Node2D
 
     public void OnBulletBodyEntered(object body)
     {
-        var cameraShake = GetTree().CurrentScene.GetNode<CameraShake>("MainCam");
-        if (body.GetType().Name == "Enemy")
-        {
-            cameraShake.StartShake();
-            var enemy = body as Enemy;
+        if (body is Enemy enemy)
             enemy.TakeDamage(damage);
-        }
-        else if (body.GetType().Name == "BigEnemy")
-        {
-            cameraShake.StartShake();
-            var enemy = body as BigEnemy;
-            enemy.TakeDamage(damage);
-        }
 		
         QueueFree();
     }

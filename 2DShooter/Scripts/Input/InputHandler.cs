@@ -25,7 +25,7 @@ public class InputHandler : Node
 
     public bool EquipedPressed(Gun gun)
     {
-        return gun.wantToEquipGun && Input.IsActionJustPressed("Equip");
+        return Input.IsActionJustPressed("Equip") && gun.wantToEquipGun;
     }
 
     public bool FullScreenPressed()

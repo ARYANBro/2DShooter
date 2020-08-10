@@ -18,6 +18,7 @@ shader_param/hit = false
 extents = Vector2( 7, 7 )
 
 [node name="Enemy" type="Node2D"]
+show_behind_parent = true
 scale = Vector2( 2, 2 )
 
 [node name="Enemy" type="KinematicBody2D" parent="."]
@@ -36,6 +37,7 @@ retreatDistance = 50
 maxBullets = 10
 
 [node name="EnemySprite" type="Sprite" parent="Enemy"]
+show_behind_parent = true
 material = SubResource( 1 )
 scale = Vector2( 15, 15 )
 texture = SubResource( 2 )
@@ -45,6 +47,7 @@ visible = false
 shape = SubResource( 3 )
 
 [node name="EnemyHealthbar" parent="Enemy" instance=ExtResource( 4 )]
+show_behind_parent = true
 margin_left = -15.611
 margin_top = -25.2265
 margin_right = 16.389

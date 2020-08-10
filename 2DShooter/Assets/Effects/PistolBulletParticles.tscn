@@ -2,7 +2,6 @@
 
 [ext_resource path="res://Scripts/Gun/PistolBulletParticles.cs" type="Script" id=1]
 
-
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0.344828, 0.913462 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -4.02426, 0.0, 0, 0 ]
 
@@ -24,6 +23,7 @@ scale_curve = SubResource( 2 )
 color = Color( 1.96078, 0.945098, 0.0196078, 1 )
 
 [node name="PlayerBulletParitcles" type="Particles2D"]
+show_behind_parent = true
 emitting = false
 amount = 10
 lifetime = 0.4

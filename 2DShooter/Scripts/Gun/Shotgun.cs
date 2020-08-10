@@ -3,18 +3,13 @@ using System;
 
 public class Shotgun : Gun
 {
-    public override float XPCheck { get; set; } = 50f;
+    public override float XPCheck { get; set; } = 500f;
     public override bool IsUnlocked { get; set; } = false;
-    public override string ShopName { get; set; } = "Shotgun";
     public override bool SetForSpawn { get; set; } = false;
+    public override string ShopName { get; set; } = "Shotgun";
     public override Vector2 SlotPosition { get; set; } = new Vector2(-250f, 0f);
 
     public Particles2D outLineParticles;
-
-    public override void _EnterTree()
-    {
-        AlreadySpawned = false;
-    }
 
     public override void _Ready()
     {

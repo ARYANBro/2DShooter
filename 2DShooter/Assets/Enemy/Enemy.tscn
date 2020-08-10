@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/Enemy/EnemyBullet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Enemy/EnemyHealthbar.tscn" type="PackedScene" id=3]
 
-[sub_resource type="Shader" id=4]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform vec4 color : hint_color;
@@ -20,19 +20,20 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=5]
+[sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
-shader = SubResource( 4 )
+shader = SubResource( 1 )
 shader_param/color = Color( 0.886275, 0.0784314, 0.211765, 1 )
 shader_param/hitColor = Color( 1, 1, 1, 1 )
 shader_param/hit = false
 
-[sub_resource type="ProxyTexture" id=2]
+[sub_resource type="ProxyTexture" id=3]
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 7, 7 )
 
 [node name="Enemy" type="Node2D"]
+show_behind_parent = true
 
 [node name="Enemy" type="KinematicBody2D" parent="."]
 show_behind_parent = true
@@ -49,15 +50,17 @@ hitTimerWaitTime = 0.15
 retreatDistance = 50
 
 [node name="EnemySprite" type="Sprite" parent="Enemy"]
-material = SubResource( 5 )
+show_behind_parent = true
+material = SubResource( 2 )
 scale = Vector2( 15, 15 )
-texture = SubResource( 2 )
+texture = SubResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
 visible = false
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="EnemyHealthbar" parent="Enemy" instance=ExtResource( 3 )]
+show_behind_parent = true
 margin_left = -15.611
 margin_top = -25.2265
 margin_right = 16.389
