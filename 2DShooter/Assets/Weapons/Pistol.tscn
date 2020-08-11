@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Gun/Pistol.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Weapons/PistolBullet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Weapons/GunComponent.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Sprites/Weapons/Pistol/PistolWhiteOutline.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sprites/Weapons/Pistol/Pistol.png" type="Texture" id=5]
+[ext_resource path="res://Assets/SFX/PistolShoot.wav" type="AudioStream" id=6]
 
 [sub_resource type="ParticlesMaterial" id=1]
 emission_shape = 1
@@ -91,6 +92,9 @@ visible = false
 [node name="CollisionShape2D" parent="GunComponent/GunComponentCollision" index="0"]
 position = Vector2( 4, -22 )
 shape = SubResource( 4 )
+
+[node name="GunShootAudio" parent="GunComponent" index="3"]
+stream = ExtResource( 6 )
 [connection signal="body_entered" from="GunComponent/GunComponentCollision" to="." method="OnBodyEntered"]
 [connection signal="body_exited" from="GunComponent/GunComponentCollision" to="." method="OnBodyExited"]
 

@@ -47,7 +47,6 @@ visible = false
 shape = SubResource( 3 )
 
 [node name="EnemyHealthbar" parent="Enemy" instance=ExtResource( 4 )]
-show_behind_parent = true
 margin_left = -15.611
 margin_top = -25.2265
 margin_right = 16.389

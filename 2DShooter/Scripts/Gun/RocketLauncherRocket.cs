@@ -9,11 +9,14 @@ public class RocketLauncherRocket : Node2D
     [Export] public NodePath DamageAreaCollisionPath;
 
     public Node2D hitParticleRoot;
-
     public GameRules gameRules;
+
+    private AudioStreamPlayer2D hitAudio;
 
     public override void _Ready()
     {
+        hitAudio = GetNode<AudioStreamPlayer2D>("HitAudio");
+
         hitParticleRoot = hitParticlesScene.Instance() as Node2D;
         gameRules = GetTree().CurrentScene as GameRules;
     }
@@ -23,12 +26,15 @@ public class RocketLauncherRocket : Node2D
         if (body is Enemy enemy)
             enemy.TakeDamage(damage);
 
+        hitAudio.Play();
+        
         GetNode<CollisionShape2D>(DamageAreaCollisionPath).SetDeferred("disabled", false);
         hitParticleRoot.GetNode<Particles2D>("HitParticle").Emitting = true;
-
         hitParticleRoot.GlobalPosition = GetNode<BulletComponent>("BulletComponent").GlobalPosition;
+
         if (hitParticleRoot.GetParent() != GetTree().CurrentScene)
             GetTree().CurrentScene.AddChild(hitParticleRoot);
+
 
         GetTree().CurrentScene.GetNode<CameraShake>("MainCam").Shake(180, 90, 80);
         gameRules.StartSlowMotion(0.1f, 0.5f, 0.8f);

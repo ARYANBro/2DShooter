@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Gun/RocketLauncherRocket.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Effects/RocketLauncherRocketHitParticle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Weapons/BulletComponent.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Sprites/Weapons/RocketLauncher/Rocket.png" type="Texture" id=4]
+[ext_resource path="res://Assets/SFX/RocketExplosion.wav" type="AudioStream" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.98554
@@ -44,6 +45,11 @@ collision_mask = 6
 [node name="DamageAreaCollision" type="CollisionShape2D" parent="BulletComponent/DamageArea"]
 shape = SubResource( 2 )
 disabled = true
+
+[node name="HitAudio" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( -60, 0 )
+stream = ExtResource( 5 )
+volume_db = 1.0
 [connection signal="body_entered" from="BulletComponent" to="." method="OnBulletBodyEntered"]
 [connection signal="body_entered" from="BulletComponent/DamageArea" to="." method="OnDamageAreaBodyEntered"]
 

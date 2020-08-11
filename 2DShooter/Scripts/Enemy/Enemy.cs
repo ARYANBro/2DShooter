@@ -22,6 +22,7 @@ public class Enemy : KinematicBody2D
     protected Sprite sprite;
     protected float hp;
 
+
     [Export]
     public float Hp
     {

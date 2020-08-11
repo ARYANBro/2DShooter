@@ -7,15 +7,18 @@ public class GunComponent : Node2D
     [Export] public float startTimeBetweenShots;
     [Export] public PackedScene bulletScene;
     [Export] public NodePath firepointPath;
+    [Export] public NodePath gunShooAudioPath;
     public Position2D firepoint;
 
-	Vector2 lookDir;
+	private Vector2 lookDir;
+    private AudioStreamPlayer2D gunShootAudio;
 
     protected float timeBetweenShots;
 
     public override void _Ready()
     {
         firepoint = GetNode<Position2D>(firepointPath);
+        gunShootAudio = GetNode<AudioStreamPlayer2D>(gunShooAudioPath);
     }
 
     public override void _Process(float delta)
@@ -41,6 +44,10 @@ public class GunComponent : Node2D
                 GetTree().CurrentScene.AddChild(bulletNode2D);
 
                 timeBetweenShots = startTimeBetweenShots;
+
+                // Play Audio
+
+                gunShootAudio.Play();
             }
         }
         else

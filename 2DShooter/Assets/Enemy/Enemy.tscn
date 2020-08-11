@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Scripts/Enemy.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Enemy/Enemy.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Enemy/EnemyBullet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Enemy/EnemyHealthbar.tscn" type="PackedScene" id=3]
 
@@ -60,7 +60,6 @@ visible = false
 shape = SubResource( 4 )
 
 [node name="EnemyHealthbar" parent="Enemy" instance=ExtResource( 3 )]
-show_behind_parent = true
 margin_left = -15.611
 margin_top = -25.2265
 margin_right = 16.389

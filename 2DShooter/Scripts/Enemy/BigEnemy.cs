@@ -5,6 +5,18 @@ using System.Collections.Generic;
 class BigEnemy : Enemy
 {
     [Export] public int maxBullets = 1;
+    
+    public override void _Ready()
+    {
+        player = GetTree().CurrentScene.GetNode<Player>("Player");
+        sprite = GetNode<Sprite>("EnemySprite");
+
+        GlobalPosition = Utlities.RandPosition(new Vector2(320f, 180f), GetTree());
+        timeBetweenShots = startTimeBetweenShots;
+
+        Connect("SEnemyDied", GetTree().CurrentScene, "OnEnemyDied");
+        Connect("SSpawnPoints", GetTree().CurrentScene, "SpawnPoints");
+    }
 
     public override void Shoot(float delta)
     {

@@ -6,14 +6,17 @@ public class PauseMenue : Control
     private MainRoot main;
     private HBoxContainer buttons;
     private TextureButton pauseButton;
+    private Control settingMenue;
 
     public override void _Ready()
     {
         main = GetTree().CurrentScene as MainRoot;
         pauseButton = GetNode<TextureButton>("PauseButton");
         buttons = GetNode<HBoxContainer>("Buttons");
+        settingMenue = GetTree().CurrentScene.GetNode<Control>("Hud/SettingMenue");
      
         buttons.Hide();
+
     }
 
     private void OnResumeButtonPressed()
@@ -22,6 +25,9 @@ public class PauseMenue : Control
         
         buttons.Visible = false;
         pauseButton.Visible = true; 
+
+        if (settingMenue.Visible)
+            settingMenue.Visible = false;
     }
 
 
@@ -37,8 +43,16 @@ public class PauseMenue : Control
         pauseButton.Visible = false;
     }
 
+    private void OnSettingMenueButtonPressed()
+    {
+        if (settingMenue.Visible)
+            settingMenue.Visible = false;
+        else
+            settingMenue.Visible = true;
+    }
+
     private void OnExitButtonPressed()
     {
-        GetTree().Quit(0);
+        GetTree().Quit();
     }
 }

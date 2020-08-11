@@ -21,7 +21,6 @@ public class Player : KinematicBody2D
 
     private float damageTime;
     private float damageStartTime;
-    private bool damageVaraiblesInitiliaze = false;
 
     [Export]
     public int Hp
@@ -58,10 +57,14 @@ public class Player : KinematicBody2D
         if (takeDamageOverTime)
             TakeDamageOverTime(delta);
 
-        if (isAcidic)
-            healthbar.isAcidic = true;
-        else
-            healthbar.isAcidic = false;
+        if (healthbar != null)
+        {
+            if (isAcidic)
+                healthbar.isAcidic = true;
+            else
+                healthbar.isAcidic = false;
+        }
+        
     }
 
     public override void _PhysicsProcess(float delta)

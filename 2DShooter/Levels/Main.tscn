@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Assets/New_Enviornment.tres" type="Environment" id=1]
 [ext_resource path="res://Scripts/MainRoot.cs" type="Script" id=2]
@@ -18,7 +18,10 @@
 [ext_resource path="res://Assets/Weapons/Pistol.tscn" type="PackedScene" id=16]
 [ext_resource path="res://Assets/Fonts/Roboto/Roboto-Black.ttf" type="DynamicFontData" id=17]
 [ext_resource path="res://Assets/UI/DeathScreen.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Levels/SettingsMenue.tscn" type="PackedScene" id=19]
 [ext_resource path="res://Assets/Enemy/AcidEnemy.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Assets/Walls.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Assets/Sprites/Healthbar/Healthbar/Health bar progress acidic.png" type="Texture" id=22]
 
 [sub_resource type="DynamicFont" id=1]
 size = 15
@@ -72,25 +75,25 @@ healthPackScene = ExtResource( 9 )
 energyDrinkScene = ExtResource( 10 )
 
 [node name="Hud" type="Control" parent="."]
-margin_left = 246.321
-margin_top = 12.6454
-margin_right = 286.321
-margin_bottom = 52.6454
+margin_right = 40.0
+margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HealtbarRoot" parent="Hud" instance=ExtResource( 4 )]
-heartOrignalTextureFilePath = "res://Assets/Sprites/Healthbar/Healthbar heart new.png"
-heartAcidicTextureFilePath = "res://Assets/Sprites/Healthbar/Healthbar heart Acidic.png"
-acidicTextureProgressFilePath = "res://Assets/Sprites/Healthbar/Healthbar/Health bar progress acidic.png"
-orignalTextureProgressFilePath = "res://Assets/Sprites/Healthbar/Healthbar/Health bar progress.png"
+margin_left = 246.321
+margin_top = 12.645
+margin_right = 385.321
+margin_bottom = 40.645
+texture_progress = ExtResource( 22 )
+isAcidic = true
 
 [node name="StaminaBar" parent="Hud" instance=ExtResource( 7 )]
-position = Vector2( 1.02208, 14.5909 )
+position = Vector2( 247.343, 27.236 )
 
 [node name="Score Root" type="Node2D" parent="Hud"]
-position = Vector2( -238.144, 1.94547 )
+position = Vector2( 8.177, 14.59 )
 
 [node name="Score" type="Label" parent="Hud/Score Root"]
 margin_left = -5.40929
@@ -108,20 +111,28 @@ __meta__ = {
 "anims/Points bounce" = SubResource( 2 )
 
 [node name="PauseMenue" parent="Hud" instance=ExtResource( 5 )]
-margin_left = -250.378
-margin_top = -9.45443
-margin_right = -250.378
-margin_bottom = -9.45443
+margin_left = -4.057
+margin_top = 3.191
+margin_right = -4.057
+margin_bottom = 3.191
+
+[node name="SettingsButton" parent="Hud/PauseMenue/Buttons" index="2"]
+anchor_top = 0.0
+anchor_bottom = 0.0
 
 [node name="DeathScreen" parent="Hud" instance=ExtResource( 18 )]
 pause_mode = 2
 visible = false
-margin_left = -250.378
-margin_top = -12.0521
-margin_right = -250.378
-margin_bottom = -12.0521
+margin_left = -4.057
+margin_top = 0.593
+margin_right = -4.057
+margin_bottom = 0.592999
+
+[node name="SettingMenue" parent="Hud" instance=ExtResource( 19 )]
+visible = false
 
 [node name="Enemies" type="Node2D" parent="."]
+show_behind_parent = true
 
 [node name="MainCam" type="Camera2D" parent="."]
 position = Vector2( 160, 90 )
@@ -146,13 +157,10 @@ __meta__ = {
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
 environment = ExtResource( 1 )
 
-[node name="Walls" type="StaticBody2D" parent="Enviornment"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Enviornment/Walls"]
-position = Vector2( 0.025, 8.211 )
-polygon = PoolVector2Array( -30, -26.264, 359.771, -26.2636, 359.771, 201.354, 326.042, 201.354, 0, 201.354, -0.542479, 174.688, 322.263, 173.272, 322.027, -9.83969, -1.72233, -9.36774, -0.542479, 174.452, 0, 201.354, -32.7065, 201.354 )
+[node name="Walls" parent="Enviornment" instance=ExtResource( 21 )]
 [connection signal="SIncreasePoints" from="." to="Hud/Score Root/Score" method="IncreasePoints"]
 [connection signal="SPlayerWon" from="." to="." method="OnPlayerWon"]
+[connection signal="pressed" from="Hud/PauseMenue/Buttons/SettingsButton" to="Hud/PauseMenue" method="OnSettingMenueButtonPressed"]
 [connection signal="pressed" from="Hud/PauseMenue/PauseButton" to="Hud/PauseMenue" method="OnPauseButtonPressed"]
 [connection signal="SPlayerDied" from="Player" to="Player" method="OnPlayerDied"]
 

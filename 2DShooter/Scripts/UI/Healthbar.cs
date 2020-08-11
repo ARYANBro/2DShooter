@@ -6,19 +6,14 @@ public class Healthbar : TextureProgress
 {
     [Export] public bool isAcidic;
 
-    [Export(PropertyHint.File, "*png")] string acidicTextureProgressFilePath;
-    [Export(PropertyHint.File, "*png")] string orignalTextureProgressFilePath;
-
-    [Export(PropertyHint.File, "*png")] string heartOrignalTextureFilePath;
-    [Export(PropertyHint.File, "*png")] string heartAcidicTextureFilePath;
-    
     public Sprite heart;
     public Player player;
 
-    private Texture acidicTextureProgress;
-    private Texture orignalTextureProgress;
-    private Texture heartOrignalTexture;
-    private Texture heartAcidicTexture;
+    [Export] private Texture acidicTextureProgress = null;
+    [Export] private Texture orignalTextureProgress = null;
+    [Export] private Texture heartOrignalTexture = null;
+    [Export] private Texture heartAcidicTexture = null;
+    
 
     public override void _Ready()
     {
@@ -26,12 +21,6 @@ public class Healthbar : TextureProgress
         {
             player = GetTree().CurrentScene.GetNode<Player>("Player");
             heart = FindNode("Heart", true, false) as Sprite;
-
-            acidicTextureProgress = ResourceLoader.Load<Texture>(acidicTextureProgressFilePath);
-            orignalTextureProgress = ResourceLoader.Load<Texture>(orignalTextureProgressFilePath);
-
-            heartOrignalTexture = ResourceLoader.Load<Texture>(heartOrignalTextureFilePath);
-            heartAcidicTexture = ResourceLoader.Load<Texture>(heartAcidicTextureFilePath);
         }
     }
 

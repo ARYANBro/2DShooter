@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/UI/CheckBox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/UI/SettingMenue.cs" type="Script" id=4]
+
+[node name="SettingMenue" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 110.0
+margin_top = 60.0
+margin_right = 110.0
+margin_bottom = 60.0
+rect_scale = Vector2( 0.3, 0.3 )
+rect_clip_content = true
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FullScreenCheckBox" parent="HBoxContainer" instance=ExtResource( 2 )]
+margin_top = 8.0
+margin_right = 320.0
+margin_bottom = 86.0
+text = "FULLSCREEN"
+
+[node name="BoderlessCheckBox" parent="HBoxContainer" instance=ExtResource( 2 )]
+margin_top = 94.0
+margin_right = 320.0
+margin_bottom = 172.0
+text = "BODERLESS"
+[connection signal="toggled" from="HBoxContainer/FullScreenCheckBox" to="." method="OnCheckBoxToggled"]
+[connection signal="toggled" from="HBoxContainer/BoderlessCheckBox" to="." method="BoderlessCheckBoxToggled"]
