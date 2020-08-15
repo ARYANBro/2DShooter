@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 public class GunComponent : Node2D
@@ -11,14 +10,11 @@ public class GunComponent : Node2D
     public Position2D firepoint;
 
 	private Vector2 lookDir;
-    private AudioStreamPlayer2D gunShootAudio;
-
     protected float timeBetweenShots;
 
     public override void _Ready()
     {
         firepoint = GetNode<Position2D>(firepointPath);
-        gunShootAudio = GetNode<AudioStreamPlayer2D>(gunShooAudioPath);
     }
 
     public override void _Process(float delta)
@@ -44,10 +40,6 @@ public class GunComponent : Node2D
                 GetTree().CurrentScene.AddChild(bulletNode2D);
 
                 timeBetweenShots = startTimeBetweenShots;
-
-                // Play Audio
-
-                gunShootAudio.Play();
             }
         }
         else

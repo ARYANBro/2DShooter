@@ -17,12 +17,15 @@ _global_script_class_icons={
 
 config/name="2DShooter"
 run/main_scene="res://Levels/MainMenue.tscn"
+boot_splash/image="res://Assets/Boot Splash.png"
 boot_splash/bg_color=Color( 0.14902, 0.14902, 0.14902, 1 )
+config/icon="res://Assets/Icon.png"
 
 [display]
 
 window/size/width=320
 window/size/height=180
+window/size/fullscreen=true
 window/size/test_width=1280
 window/size/test_height=720
 window/dpi/allow_hidpi=true

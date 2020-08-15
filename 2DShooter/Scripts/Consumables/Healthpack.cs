@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Resources;
 
 public class Healthpack : Consumable
 {

@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Threading.Tasks;
 
 public class RocketLauncherRocket : Node2D
 {
@@ -11,12 +9,9 @@ public class RocketLauncherRocket : Node2D
     public Node2D hitParticleRoot;
     public GameRules gameRules;
 
-    private AudioStreamPlayer2D hitAudio;
 
     public override void _Ready()
     {
-        hitAudio = GetNode<AudioStreamPlayer2D>("HitAudio");
-
         hitParticleRoot = hitParticlesScene.Instance() as Node2D;
         gameRules = GetTree().CurrentScene as GameRules;
     }
@@ -26,8 +21,6 @@ public class RocketLauncherRocket : Node2D
         if (body is Enemy enemy)
             enemy.TakeDamage(damage);
 
-        hitAudio.Play();
-        
         GetNode<CollisionShape2D>(DamageAreaCollisionPath).SetDeferred("disabled", false);
         hitParticleRoot.GetNode<Particles2D>("HitParticle").Emitting = true;
         hitParticleRoot.GlobalPosition = GetNode<BulletComponent>("BulletComponent").GlobalPosition;

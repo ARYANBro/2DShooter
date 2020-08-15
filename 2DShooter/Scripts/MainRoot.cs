@@ -180,6 +180,4 @@ public class MainRoot : GameRules
             healthpack.QueueFree();
         }
     }
-
-
 }

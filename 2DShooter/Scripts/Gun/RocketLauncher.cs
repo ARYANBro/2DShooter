@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public class RocketLauncher : Gun
 {
@@ -8,8 +7,8 @@ public class RocketLauncher : Gun
     public override float XPCheck { get; set; } = 1000f;
     public override Vector2 SlotPosition { get; set; } = new Vector2(-500f, 0f);
     public override string ShopName { get; set; } = "RocketLauncher";
-    public override bool IsUnlocked { get; set; } = true;
-    public override bool SetForSpawn { get; set; } = true;
+    public override bool IsUnlocked { get; set; } = false;
+    public override bool SetForSpawn { get; set; } = false;
 
     public override void _Ready()
     {

@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public class Score : Label
 {
@@ -14,7 +13,7 @@ public class Score : Label
 
     public override void _Process(float delta)
     {
-        Text = Convert.ToString(points) + "P";
+        Text = points.ToString() + "P";
     }
 
     private void IncreasePoints(int _points)

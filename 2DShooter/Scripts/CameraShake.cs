@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 public class CameraShake : Camera2D

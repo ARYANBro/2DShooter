@@ -84,6 +84,7 @@ scale = Vector2( 15, 15 )
 texture = SubResource( 4 )
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 5 )
 
 [node name="PlayerSpriteParitcles" type="Particles2D" parent="."]

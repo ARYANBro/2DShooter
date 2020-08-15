@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public abstract class Gun : Node2D, IPickable, IIsShopable
 {
